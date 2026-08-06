@@ -42,7 +42,7 @@ class TitledComponent extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.secondaryColor),
+                        color: AppColors.lightBrandPrimary),
                   ),
                 ),
             ],

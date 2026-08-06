@@ -1,4 +1,4 @@
-package com.academy.commerce
+package com.sakinah.app
 
 import io.flutter.embedding.android.FlutterActivity
 

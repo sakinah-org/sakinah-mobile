@@ -10,7 +10,7 @@
 
 
     <application
-        android:label="Academy Commerce"
+        android:label="Sakinah"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:base/configurations/app_errors.dart';
+import 'package:sakinah/configurations/app_errors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';

@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:encrypt/encrypt.dart';
 
+import '../../configurations/app_env.dart';
 import 'encrypted_value.dart';
 import 'encryptor_interface.dart';
 
@@ -11,7 +10,7 @@ class AESEncryptor extends KeyEncryptor {
   AESEncryptor._ins();
   factory AESEncryptor.init() {
     _instance ??= AESEncryptor._ins();
-    _instance!.setKey = "8bvnJ68dM9MuWKkPBjjQpcI5TVVWgzDxnSclE4U1NEo=";
+    _instance!.setKey = AppEnv.instance.securityKey;
 
     return _instance!;
   }
@@ -23,9 +22,8 @@ class AESEncryptor extends KeyEncryptor {
   @override
   EncryptedValue encrypt(String value) {
     IV randomIV = IV.fromLength(16);
-    _encryptor = Encrypter(AES(Key.fromUtf8(getKey)));
+    _encryptor = Encrypter(AES(Key.fromBase64(getKey)));
     final encrypted = _encryptor.encrypt(value.toString(), iv: randomIV);
-    Platform.environment['ENCRYPTION_KEY'] = encrypted.base64;
 
     return EncryptedValue(
         encryptedValue: encrypted.base64,
@@ -35,7 +33,7 @@ class AESEncryptor extends KeyEncryptor {
 
   @override
   dynamic decrypt(EncryptedValue encryptedValue) {
-    _encryptor = Encrypter(AES(Key.fromUtf8(getKey)));
+    _encryptor = Encrypter(AES(Key.fromBase64(getKey)));
     final decrypted = _encryptor.decrypt(
         Encrypted.from64(encryptedValue.encryptedValue),
         iv: IV.fromBase64(encryptedValue.ivKey));

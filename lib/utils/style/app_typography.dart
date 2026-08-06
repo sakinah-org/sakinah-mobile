@@ -1,28 +1,206 @@
 import 'package:flutter/material.dart';
-const String appFontFamily = 'FuturaPT';
+
+import 'app_colors.dart';
+
+/// Sakinah typography scale.
+/// Tajawal is the UI workhorse; Lateef is reserved for Quranic verse text;
+/// KFGQPC Nastaleeq is an ornamental script for wordmark/divider moments only.
 abstract class AppTypography {
-  // Display
-  static const displayLarge = TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black, fontFamily: appFontFamily);
-  static const displayMedium = TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black, fontFamily: appFontFamily);
-  static const displaySmall = TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: Colors.black, fontFamily: appFontFamily);
+  // ============================================================================
+  // FONT FAMILIES
+  // ============================================================================
 
-  // Headline
-  static const headlineLarge = TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black, fontFamily: appFontFamily);
-  static const headlineMedium = TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black, fontFamily: appFontFamily);
-  static const headlineSmall = TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.black, fontFamily: appFontFamily);
+  static const String uiFontFamily = 'Tajawal';
+  static const String quranFontFamily = 'Lateef';
+  static const String ornamentalFontFamily = 'KFGQPC Nastaleeq';
 
-  // Title
-  static const titleLarge = TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black, fontFamily: appFontFamily);
-  static const titleMedium = TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black, fontFamily: appFontFamily);
-  static const titleSmall = TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black, fontFamily: appFontFamily);
+  // ============================================================================
+  // HEADINGS
+  // ============================================================================
 
-  // Body
-  static const bodyLarge = TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.black, fontFamily: appFontFamily);
-  static const bodyMedium = TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.black87, fontFamily: appFontFamily);
-  static const bodySmall = TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: Colors.black54, fontFamily: appFontFamily);
+  static const TextStyle h1Light = TextStyle(
+    fontFamily: uiFontFamily,
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+    height: 20 / 20,
+    letterSpacing: -0.4,
+    color: AppColors.lightTextPrimary,
+  );
 
-  // Label
-  static const labelLarge = TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white, fontFamily: appFontFamily);
-  static const labelMedium = TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white70, fontFamily: appFontFamily);
-  static const labelSmall = TextStyle(fontSize: 10, fontWeight: FontWeight.w400, color: Colors.grey, fontFamily: appFontFamily);
+  static const TextStyle h1Dark = TextStyle(
+    fontFamily: uiFontFamily,
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+    height: 20 / 20,
+    letterSpacing: -0.4,
+    color: AppColors.darkTextPrimary,
+  );
+
+  static const TextStyle h2Light = TextStyle(
+    fontFamily: uiFontFamily,
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    height: 20 / 16,
+    letterSpacing: -0.24,
+    color: AppColors.lightTextPrimary,
+  );
+
+  static const TextStyle h2Dark = TextStyle(
+    fontFamily: uiFontFamily,
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    height: 20 / 16,
+    letterSpacing: -0.24,
+    color: AppColors.darkTextPrimary,
+  );
+
+  // ============================================================================
+  // BODY
+  // ============================================================================
+
+  static const TextStyle body1Light = TextStyle(
+    fontFamily: uiFontFamily,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    height: 24 / 14,
+    color: AppColors.lightTextPrimary,
+  );
+
+  static const TextStyle body1Dark = TextStyle(
+    fontFamily: uiFontFamily,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    height: 24 / 14,
+    color: AppColors.darkTextPrimary,
+  );
+
+  static const TextStyle body2Light = TextStyle(
+    fontFamily: uiFontFamily,
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    height: 12 / 12,
+    color: AppColors.lightTextSecondary,
+  );
+
+  static const TextStyle body2Dark = TextStyle(
+    fontFamily: uiFontFamily,
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    height: 12 / 12,
+    color: AppColors.darkTextSecondary,
+  );
+
+  static const TextStyle body3Light = TextStyle(
+    fontFamily: uiFontFamily,
+    fontSize: 10,
+    fontWeight: FontWeight.w400,
+    height: 12 / 10,
+    color: AppColors.lightTextTertiary,
+  );
+
+  static const TextStyle body3Dark = TextStyle(
+    fontFamily: uiFontFamily,
+    fontSize: 10,
+    fontWeight: FontWeight.w400,
+    height: 12 / 10,
+    color: AppColors.darkTextTertiary,
+  );
+
+  // ============================================================================
+  // BUTTON
+  // ============================================================================
+
+  static const TextStyle buttonLight = TextStyle(
+    fontFamily: uiFontFamily,
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    height: 14 / 16,
+    color: AppColors.lightOnBrand,
+  );
+
+  static const TextStyle buttonDark = TextStyle(
+    fontFamily: uiFontFamily,
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    height: 14 / 16,
+    color: AppColors.darkOnBrand,
+  );
+
+  // ============================================================================
+  // DISPLAY
+  // ============================================================================
+
+  static const TextStyle displayLight = TextStyle(
+    fontFamily: uiFontFamily,
+    fontSize: 32,
+    fontWeight: FontWeight.w800,
+    height: 38 / 32,
+    color: AppColors.lightTextPrimary,
+  );
+
+  static const TextStyle displayDark = TextStyle(
+    fontFamily: uiFontFamily,
+    fontSize: 32,
+    fontWeight: FontWeight.w800,
+    height: 38 / 32,
+    color: AppColors.darkTextPrimary,
+  );
+
+  // ============================================================================
+  // QURAN (Lateef)
+  // ============================================================================
+
+  static const TextStyle quranLight = TextStyle(
+    fontFamily: quranFontFamily,
+    fontSize: 26,
+    fontWeight: FontWeight.w400,
+    height: 52 / 26,
+    color: AppColors.lightTextPrimary,
+  );
+
+  static const TextStyle quranDark = TextStyle(
+    fontFamily: quranFontFamily,
+    fontSize: 26,
+    fontWeight: FontWeight.w400,
+    height: 52 / 26,
+    color: AppColors.darkTextPrimary,
+  );
+
+  // ============================================================================
+  // TEXT THEME BUILDERS
+  // ============================================================================
+
+  static TextTheme get lightTextTheme => const TextTheme(
+        displayLarge: h1Light,
+        displayMedium: h2Light,
+        displaySmall: h2Light,
+        headlineMedium: h2Light,
+        headlineSmall: body1Light,
+        titleLarge: body1Light,
+        titleMedium: body2Light,
+        titleSmall: body3Light,
+        bodyLarge: body1Light,
+        bodyMedium: body2Light,
+        bodySmall: body3Light,
+        labelLarge: buttonLight,
+        labelMedium: body2Light,
+        labelSmall: body3Light,
+      );
+
+  static TextTheme get darkTextTheme => const TextTheme(
+        displayLarge: h1Dark,
+        displayMedium: h2Dark,
+        displaySmall: h2Dark,
+        headlineMedium: h2Dark,
+        headlineSmall: body1Dark,
+        titleLarge: body1Dark,
+        titleMedium: body2Dark,
+        titleSmall: body3Dark,
+        bodyLarge: body1Dark,
+        bodyMedium: body2Dark,
+        bodySmall: body3Dark,
+        labelLarge: buttonDark,
+        labelMedium: body2Dark,
+        labelSmall: body3Dark,
+      );
 }

@@ -1,19 +1,19 @@
-import 'package:base/shared/bloc/settings_cubit.dart';
-import 'package:base/configurations/app_env.dart';
-import 'package:base/configurations/app_states.dart';
-import 'package:base/handlers/security/AESEncryptor.dart';
-import 'package:base/navigation/app_routes.dart';
-import 'package:base/utils/style/app_theme.dart';
+import 'package:sakinah/shared/bloc/settings_cubit.dart';
+import 'package:sakinah/configurations/app_env.dart';
+import 'package:sakinah/configurations/app_states.dart';
+import 'package:sakinah/handlers/security/AESEncryptor.dart';
+import 'package:sakinah/navigation/app_routes.dart';
+import 'package:sakinah/utils/style/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'navigation/route_generator.dart';
 
 String env = 'dev';
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AppEnv.init(env);
   AESEncryptor.init();
-  AppEnv.init(env);
   runApp(const MyApp());
 }
 
@@ -27,9 +27,11 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<SettingsCubit, AppStates>(
         builder: (context, state) {
           return MaterialApp(
-            theme: SettingsCubit.instance.isDarkMode
-                ? ThemeData.dark()
-                : lightTheme,
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            themeMode: SettingsCubit.instance.isDarkMode
+                ? ThemeMode.dark
+                : ThemeMode.light,
             locale: SettingsCubit.instance.locale,
             onGenerateRoute: generateRoute,
             initialRoute: AppRoutes.login,

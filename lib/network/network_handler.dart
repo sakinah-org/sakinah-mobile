@@ -1,6 +1,6 @@
 import 'dart:developer';
-import 'package:base/configurations/app_env.dart';
-import 'package:base/network/request_instructions.dart';
+import 'package:sakinah/configurations/app_env.dart';
+import 'package:sakinah/network/request_instructions.dart';
 import 'package:dio/dio.dart';
 
 class DioClient {
