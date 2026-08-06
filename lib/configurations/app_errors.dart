@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class Failure implements Exception {
   final String message;
@@ -8,6 +9,39 @@ abstract class Failure implements Exception {
   @override
   String toString() {
     return message;
+  }
+
+  static Failure handleAuthException(AuthException exception) {
+    log('${exception.runtimeType}: ${exception.message} '
+        '(code: ${exception.code}, status: ${exception.statusCode})');
+    if (exception is AuthRetryableFetchException) {
+      return ConnectionFailure("Failed due to internet connection");
+    }
+    switch (exception.code) {
+      case 'invalid_credentials':
+        return UnauthorizedFailure(exception.message);
+      case 'user_already_exists':
+      case 'email_exists':
+        return BadRequestFailure(exception.message);
+      case 'otp_expired':
+      case 'otp_disabled':
+        return UnauthorizedFailure(exception.message);
+      case 'weak_password':
+        return ValidationFailure(exception.message);
+      case 'over_email_send_rate_limit':
+      case 'over_request_rate_limit':
+        return BadRequestFailure(exception.message);
+      default:
+        switch (exception.statusCode) {
+          case '400':
+          case '401':
+            return UnauthorizedFailure(exception.message);
+          case '422':
+            return BadRequestFailure(exception.message);
+          default:
+            return UnknownFailure(exception.message);
+        }
+    }
   }
 
   static Failure handleDioException(DioException exception) {

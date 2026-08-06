@@ -41,4 +41,12 @@ abstract class AppIcons {
   static const String profile = 'profile';
   static const String inAppAlert = 'in_app_alert';
   static const String password = 'password';
+
+  // ============================================================================
+  // Auth screens (login / register / forgot-password / OTP / reset-password)
+  // ============================================================================
+
+  static const String emailOutlined = 'email_outlined';
+  static const String eye = 'eye';
+  static const String eyeHide = 'eye_hide';
 }

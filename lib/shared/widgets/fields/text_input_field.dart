@@ -62,12 +62,7 @@ class _TextInputFieldState extends State<TextInputField> {
   _mapSuffixIcon() {
     if (widget.keyboardType == null) {
       return null;
-    } else if (widget.keyboardType == TextInputType.emailAddress) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-        child: drawSvgIcon("email_outlined", iconColor: Colors.grey),
-      );
-    } else if (widget.keyboardType == TextInputType.visiblePassword) {
+    }  else if (widget.keyboardType == TextInputType.visiblePassword) {
       return GestureDetector(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
@@ -143,7 +138,10 @@ class _TextInputFieldState extends State<TextInputField> {
                   fontWeight: FontWeight.w500, color: Colors.grey[400]),
               contentPadding: const EdgeInsets.all(16),
               suffixIcon: widget.suffixIcon ?? _mapSuffixIcon(),
-              prefixIcon: widget.prefixIcon,
+              prefixIcon: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: widget.prefixIcon,
+              ),
               enabledBorder: _mapBorder(
                   borderColor: widget.enableBorderColor ??
                       (value == null

@@ -1,32 +1,25 @@
-
 class User {
-  String? token;
-  String? userId;
-  String? firstName;
-  String? lastName;
+  String? id;
+  String? name;
   String? email;
 
   User({
-    this.token,
-    this.userId,
-    this.firstName,
-    this.lastName,
+    this.id,
+    this.name,
     this.email,
-
   });
+
   User.fromJson(Map<String, dynamic> json) {
-    userId = json['_id'];
-    firstName = json['firstname'];
-    lastName = json['lastname'];
+    id = json['id'];
+    name = json['name'];
     email = json['email'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.userId;
-    data['firstname'] = this.firstName;
-    data['lastname'] = this.lastName;
-    data['email'] = this.email;
+    final Map<String, dynamic> data = {};
+    data['id'] = id;
+    data['name'] = name;
+    data['email'] = email;
     return data;
   }
 }

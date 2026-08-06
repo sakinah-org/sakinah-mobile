@@ -1,3 +1,42 @@
 {
-  "settings":"الاعدادات"
+  "settings": "الاعدادات",
+
+  "auth_welcome_back": "مرحباً بعودتك",
+  "auth_login_subtitle": "سجّل الدخول لمزامنة تفضيلاتك ومحفوظاتك",
+  "auth_email_label": "البريد الإلكتروني",
+  "auth_password_label": "كلمة المرور",
+  "auth_forgot_password": "نسيت كلمة المرور؟",
+  "auth_login_cta": "تسجيل الدخول",
+  "auth_no_account_prompt": "ليس لديك حساب؟",
+  "auth_create_account_link": "إنشاء حساب",
+
+  "auth_register_title": "إنشاء حساب جديد",
+  "auth_register_subtitle": "انضم إلى سكينة لمزامنة تفضيلاتك ومحفوظاتك",
+  "auth_name_label": "الاسم",
+  "auth_confirm_password_label": "تأكيد كلمة المرور",
+  "auth_register_cta": "إنشاء الحساب",
+  "auth_have_account_prompt": "لديك حساب بالفعل؟",
+  "auth_login_link": "تسجيل الدخول",
+  "auth_register_success_message": "تم إنشاء حسابك بنجاح، يمكنك تسجيل الدخول الآن",
+
+  "auth_forgot_password_title": "نسيت كلمة المرور؟",
+  "auth_forgot_password_subtitle": "لا داعي للقلق، أدخل بريدك الإلكتروني المسجّل وسنرسل لك رمز تحقق لإعادة تعيين كلمة المرور",
+  "auth_send_code_cta": "إرسال الرمز",
+  "auth_remembered_password_prompt": "تذكّرت كلمة المرور؟",
+
+  "auth_otp_title": "رمز التحقق",
+  "auth_otp_subtitle_prefix": "أرسلنا رمزاً مكوّناً من 6 أرقام إلى",
+  "auth_otp_resend_prompt": "لم يصلك الرمز؟",
+  "auth_otp_resend_action": "إعادة الإرسال",
+  "auth_otp_resend_countdown": "إعادة الإرسال بعد",
+  "auth_otp_verify_cta": "تأكيد",
+  "auth_otp_wrong_email_prompt": "بريد خاطئ؟",
+  "auth_otp_change_email": "تغيير البريد الإلكتروني",
+
+  "auth_reset_password_title": "إعادة تعيين كلمة المرور",
+  "auth_reset_password_subtitle": "يجب أن تكون كلمة المرور الجديدة مختلفة عن كلمة المرور المستخدمة سابقًا",
+  "auth_new_password_label": "كلمة المرور الجديدة",
+  "auth_password_rules_hint": "8 أحرف على الأقل",
+  "auth_save_password_cta": "حفظ كلمة المرور",
+  "auth_reset_password_success_message": "تم تحديث كلمة المرور بنجاح"
 }

@@ -12,8 +12,18 @@ abstract class AppTypography {
 
   static const String uiFontFamily = 'Tajawal';
   static const String quranFontFamily = 'Lateef';
-  static const String ornamentalFontFamily = 'KFGQPC Nastaleeq';
+  static const String ornamentalFontFamily = 'Nastaleeq';
 
+  // ============================================================================
+  // APP NAME
+  // ============================================================================
+
+  static const TextStyle appNameRegular = TextStyle(
+    fontSize: 44,
+    fontWeight: FontWeight.w400,
+    fontFamily: ornamentalFontFamily,
+    color: AppColors.lightBrandPrimary,
+  );
   // ============================================================================
   // HEADINGS
   // ============================================================================

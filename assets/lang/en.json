@@ -1,3 +1,42 @@
 {
-  "settings": "Settings"
+  "settings": "Settings",
+
+  "auth_welcome_back": "Welcome back",
+  "auth_login_subtitle": "Sign in to sync your preferences and history",
+  "auth_email_label": "Email",
+  "auth_password_label": "Password",
+  "auth_forgot_password": "Forgot password?",
+  "auth_login_cta": "Log in",
+  "auth_no_account_prompt": "Don't have an account?",
+  "auth_create_account_link": "Create account",
+
+  "auth_register_title": "Create a new account",
+  "auth_register_subtitle": "Join Sakinah to sync your preferences and history",
+  "auth_name_label": "Name",
+  "auth_confirm_password_label": "Confirm password",
+  "auth_register_cta": "Create account",
+  "auth_have_account_prompt": "Already have an account?",
+  "auth_login_link": "Log in",
+  "auth_register_success_message": "Your account was created successfully — you can log in now",
+
+  "auth_forgot_password_title": "Forgot password?",
+  "auth_forgot_password_subtitle": "No worries — enter your registered email and we'll send you a verification code to reset your password",
+  "auth_send_code_cta": "Send code",
+  "auth_remembered_password_prompt": "Remembered your password?",
+
+  "auth_otp_title": "Verification code",
+  "auth_otp_subtitle_prefix": "We sent a 6-digit code to",
+  "auth_otp_resend_prompt": "Didn't receive the code?",
+  "auth_otp_resend_action": "Resend",
+  "auth_otp_resend_countdown": "Resend in",
+  "auth_otp_verify_cta": "Confirm",
+  "auth_otp_wrong_email_prompt": "Wrong email?",
+  "auth_otp_change_email": "Change email",
+
+  "auth_reset_password_title": "Reset password",
+  "auth_reset_password_subtitle": "The new password must be different from the one you used before",
+  "auth_new_password_label": "New password",
+  "auth_password_rules_hint": "At least 8 characters",
+  "auth_save_password_cta": "Save password",
+  "auth_reset_password_success_message": "Your password has been reset successfully"
 }

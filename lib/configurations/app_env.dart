@@ -5,6 +5,8 @@ class AppEnv {
   final List<String> allowedDomains;
   final String environment;
   final String securityKey;
+  final String supabaseUrl;
+  final String supabaseAnonKey;
 
   //============================== Singleton ==============================
   // Holds the single instance of AppEnv
@@ -24,8 +26,8 @@ class AppEnv {
   }
 
   // Private constructor
-  AppEnv._(
-      this.baseUrl, this.allowedDomains, this.environment, this.securityKey);
+  AppEnv._(this.baseUrl, this.allowedDomains, this.environment,
+      this.securityKey, this.supabaseUrl, this.supabaseAnonKey);
 
   // Development configuration
   static Future<AppEnv> dev() async {
@@ -38,6 +40,8 @@ class AppEnv {
           .toList(),
       'development',
       dotenv.env['SECURITY_KEY'] ?? '',
+      dotenv.env['SUPABASE_URL'] ?? '',
+      dotenv.env['SUPABASE_ANON_KEY'] ?? '',
     );
   }
 
@@ -52,6 +56,8 @@ class AppEnv {
           .toList(),
       'staging',
       dotenv.env['SECURITY_KEY'] ?? '',
+      dotenv.env['SUPABASE_URL'] ?? '',
+      dotenv.env['SUPABASE_ANON_KEY'] ?? '',
     );
   }
 
@@ -66,6 +72,8 @@ class AppEnv {
           .toList(),
       'production',
       dotenv.env['SECURITY_KEY'] ?? '',
+      dotenv.env['SUPABASE_URL'] ?? '',
+      dotenv.env['SUPABASE_ANON_KEY'] ?? '',
     );
   }
 
