@@ -31,7 +31,7 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We need your location even when the app is running in the background.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need your location to provide personalized services.</string>
+	<string>Sakinah uses your location to calculate accurate prayer times for where you are.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Used to capture audio for image picker plugin</string>
 	<key>NSPhotoLibraryUsageDescription</key>

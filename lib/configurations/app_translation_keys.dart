@@ -60,4 +60,49 @@ abstract class TranslationKeys {
   static const String authSavePasswordCta = 'auth_save_password_cta';
   static const String authResetPasswordSuccessMessage =
       'auth_reset_password_success_message';
+
+  // ============================================================================
+  // Home — greeting header
+  // ============================================================================
+  static const String homeGreetingMorning = 'home_greeting_morning';
+  static const String homeGreetingAfternoon = 'home_greeting_afternoon';
+  static const String homeGreetingEvening = 'home_greeting_evening';
+  static const String homeGreetingNameSeparator =
+      'home_greeting_name_separator';
+
+  // ============================================================================
+  // Home — prayer times card
+  // ============================================================================
+  static const String homeNextPrayerLabel = 'home_next_prayer_label';
+  static const String homeUntilAdhanLabel = 'home_until_adhan_label';
+  static const String homePrayerFajr = 'home_prayer_fajr';
+  static const String homePrayerDhuhr = 'home_prayer_dhuhr';
+  static const String homePrayerAsr = 'home_prayer_asr';
+  static const String homePrayerMaghrib = 'home_prayer_maghrib';
+  static const String homePrayerIsha = 'home_prayer_isha';
+  static const String homePrayerLocationRequiredTitle =
+      'home_prayer_location_required_title';
+  static const String homePrayerLocationRequiredMessage =
+      'home_prayer_location_required_message';
+  static const String homePrayerUnavailableTitle =
+      'home_prayer_unavailable_title';
+  static const String homePrayerUnavailableMessage =
+      'home_prayer_unavailable_message';
+  static const String homeEnableLocationCta = 'home_enable_location_cta';
+
+  // ============================================================================
+  // Home — Ayah of Today card
+  // ============================================================================
+  static const String homeAyahSectionTitle = 'home_ayah_section_title';
+  static const String homeAyahShareCta = 'home_ayah_share_cta';
+  static const String homeAyahCachedLabel = 'home_ayah_cached_label';
+  static const String homeAyahUnavailableMessage =
+      'home_ayah_unavailable_message';
+  static const String homeRetryCta = 'home_retry_cta';
+
+  // ============================================================================
+  // Prayers placeholder (temporary — see research.md §6)
+  // ============================================================================
+  static const String prayersPlaceholderTitle = 'prayers_placeholder_title';
+  static const String prayersPlaceholderMessage = 'prayers_placeholder_message';
 }

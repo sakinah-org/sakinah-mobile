@@ -38,5 +38,32 @@
   "auth_new_password_label": "كلمة المرور الجديدة",
   "auth_password_rules_hint": "8 أحرف على الأقل",
   "auth_save_password_cta": "حفظ كلمة المرور",
-  "auth_reset_password_success_message": "تم تحديث كلمة المرور بنجاح"
+  "auth_reset_password_success_message": "تم تحديث كلمة المرور بنجاح",
+
+  "home_greeting_morning": "صباح الخير",
+  "home_greeting_afternoon": "مساء الخير",
+  "home_greeting_evening": "مساء الخير",
+  "home_greeting_name_separator": "، ",
+
+  "home_next_prayer_label": "الصلاة القادمة",
+  "home_until_adhan_label": "حتى الأذان",
+  "home_prayer_fajr": "الفجر",
+  "home_prayer_dhuhr": "الظهر",
+  "home_prayer_asr": "العصر",
+  "home_prayer_maghrib": "المغرب",
+  "home_prayer_isha": "العشاء",
+  "home_prayer_location_required_title": "حدد موقعك",
+  "home_prayer_location_required_message": "نحتاج إلى موقعك لعرض مواقيت الصلاة بدقة.",
+  "home_prayer_unavailable_title": "تعذر تحميل مواقيت الصلاة",
+  "home_prayer_unavailable_message": "تحقق من اتصالك بالإنترنت وحاول مرة أخرى.",
+  "home_enable_location_cta": "تفعيل الموقع",
+
+  "home_ayah_section_title": "آية اليوم",
+  "home_ayah_share_cta": "مشاركة",
+  "home_ayah_cached_label": "محفوظة",
+  "home_ayah_unavailable_message": "آية اليوم غير متاحة. تحقق من اتصالك بالإنترنت.",
+  "home_retry_cta": "إعادة المحاولة",
+
+  "prayers_placeholder_title": "الصلوات",
+  "prayers_placeholder_message": "إعدادات الصلاة قريبًا."
 }

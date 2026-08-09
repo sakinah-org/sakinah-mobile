@@ -48,7 +48,8 @@ class AppLocalizationsDelegate
 
   @override
   Future<GlobalTranslations> load(Locale locale) async {
-    return translator..initTranslation(locale.languageCode, false);
+    await translator.initTranslation(locale.languageCode, false);
+    return translator;
   }
 
   @override

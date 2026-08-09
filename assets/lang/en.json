@@ -38,5 +38,32 @@
   "auth_new_password_label": "New password",
   "auth_password_rules_hint": "At least 8 characters",
   "auth_save_password_cta": "Save password",
-  "auth_reset_password_success_message": "Your password has been reset successfully"
+  "auth_reset_password_success_message": "Your password has been reset successfully",
+
+  "home_greeting_morning": "Good morning",
+  "home_greeting_afternoon": "Good afternoon",
+  "home_greeting_evening": "Good evening",
+  "home_greeting_name_separator": ", ",
+
+  "home_next_prayer_label": "Next prayer",
+  "home_until_adhan_label": "until adhan",
+  "home_prayer_fajr": "Fajr",
+  "home_prayer_dhuhr": "Dhuhr",
+  "home_prayer_asr": "Asr",
+  "home_prayer_maghrib": "Maghrib",
+  "home_prayer_isha": "Isha",
+  "home_prayer_location_required_title": "Set your location",
+  "home_prayer_location_required_message": "We need your location to show accurate prayer times.",
+  "home_prayer_unavailable_title": "Unable to load prayer times",
+  "home_prayer_unavailable_message": "Check your internet connection and try again.",
+  "home_enable_location_cta": "Enable location",
+
+  "home_ayah_section_title": "Verse of the Day",
+  "home_ayah_share_cta": "Share",
+  "home_ayah_cached_label": "Cached",
+  "home_ayah_unavailable_message": "Ayah of Today is unavailable. Check your internet connection.",
+  "home_retry_cta": "Retry",
+
+  "prayers_placeholder_title": "Prayers",
+  "prayers_placeholder_message": "Prayer settings are coming soon."
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../home/presentation/pages/home_page.dart';
 import '../widgets/main_bottom_navigation_bar.dart';
 
 class MainPage extends StatelessWidget {
@@ -11,13 +12,11 @@ class MainPage extends StatelessWidget {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         children: [
+          const HomePage(),
           Container(),
           Container(),
-          Container(),
-          Container(),
-          Container()
         ],
       ),
       bottomNavigationBar: MainBottomNavigationBar(

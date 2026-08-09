@@ -1,5 +1,6 @@
 import 'package:sakinah/shared/bloc/session_cubit.dart';
 import 'package:sakinah/shared/bloc/settings_cubit.dart';
+import 'package:sakinah/shared/prayer_times/presentation/bloc/prayer_times_cubit.dart';
 import 'package:sakinah/configurations/app_env.dart';
 import 'package:sakinah/configurations/app_states.dart';
 import 'package:sakinah/handlers/security/AESEncryptor.dart';
@@ -9,6 +10,7 @@ import 'package:sakinah/utils/style/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'handlers/translation_handler.dart';
 import 'navigation/route_generator.dart';
@@ -19,6 +21,9 @@ void main() async {
   await AppEnv.init(env);
   AESEncryptor.init();
   await SharedPrefHandler.init();
+  // Required before any `DateFormat`/Hijri day-name formatting for a
+  // non-'en' locale (Home's greeting header, prayer-time captions).
+  await initializeDateFormatting();
   await Supabase.initialize(
     url: AppEnv.instance.supabaseUrl,
     publishableKey: AppEnv.instance.supabaseAnonKey,
@@ -36,6 +41,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => SettingsCubit.instance),
         BlocProvider(create: (context) => SessionCubit.instance),
+        BlocProvider(create: (context) => PrayerTimesCubit.instance),
       ],
       child: BlocBuilder<SettingsCubit, AppStates>(
         builder: (context, state) {

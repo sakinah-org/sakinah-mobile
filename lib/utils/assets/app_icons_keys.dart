@@ -49,4 +49,9 @@ abstract class AppIcons {
   static const String emailOutlined = 'email_outlined';
   static const String eye = 'eye';
   static const String eyeHide = 'eye_hide';
+
+  // ============================================================================
+  // Home — Ayah of Today card
+  // ============================================================================
+  static const String quote = 'quote';
 }
