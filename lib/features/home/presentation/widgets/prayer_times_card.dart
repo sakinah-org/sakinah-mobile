@@ -29,32 +29,22 @@ class PrayerTimesCard extends StatelessWidget {
     final next = times.nextPrayer(DateTime.now());
     final timeLabel = DateFormat.jm(locale.languageCode).format(next.time);
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment(-0.5, -1),
-            end: Alignment(0.5, 1),
-            colors: [AppColors.teal700, AppColors.teal900],
-          ),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              left: -30,
-              top: -30,
-              child: Container(
-                width: 130,
-                height: 130,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.06),
-                ),
+    return Stack(
+      children: [
+
+        ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+            height: 132,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment(-0.5, -1),
+                end: Alignment(0.5, 1),
+                colors: [AppColors.teal700, AppColors.teal900],
               ),
             ),
-            Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
@@ -69,7 +59,7 @@ class PrayerTimesCard extends StatelessWidget {
                                 .word(TranslationKeys.homeNextPrayerLabel),
                             style: TextStyle(
                               fontFamily: AppTypography.uiFontFamily,
-                              fontSize: 12,
+                              fontSize: 14,
                               color: Colors.white.withValues(alpha: 0.82),
                             ),
                           ),
@@ -78,7 +68,7 @@ class PrayerTimesCard extends StatelessWidget {
                             prayerCodeLabel(next.code),
                             style: const TextStyle(
                               fontFamily: AppTypography.uiFontFamily,
-                              fontSize: 26,
+                              fontSize: 30,
                               fontWeight: FontWeight.w800,
                               color: Colors.white,
                             ),
@@ -106,8 +96,7 @@ class PrayerTimesCard extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-                const SizedBox(height: 12),
+                ),Spacer(),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.baseline,
                   textBaseline: TextBaseline.alphabetic,
@@ -116,7 +105,7 @@ class PrayerTimesCard extends StatelessWidget {
                       target: next.time,
                       style: const TextStyle(
                         fontFamily: AppTypography.uiFontFamily,
-                        fontSize: 34,
+                        fontSize: 45,
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
                         fontFeatures: [FontFeature.tabularFigures()],
@@ -135,9 +124,21 @@ class PrayerTimesCard extends StatelessWidget {
                 ),
               ],
             ),
-          ],
+          ),
         ),
-      ),
+        Positioned(
+          left: -30,
+          top: -30,
+          child: Container(
+            width: 130,
+            height: 130,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white.withValues(alpha: 0.06),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

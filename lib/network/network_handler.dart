@@ -3,6 +3,8 @@ import 'package:sakinah/configurations/app_env.dart';
 import 'package:sakinah/network/request_instructions.dart';
 import 'package:dio/dio.dart';
 
+import 'dio_interceptor.dart';
+
 class DioClient {
   Dio dio = Dio();
   static DioClient instance = DioClient._internal();
@@ -10,25 +12,7 @@ class DioClient {
   DioClient._internal() {
     dio.options.baseUrl = AppEnv.instance.baseUrl;
     dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          log("==: Method => ${options.method}");
-          log("==: Headers => ${options.headers}");
-          log('==: Request => ${options.uri}');
-          log('==: Request Body => ${options.data}');
-          log("==: Request Query => ${options.queryParameters}");
-          return handler.next(options);
-        },
-        onResponse: (response, handler) {
-          log('==: {${response.realUri.path}} Response => ${response.data}');
-          return handler.next(response);
-        },
-        onError: (DioException e, handler) {
-          log('==: Error => ${e.message}');
-          log('==: Error Response => ${e.response?.data}');
-          return handler.next(e);
-        },
-      ),
+      DioLoggingInterceptor.getInterceptor(),
     );
     dio.options.headers = {
       "Accept": "application/json",

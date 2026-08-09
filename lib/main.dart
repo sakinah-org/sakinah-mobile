@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
                 : ThemeMode.light,
             locale: SettingsCubit.instance.locale,
             onGenerateRoute: generateRoute,
-            initialRoute: AppRoutes.login,
+            initialRoute: AppRoutes.main,
             // home: NotificationPages(),
             debugShowCheckedModeBanner: false,
             supportedLocales: const [
