@@ -64,6 +64,13 @@
   "home_ayah_unavailable_message": "Ayah of Today is unavailable. Check your internet connection.",
   "home_retry_cta": "Retry",
 
-  "prayers_placeholder_title": "Prayers",
-  "prayers_placeholder_message": "Prayer settings are coming soon."
+  "prayers_screen_title": "Prayers",
+  "prayers_location_calculation_method_label": "Calculation method",
+  "prayers_reminder_offset_caption": "10 minutes before",
+  "prayers_all_off_banner_message": "Prayer reminders are turned off",
+  "prayers_notification_denied_title": "Notifications are off",
+  "prayers_notification_denied_message": "Notification permission is currently disabled. Enable it to receive prayer reminders.",
+  "prayers_notification_permanently_denied_title": "Notifications are disabled",
+  "prayers_notification_permanently_denied_message": "Notification permission is disabled. Prayer reminders cannot be sent. Tap \"Enable\" to change this in your device settings.",
+  "prayers_enable_notifications_cta": "Enable"
 }

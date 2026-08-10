@@ -7,6 +7,7 @@ import 'package:sakinah/handlers/security/AESEncryptor.dart';
 import 'package:sakinah/handlers/security/encrypted_value.dart';
 import 'package:sakinah/handlers/shared_handler.dart';
 import 'package:sakinah/shared/models/user.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 /// # SessionCubit
 /// ## Info
@@ -41,7 +42,7 @@ class SessionCubit extends Cubit<AppStates> {
           prefs.contains(AppPersistenceDataKeys.userData);
 
       if (!hasSession) {
-        _currentUser = null;
+        _currentUser = _userFromSupabaseSession();
         emit(LoadedState(_currentUser));
         return;
       }
@@ -56,8 +57,29 @@ class SessionCubit extends Cubit<AppStates> {
       emit(LoadedState(_currentUser));
     } catch (e) {
       log('SessionCubit.restoreSession failed, falling back to signed-out: $e');
-      _currentUser = null;
+      _currentUser = _userFromSupabaseSession();
       emit(LoadedState(_currentUser));
+    }
+  }
+
+  /// `supabase_flutter` persists and auto-refreshes its own auth session
+  /// independently of the encrypted copy above. If ours is missing or
+  /// corrupted but Supabase's is still valid, prefer that over declaring
+  /// the user signed out — otherwise every Supabase call gated on
+  /// [currentUser] (e.g. prayer-reminder sync) silently no-ops while the
+  /// user is, in fact, still logged in.
+  User? _userFromSupabaseSession() {
+    try {
+      final supabaseUser = supabase.Supabase.instance.client.auth.currentUser;
+      if (supabaseUser == null) return null;
+      return User(
+        id: supabaseUser.id,
+        name: supabaseUser.userMetadata?['name'] as String?,
+        email: supabaseUser.email,
+      );
+    } catch (_) {
+      // Supabase not initialized (e.g. plain unit tests) — no fallback.
+      return null;
     }
   }
 

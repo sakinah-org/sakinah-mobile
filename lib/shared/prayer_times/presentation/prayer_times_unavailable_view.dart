@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../../../../configurations/app_translation_keys.dart';
-import '../../../../handlers/translation_handler.dart';
-import '../../../../shared/widgets/icon_handler.dart';
-import '../../../../utils/assets/app_icons_keys.dart';
-import '../../../../utils/style/app_colors.dart';
-import '../../../../utils/style/app_typography.dart';
+import '../../../configurations/app_translation_keys.dart';
+import '../../../handlers/translation_handler.dart';
+import '../../widgets/icon_handler.dart';
+import '../../../utils/assets/app_icons_keys.dart';
+import '../../../utils/style/app_colors.dart';
+import '../../../utils/style/app_typography.dart';
 
 enum PrayerTimesUnavailableVariant { locationRequired, unableToLoad }
 
 /// FR-008 ("unable to load") / FR-009 ("set your location") states — never
-/// a blank or fabricated prayer card.
+/// a blank or fabricated prayer card. Shared (not Home-owned) because both
+/// Home and the Prayers screen (specs/003-prayers-times-screen) render it
+/// from the same [PrayerTimesState] branches — Constitution Principle I
+/// forbids Home and Prayers importing from one another directly.
 class PrayerTimesUnavailableView extends StatelessWidget {
   const PrayerTimesUnavailableView({
     super.key,

@@ -31,4 +31,19 @@ class PermissionHandler {
   Future<bool> checkContactsPermission() async {
     return await _checkPermission(Permission.contacts);
   }
+
+  /// Notification permission as a tri-state, unlike [_checkPermission]'s
+  /// bool (which collapses denied/permanentlyDenied) — the Prayers screen
+  /// needs to tell those two apart (FR-013 vs FR-014, research.md R4).
+  /// Requests the OS prompt when not yet determined, same as
+  /// [_checkPermission]'s existing denied-branch behavior.
+  Future<PermissionStatus> checkNotificationPermissionStatus() async {
+    final status = await Permission.notification.status;
+    if (status == PermissionStatus.denied) {
+      return await Permission.notification.request();
+    }
+    return status;
+  }
+
+  Future<void> openAppNotificationSettings() => openAppSettings();
 }

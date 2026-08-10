@@ -3,6 +3,7 @@ import 'package:sakinah/shared/bloc/settings_cubit.dart';
 import 'package:sakinah/shared/prayer_times/presentation/bloc/prayer_times_cubit.dart';
 import 'package:sakinah/configurations/app_env.dart';
 import 'package:sakinah/configurations/app_states.dart';
+import 'package:sakinah/handlers/notification_handler.dart';
 import 'package:sakinah/handlers/security/AESEncryptor.dart';
 import 'package:sakinah/handlers/shared_handler.dart';
 import 'package:sakinah/navigation/app_routes.dart';
@@ -28,6 +29,7 @@ void main() async {
     url: AppEnv.instance.supabaseUrl,
     publishableKey: AppEnv.instance.supabaseAnonKey,
   );
+  await NotificationHandler.instance.init();
   await SessionCubit.instance.restoreSession();
   runApp(const MyApp());
 }
@@ -46,6 +48,7 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<SettingsCubit, AppStates>(
         builder: (context, state) {
           return MaterialApp(
+            navigatorKey: NotificationHandler.instance.navigatorKey,
             theme: lightTheme,
             darkTheme: darkTheme,
             themeMode: SettingsCubit.instance.isDarkMode

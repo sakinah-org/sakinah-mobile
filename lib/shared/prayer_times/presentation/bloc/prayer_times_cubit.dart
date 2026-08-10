@@ -46,6 +46,22 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     await _resolveAndFetch();
   }
 
+  /// City/country + calculation method for the Prayers screen's location
+  /// card (specs/003-prayers-times-screen). Not modeled as cubit *state*
+  /// (it doesn't drive the loading/loaded/unavailable machine the rest of
+  /// this cubit represents) but still routed through here rather than
+  /// exposing [PrayerTimesRepository] to widgets directly, per this file's
+  /// own "only caller of PrayerTimesRepository" contract.
+  Future<({ResolvedLocationLabel? locationLabel, CalculationMethod method})>
+      loadLocationCardInfo() async {
+    final coordinates = await _repository.resolveLocation();
+    final method = await _repository.getStoredCalculationMethod();
+    final label = coordinates == null
+        ? null
+        : await _repository.resolveDisplayLocation(coordinates);
+    return (locationLabel: label, method: method);
+  }
+
   Future<void> _resolveAndFetch({bool forceRedetect = false}) async {
     try {
       final coordinates =

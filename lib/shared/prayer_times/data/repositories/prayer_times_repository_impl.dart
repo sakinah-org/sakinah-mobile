@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 
 import '../../../../configurations/app_end_points.dart';
 import '../../../../configurations/app_errors.dart';
 import '../../../../configurations/app_persistence_data_keys.dart';
+import '../../../../handlers/geocoding_handler.dart';
 import '../../../../handlers/location_handler.dart';
 import '../../../../handlers/permission_handler.dart';
 import '../../../../handlers/shared_handler.dart';
@@ -20,15 +23,18 @@ class PrayerTimesRepositoryImpl implements PrayerTimesRepository {
     SharedPrefHandler? prefs,
     LocationHandler? locationHandler,
     PermissionHandler? permissionHandler,
+    GeocodingHandler? geocodingHandler,
   })  : _dio = dioClient ?? DioClient.instance,
         _prefs = prefs ?? SharedPrefHandler.instance!,
         _locationHandler = locationHandler ?? LocationHandler(),
-        _permissionHandler = permissionHandler ?? PermissionHandler();
+        _permissionHandler = permissionHandler ?? PermissionHandler(),
+        _geocodingHandler = geocodingHandler ?? GeocodingHandler();
 
   final DioClient _dio;
   final SharedPrefHandler _prefs;
   final LocationHandler _locationHandler;
   final PermissionHandler _permissionHandler;
+  final GeocodingHandler _geocodingHandler;
 
   @override
   Future<Coordinates?> resolveLocation({bool forceRedetect = false}) async {
@@ -71,6 +77,63 @@ class PrayerTimesRepositoryImpl implements PrayerTimesRepository {
   Future<void> storeCalculationMethod(CalculationMethod method) async {
     await _prefs.save(AppPersistenceDataKeys.prayerCalculationMethod,
         value: method.storedValue);
+  }
+
+  @override
+  Future<ResolvedLocationLabel?> resolveDisplayLocation(
+      PrayerLocation location) async {
+    if (location is City) {
+      return ResolvedLocationLabel(city: location.city, country: '');
+    }
+    final coordinates = location as Coordinates;
+    final signature = coordinates.signature;
+    final cached = _readLocationLabelCache();
+    if (cached != null && cached.signature == signature) {
+      return cached.label;
+    }
+
+    try {
+      final placemarks = await _geocodingHandler.placemarksFromCoordinates(
+        coordinates.latitude,
+        coordinates.longitude,
+      );
+      if (placemarks.isEmpty) return cached?.label;
+
+      final placemark = placemarks.first;
+      final city =
+          (placemark.locality != null && placemark.locality!.isNotEmpty)
+              ? placemark.locality!
+              : (placemark.subAdministrativeArea ??
+                  placemark.administrativeArea ??
+                  '');
+      final label =
+          ResolvedLocationLabel(city: city, country: placemark.country ?? '');
+
+      await _prefs.save(
+        AppPersistenceDataKeys.prayerLocationDisplay,
+        value: {'signature': signature, ...label.toJson()},
+      );
+      return label;
+    } catch (e) {
+      log('PrayerTimesRepositoryImpl.resolveDisplayLocation failed: $e');
+      return cached?.label;
+    }
+  }
+
+  ({String signature, ResolvedLocationLabel label})? _readLocationLabelCache() {
+    if (!_prefs.contains(AppPersistenceDataKeys.prayerLocationDisplay)) {
+      return null;
+    }
+    try {
+      final raw =
+          _prefs.get<Map>(key: AppPersistenceDataKeys.prayerLocationDisplay);
+      return (
+        signature: raw['signature'] as String,
+        label: ResolvedLocationLabel.fromJson(raw),
+      );
+    } catch (_) {
+      return null;
+    }
   }
 
   @override

@@ -64,6 +64,13 @@
   "home_ayah_unavailable_message": "آية اليوم غير متاحة. تحقق من اتصالك بالإنترنت.",
   "home_retry_cta": "إعادة المحاولة",
 
-  "prayers_placeholder_title": "الصلوات",
-  "prayers_placeholder_message": "إعدادات الصلاة قريبًا."
+  "prayers_screen_title": "الصلوات",
+  "prayers_location_calculation_method_label": "طريقة الحساب",
+  "prayers_reminder_offset_caption": "قبل 10 دقائق",
+  "prayers_all_off_banner_message": "تذكيرات الصلاة متوقفة",
+  "prayers_notification_denied_title": "الإشعارات متوقفة",
+  "prayers_notification_denied_message": "إذن الإشعارات معطّل حاليًا. فعّله لتصلك تذكيرات الصلاة.",
+  "prayers_notification_permanently_denied_title": "الإشعارات معطّلة",
+  "prayers_notification_permanently_denied_message": "إذن الإشعارات معطّل. لا يمكن إرسال تذكيرات الصلاة. اضغط \"تفعيل\" لتغيير ذلك من إعدادات جهازك.",
+  "prayers_enable_notifications_cta": "تفعيل"
 }

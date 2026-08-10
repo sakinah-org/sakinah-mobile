@@ -26,3 +26,24 @@ class City extends PrayerLocation {
 
   String get signature => city;
 }
+
+/// Human-readable city/country for the Prayers screen's location card
+/// (specs/003-prayers-times-screen/spec.md FR-001) — display only, never
+/// used for prayer-time calculation. Produced by
+/// [PrayerTimesRepository.resolveDisplayLocation].
+class ResolvedLocationLabel {
+  final String city;
+  final String country;
+
+  const ResolvedLocationLabel({required this.city, required this.country});
+
+  Map<String, dynamic> toJson() => {
+        'city': city,
+        'country': country,
+      };
+
+  static ResolvedLocationLabel fromJson(Map json) => ResolvedLocationLabel(
+        city: json['city'] as String,
+        country: json['country'] as String,
+      );
+}

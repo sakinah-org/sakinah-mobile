@@ -22,4 +22,12 @@ abstract class PrayerTimesRepository {
   Future<CalculationMethod> getStoredCalculationMethod();
 
   Future<void> storeCalculationMethod(CalculationMethod method);
+
+  /// City/country label for the Prayers screen's location card (FR-001) —
+  /// reverse-geocodes [Coordinates] on device (cached against the location's
+  /// signature so it isn't re-geocoded every screen open), or returns the
+  /// manually-entered [City.city] as-is. Returns null when it cannot be
+  /// resolved (research.md R1).
+  Future<ResolvedLocationLabel?> resolveDisplayLocation(
+      PrayerLocation location);
 }

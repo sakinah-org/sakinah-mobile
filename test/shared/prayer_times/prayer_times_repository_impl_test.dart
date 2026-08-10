@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:sakinah/configurations/app_env.dart';
 import 'package:sakinah/configurations/app_errors.dart';
+import 'package:sakinah/handlers/geocoding_handler.dart';
 import 'package:sakinah/handlers/location_handler.dart';
 import 'package:sakinah/handlers/permission_handler.dart';
 import 'package:sakinah/handlers/shared_handler.dart';
@@ -28,6 +30,22 @@ class MockDio extends Mock implements Dio {}
 class MockLocationHandler extends Mock implements LocationHandler {}
 
 class MockPermissionHandler extends Mock implements PermissionHandler {}
+
+class MockGeocodingHandler extends Mock implements GeocodingHandler {}
+
+Placemark _fakePlacemark({String? locality, String? country}) => Placemark(
+      name: null,
+      street: null,
+      isoCountryCode: null,
+      country: country ?? 'Egypt',
+      postalCode: null,
+      administrativeArea: null,
+      subAdministrativeArea: null,
+      locality: locality ?? 'Cairo',
+      subLocality: null,
+      thoroughfare: null,
+      subThoroughfare: null,
+    );
 
 Map<String, dynamic> _alAdhanJson() => {
       'data': {
@@ -65,6 +83,7 @@ void main() {
   late MockDio dio;
   late MockLocationHandler locationHandler;
   late MockPermissionHandler permissionHandler;
+  late MockGeocodingHandler geocodingHandler;
   late PrayerTimesRepositoryImpl repository;
 
   setUpAll(() async {
@@ -85,12 +104,68 @@ void main() {
     dio = MockDio();
     locationHandler = MockLocationHandler();
     permissionHandler = MockPermissionHandler();
+    geocodingHandler = MockGeocodingHandler();
     repository = PrayerTimesRepositoryImpl(
       dioClient: DioClient.instance..dio = dio,
       prefs: SharedPrefHandler.instance,
       locationHandler: locationHandler,
       permissionHandler: permissionHandler,
+      geocodingHandler: geocodingHandler,
     );
+  });
+
+  group('resolveDisplayLocation', () {
+    const location = Coordinates(latitude: 30.0444, longitude: 31.2357);
+
+    test('geocodes and caches on first resolution', () async {
+      when(() => geocodingHandler.placemarksFromCoordinates(any(), any()))
+          .thenAnswer((_) async => [_fakePlacemark()]);
+
+      final label = await repository.resolveDisplayLocation(location);
+
+      expect(label, isNotNull);
+      expect(label!.city, 'Cairo');
+      expect(label.country, 'Egypt');
+    });
+
+    test('reuses the cached label without re-geocoding for the same signature',
+        () async {
+      when(() => geocodingHandler.placemarksFromCoordinates(any(), any()))
+          .thenAnswer((_) async => [_fakePlacemark()]);
+      await repository.resolveDisplayLocation(location); // seeds the cache
+
+      final label = await repository.resolveDisplayLocation(location);
+
+      expect(label!.city, 'Cairo');
+      verify(() => geocodingHandler.placemarksFromCoordinates(any(), any()))
+          .called(1);
+    });
+
+    test('falls back to the cached label when a later geocode returns nothing',
+        () async {
+      when(() => geocodingHandler.placemarksFromCoordinates(any(), any()))
+          .thenAnswer((_) async => [_fakePlacemark()]);
+      await repository.resolveDisplayLocation(location); // seeds the cache
+
+      const moved = Coordinates(latitude: 31.5, longitude: 34.5);
+      when(() => geocodingHandler.placemarksFromCoordinates(any(), any()))
+          .thenAnswer((_) async => const []);
+
+      final label = await repository.resolveDisplayLocation(moved);
+
+      expect(
+          label!.city, 'Cairo'); // stale cache, still surfaced rather than null
+    });
+
+    test('returns null when nothing is cached and geocoding returns nothing',
+        () async {
+      when(() => geocodingHandler.placemarksFromCoordinates(any(), any()))
+          .thenAnswer((_) async => const []);
+
+      final label = await repository.resolveDisplayLocation(location);
+
+      expect(label, isNull);
+    });
   });
 
   group('resolveLocation', () {

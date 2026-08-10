@@ -17,4 +17,15 @@ abstract class AppPersistenceDataKeys {
   // Ayah of Today (lib/features/home/)
   // ============================================================================
   static const String ayahOfTodayCache = 'ayah_of_today_cache';
+
+  // ============================================================================
+  // Prayer Location Display (lib/shared/prayer_times/)
+  // ============================================================================
+  static const String prayerLocationDisplay = 'prayer_location_display';
+
+  // ============================================================================
+  // Prayer Notification Settings (lib/features/prayers/)
+  // ============================================================================
+  static const String prayerNotificationSettings =
+      'prayer_notification_settings';
 }

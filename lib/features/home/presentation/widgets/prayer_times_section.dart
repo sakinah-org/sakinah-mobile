@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../shared/prayer_times/presentation/bloc/prayer_times_cubit.dart';
 import '../../../../shared/prayer_times/presentation/bloc/prayer_times_state.dart';
+import '../../../../shared/prayer_times/presentation/prayer_times_unavailable_view.dart';
 import '../../../../shared/widgets/shimmer_container.dart';
 import 'prayer_day_strip.dart';
 import 'prayer_times_card.dart';
-import 'prayer_times_unavailable_view.dart';
 
 /// Subscribes to the global [PrayerTimesCubit] and renders whichever of the
 /// 5 states it's currently in — keeps `HomePage` itself to pure composition.

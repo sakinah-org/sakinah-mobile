@@ -136,6 +136,38 @@ void main() {
     ],
   );
 
+  group('loadLocationCardInfo', () {
+    test('resolves location label + calculation method via the repository',
+        () async {
+      when(() => repository.resolveLocation(forceRedetect: false)).thenAnswer(
+          (_) async => const Coordinates(latitude: 30, longitude: 31));
+      when(() => repository.getStoredCalculationMethod())
+          .thenAnswer((_) async => CalculationMethod.ummAlQura);
+      when(() => repository.resolveDisplayLocation(any())).thenAnswer(
+          (_) async =>
+              const ResolvedLocationLabel(city: 'Cairo', country: 'Egypt'));
+
+      final cubit = PrayerTimesCubit.test(repository);
+      final info = await cubit.loadLocationCardInfo();
+
+      expect(info.locationLabel?.city, 'Cairo');
+      expect(info.method, CalculationMethod.ummAlQura);
+    });
+
+    test('returns a null label when no location is resolvable', () async {
+      when(() => repository.resolveLocation(forceRedetect: false))
+          .thenAnswer((_) async => null);
+      when(() => repository.getStoredCalculationMethod())
+          .thenAnswer((_) async => CalculationMethod.ummAlQura);
+
+      final cubit = PrayerTimesCubit.test(repository);
+      final info = await cubit.loadLocationCardInfo();
+
+      expect(info.locationLabel, isNull);
+      verifyNever(() => repository.resolveDisplayLocation(any()));
+    });
+  });
+
   group('PrayerTimes.nextPrayer', () {
     test('returns the next upcoming prayer today', () {
       final now = DateTime(2026, 8, 9, 13, 0); // between Dhuhr and Asr

@@ -101,8 +101,23 @@ abstract class TranslationKeys {
   static const String homeRetryCta = 'home_retry_cta';
 
   // ============================================================================
-  // Prayers placeholder (temporary — see research.md §6)
+  // Prayers screen (lib/features/prayers/) — specs/003-prayers-times-screen
   // ============================================================================
-  static const String prayersPlaceholderTitle = 'prayers_placeholder_title';
-  static const String prayersPlaceholderMessage = 'prayers_placeholder_message';
+  static const String prayersScreenTitle = 'prayers_screen_title';
+  static const String prayersLocationCalculationMethodLabel =
+      'prayers_location_calculation_method_label';
+  static const String prayersReminderOffsetCaption =
+      'prayers_reminder_offset_caption';
+  static const String prayersAllOffBannerMessage =
+      'prayers_all_off_banner_message';
+  static const String prayersNotificationDeniedTitle =
+      'prayers_notification_denied_title';
+  static const String prayersNotificationDeniedMessage =
+      'prayers_notification_denied_message';
+  static const String prayersNotificationPermanentlyDeniedTitle =
+      'prayers_notification_permanently_denied_title';
+  static const String prayersNotificationPermanentlyDeniedMessage =
+      'prayers_notification_permanently_denied_message';
+  static const String prayersEnableNotificationsCta =
+      'prayers_enable_notifications_cta';
 }
