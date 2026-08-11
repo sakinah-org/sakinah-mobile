@@ -120,4 +120,27 @@ abstract class TranslationKeys {
       'prayers_notification_permanently_denied_message';
   static const String prayersEnableNotificationsCta =
       'prayers_enable_notifications_cta';
+
+  // ============================================================================
+  // Quran screen (lib/features/quran/) — specs/004-quran-screen
+  // ============================================================================
+  static const String quranTabLabel = 'quran_tab_label';
+  static const String quranScreenTitle = 'quran_screen_title';
+  static const String quranSurahTabLabel = 'quran_surah_tab_label';
+  static const String quranJuzTabLabel = 'quran_juz_tab_label';
+  static const String quranJuzSectionLabel = 'quran_juz_section_label';
+  static const String quranSearchPlaceholder = 'quran_search_placeholder';
+  static const String quranSearchNoResultsMessage =
+      'quran_search_no_results_message';
+  static const String quranUnavailableMessage = 'quran_unavailable_message';
+  static const String quranRevelationMeccan = 'quran_revelation_meccan';
+  static const String quranRevelationMedinan = 'quran_revelation_medinan';
+  static const String quranAyahCountSuffix = 'quran_ayah_count_suffix';
+  static const String quranFontSettingsTitle = 'quran_font_settings_title';
+  static const String quranFontSizeLabel = 'quran_font_size_label';
+  static const String quranFontTypeLabel = 'quran_font_type_label';
+  static const String quranFontStyleNaskh = 'quran_font_style_naskh';
+  static const String quranFontStyleUthmani = 'quran_font_style_uthmani';
+  static const String quranFontStyleOrnamental = 'quran_font_style_ornamental';
+  static const String quranFontDefaultSuffix = 'quran_font_default_suffix';
 }

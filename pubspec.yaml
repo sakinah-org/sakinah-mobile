@@ -79,6 +79,7 @@ flutter:
    - assets/images/
    - assets/icons/
    - assets/env/
+   - assets/quran/quran_uthmani.json
 
 
  
@@ -99,9 +100,19 @@ flutter:
           weight: 800
         - asset: assets/fonts/tajawal/w900.ttf
           weight: 900
-    - family: Nastaleeq
+    - family: Amiri
       fonts:
-        - asset: assets/fonts/nastaleeq/w400.ttf
+        - asset: assets/fonts/amiri/w400.ttf
+    - family: Kitab
+      fonts:
+        - asset: assets/fonts/kitab/w400.ttf
+        - asset: assets/fonts/kitab/w700.ttf
+    - family: MeQuran
+      fonts:
+        - asset: assets/fonts/me_quran/w400.ttf
+    - family: QPCHafs
+      fonts:
+        - asset: assets/fonts/qpc_hafs/w400.ttf
     - family: Lateef
       fonts:
         - asset: assets/fonts/lateef/w200.ttf

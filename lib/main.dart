@@ -1,3 +1,4 @@
+import 'package:sakinah/features/quran/presentation/bloc/quran_font_settings_cubit.dart';
 import 'package:sakinah/shared/bloc/session_cubit.dart';
 import 'package:sakinah/shared/bloc/settings_cubit.dart';
 import 'package:sakinah/shared/prayer_times/presentation/bloc/prayer_times_cubit.dart';
@@ -31,6 +32,9 @@ void main() async {
   );
   await NotificationHandler.instance.init();
   await SessionCubit.instance.restoreSession();
+  // Runs after restoreSession() so an authenticated user's remote font
+  // setting (if any) is adopted using the correct SessionCubit.currentUser.
+  await QuranFontSettingsCubit.instance.load();
   runApp(const MyApp());
 }
 
@@ -44,6 +48,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SettingsCubit.instance),
         BlocProvider(create: (context) => SessionCubit.instance),
         BlocProvider(create: (context) => PrayerTimesCubit.instance),
+        BlocProvider(create: (context) => QuranFontSettingsCubit.instance),
       ],
       child: BlocBuilder<SettingsCubit, AppStates>(
         builder: (context, state) {

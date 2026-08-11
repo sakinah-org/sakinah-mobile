@@ -7,4 +7,5 @@ abstract class AppRoutes {
   static const String verifyOtp = '/verify-otp';
   static const String resetPassword = '/reset-password';
   static const String prayers = '/prayers';
+  static const String surahReading = '/surah-reading';
 }

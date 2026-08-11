@@ -21,9 +21,22 @@ abstract class AppEndPoints {
       "$quranCloudBaseUrl/ayah/$globalAyahNumber/editions/quran-uthmani,en.sahih";
 
   // ============================================================================
-  // Supabase tables (lib/features/prayers/) — not REST paths, but centralized
-  // here per Principle VII rather than inlined as magic strings.
+  // Al Quran Cloud (Surah/Juz/Reading) — lib/features/quran/
+  // ============================================================================
+  static String quranCloudSurahList() => "$quranCloudBaseUrl/surah";
+
+  static String quranCloudJuz(int juzNumber) =>
+      "$quranCloudBaseUrl/juz/$juzNumber/quran-uthmani";
+
+  static String quranCloudSurah(int surahNumber) =>
+      "$quranCloudBaseUrl/surah/$surahNumber/quran-uthmani";
+
+  // ============================================================================
+  // Supabase tables (lib/features/prayers/, lib/features/quran/) — not REST
+  // paths, but centralized here per Principle VII rather than inlined as
+  // magic strings.
   // ============================================================================
   static const String prayerNotificationSettingsTable =
       'prayer_notification_settings';
+  static const String userPreferencesTable = 'user_preferences';
 }

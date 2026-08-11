@@ -19,7 +19,7 @@ class AyahOfTodayModel {
       arabicText: arabic['text'] as String,
       translation: translationEntry['text'] as String,
       surahNumber: surah['number'] as int,
-      surahName: surah['englishName'] as String,
+      surahName: surah['name'] as String,
       ayahNumberInSurah: arabic['numberInSurah'] as int,
       globalAyahNumber: globalAyahNumber,
       selectedForDate: selectedForDate,

@@ -6,6 +6,7 @@ import '../features/auth/presentation/pages/reset_password_page.dart';
 import '../features/auth/presentation/pages/verify_otp_page.dart';
 import '../features/main/ui/pages/main_page.dart';
 import '../features/prayers/presentation/pages/prayers_page.dart';
+import '../features/quran/presentation/pages/surah_reading_page.dart';
 import 'app_routes.dart';
 
 PageRouteBuilder _createRoute(Widget page, RouteSettings settings) {
@@ -52,6 +53,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _createRoute(const ResetPasswordPage(), settings);
     case AppRoutes.prayers:
       return _createRoute(const PrayersPage(), settings);
+    case AppRoutes.surahReading:
+      return _createRoute(const SurahReadingPage(), settings);
     default:
       return _createRoute(const SizedBox(), settings);
   }

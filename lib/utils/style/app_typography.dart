@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
 /// Sakinah typography scale.
-/// Tajawal is the UI workhorse; Lateef is reserved for Quranic verse text;
-/// KFGQPC Nastaleeq is an ornamental script for wordmark/divider moments only.
+/// Tajawal is the UI workhorse; Lateef is the default Quranic verse-text
+/// face. KFGQPC Nastaleeq is reserved for ornamental wordmark/divider
+/// moments only — do not use it for general UI/body text or for Quran
+/// reading. The Quran font-settings feature's 3 selectable reading fonts
+/// (lib/features/quran/, specs/004-quran-screen) are Lateef, Amiri, and
+/// QPCHafs, defined on `QuranFontSetting.availableFontFamilies`.
 abstract class AppTypography {
   // ============================================================================
   // FONT FAMILIES

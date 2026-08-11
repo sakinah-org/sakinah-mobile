@@ -72,5 +72,24 @@
   "prayers_notification_denied_message": "Notification permission is currently disabled. Enable it to receive prayer reminders.",
   "prayers_notification_permanently_denied_title": "Notifications are disabled",
   "prayers_notification_permanently_denied_message": "Notification permission is disabled. Prayer reminders cannot be sent. Tap \"Enable\" to change this in your device settings.",
-  "prayers_enable_notifications_cta": "Enable"
+  "prayers_enable_notifications_cta": "Enable",
+
+  "quran_tab_label": "Quran",
+  "quran_screen_title": "The Noble Quran",
+  "quran_surah_tab_label": "Surah",
+  "quran_juz_tab_label": "Juz",
+  "quran_juz_section_label": "Juz",
+  "quran_search_placeholder": "Search for a surah…",
+  "quran_search_no_results_message": "No surahs match your search",
+  "quran_unavailable_message": "Unable to load the Quran. Check your internet connection.",
+  "quran_revelation_meccan": "Meccan",
+  "quran_revelation_medinan": "Medinan",
+  "quran_ayah_count_suffix": "ayahs",
+  "quran_font_settings_title": "Reading Settings",
+  "quran_font_size_label": "Font Size",
+  "quran_font_type_label": "Font Type",
+  "quran_font_style_naskh": "Naskh",
+  "quran_font_style_uthmani": "Uthmani",
+  "quran_font_style_ornamental": "Ornamental",
+  "quran_font_default_suffix": " (Default)"
 }

@@ -1,6 +1,8 @@
 import 'package:sakinah/shared/widgets/icon_handler.dart';
 import 'package:sakinah/utils/assets/app_icons_keys.dart';
 import 'package:flutter/material.dart';
+import '../../../../configurations/app_translation_keys.dart';
+import '../../../../handlers/translation_handler.dart';
 import '../../../../utils/style/app_colors.dart';
 
 class MainBottomNavigationBar extends StatefulWidget {
@@ -45,14 +47,14 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
                 ? AppColors.lightBrandPrimary
                 : const Color(0xff8E8E8E),
           ),
-          label: "Quran",
+          label: translator.word(TranslationKeys.quranTabLabel),
         ),
         BottomNavigationBarItem(
           icon: drawSvgIcon(
             AppIcons.settingsIcon,
-              iconColor: _currentIndex == 2
-                  ? AppColors.lightBrandPrimary
-                  : const Color(0xff8E8E8E),
+            iconColor: _currentIndex == 2
+                ? AppColors.lightBrandPrimary
+                : const Color(0xff8E8E8E),
           ),
           label: "Settings",
         ),
