@@ -13,6 +13,25 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// Some plugins (e.g. flutter_compass_v2, a transitive dep of flutter_qiblah)
+// ship an android/build.gradle with a stale compileSdkVersion that no longer
+// covers the androidx artifacts Gradle resolves for them, which fails
+// :checkDebugAarMetadata. Force every plugin subproject onto the app's own
+// compileSdk instead of whatever each plugin individually declares. Skips
+// ":app" itself — evaluationDependsOn(":app") above already evaluates it
+// eagerly, so calling afterEvaluate on it here would fail with "already
+// evaluated" (and it already sets compileSdk = 36 directly anyway).
+subprojects {
+    if (project.name == "app") return
+    afterEvaluate { project ->
+        if (project.hasProperty("android")) {
+            project.android {
+                compileSdkVersion 36
+            }
+        }
+    }
+}
+
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
