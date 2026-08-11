@@ -79,7 +79,8 @@ flutter:
    - assets/images/
    - assets/icons/
    - assets/env/
-   - assets/quran/quran_uthmani.json
+   - assets/quran/chapters/
+   - assets/quran/juz_boundaries.json
 
 
  

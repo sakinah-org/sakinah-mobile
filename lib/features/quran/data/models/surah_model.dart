@@ -1,45 +1,39 @@
 import '../../domain/entities/surah.dart';
 
-/// Maps a single Al Quran Cloud `/surah` list entry — or, since the bundled
-/// local fallback (`assets/quran/quran_uthmani.json`) uses the identical
-/// field names, a bundled surah entry too — onto [Surah]. Also the Hive
-/// envelope for the permanent local list cache (research.md R2).
+/// Maps a single bundled `assets/quran/chapters/index.json` entry (the
+/// English-locale `risan/quran-json` chapter list — plan.md/research.md R2)
+/// onto [Surah]. Also the Hive envelope for the permanent local list cache
+/// (specs/004-quran-screen research.md R2).
 class SurahModel {
   static Surah fromJson(Map<String, dynamic> json) => Surah(
-        number: json['number'] as int,
+        number: json['id'] as int,
         arabicName: json['name'] as String,
-        transliteration: json['englishName'] as String,
-        meaning: json['englishNameTranslation'] as String,
-        revelationType:
-            (json['revelationType'] as String).toLowerCase() == 'meccan'
-                ? RevelationType.meccan
-                : RevelationType.medinan,
-        ayahCount: json['numberOfAyahs'] as int,
+        transliteration: json['transliteration'] as String,
+        meaning: json['translation'] as String,
+        revelationType: (json['type'] as String).toLowerCase() == 'meccan'
+            ? RevelationType.meccan
+            : RevelationType.medinan,
+        ayahCount: json['total_verses'] as int,
       );
 
-  static List<Surah> listFromAlQuranCloudJson(Map<String, dynamic> json) {
-    final data = json['data'] as List;
-    return data
+  /// Parses the top-level array in `assets/quran/chapters/index.json`.
+  static List<Surah> listFromBundledJson(List json) {
+    return json
         .map((e) => fromJson(Map<String, dynamic>.from(e as Map)))
         .toList();
   }
 
-  static List<Surah> listFromBundledJson(Map<String, dynamic> json) {
-    final surahs = json['surahs'] as List;
-    return surahs
-        .map((e) => fromJson(Map<String, dynamic>.from(e as Map)))
-        .toList();
-  }
-
+  /// Uses the same field names [fromJson] expects, so [listFromHiveJson]
+  /// can reuse it for the cache round-trip without a second parser.
   static Map<String, dynamic> toHiveJson(Surah surah) => {
-        'number': surah.number,
+        'id': surah.number,
         'name': surah.arabicName,
-        'englishName': surah.transliteration,
-        'englishNameTranslation': surah.meaning,
-        'revelationType': surah.revelationType == RevelationType.meccan
-            ? 'Meccan'
-            : 'Medinan',
-        'numberOfAyahs': surah.ayahCount,
+        'transliteration': surah.transliteration,
+        'translation': surah.meaning,
+        'type': surah.revelationType == RevelationType.meccan
+            ? 'meccan'
+            : 'medinan',
+        'total_verses': surah.ayahCount,
       };
 
   static List<Map<String, dynamic>> listToHiveJson(List<Surah> surahs) =>

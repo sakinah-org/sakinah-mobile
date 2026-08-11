@@ -1,31 +1,27 @@
 import '../../domain/entities/ayah.dart';
 
-/// Maps Al Quran Cloud `/surah/{n}/quran-uthmani` `ayahs[]` entries — or the
-/// identically-shaped bundled fallback entries — onto [Ayah]. Also the Hive
-/// envelope for the permanent per-Surah local cache (research.md R2).
+/// Maps a bundled `assets/quran/chapters/{n}.json`'s `verses[]` entries
+/// (`risan/quran-json` per-chapter shape — plan.md/research.md R2) onto
+/// [Ayah]. Also the Hive envelope for the permanent per-Surah local cache
+/// (specs/004-quran-screen research.md R2).
 class AyahModel {
   static Ayah fromJson(Map<String, dynamic> json) => Ayah(
-        numberInSurah: json['numberInSurah'] as int,
+        numberInSurah: json['id'] as int,
         text: json['text'] as String,
       );
 
-  static List<Ayah> listFromAlQuranCloudJson(Map<String, dynamic> json) {
-    final data = json['data'] as Map<String, dynamic>;
-    final ayahs = data['ayahs'] as List;
-    return ayahs
-        .map((e) => fromJson(Map<String, dynamic>.from(e as Map)))
-        .toList();
-  }
-
+  /// Parses one bundled Surah file's `verses[]` array.
   static List<Ayah> listFromBundledJson(Map<String, dynamic> surahJson) {
-    final ayahs = surahJson['ayahs'] as List;
-    return ayahs
+    final verses = surahJson['verses'] as List;
+    return verses
         .map((e) => fromJson(Map<String, dynamic>.from(e as Map)))
         .toList();
   }
 
+  /// Uses the same field names [fromJson] expects, so [listFromHiveJson]
+  /// can reuse it for the cache round-trip without a second parser.
   static Map<String, dynamic> toHiveJson(Ayah ayah) => {
-        'numberInSurah': ayah.numberInSurah,
+        'id': ayah.numberInSurah,
         'text': ayah.text,
       };
 

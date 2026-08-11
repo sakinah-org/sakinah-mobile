@@ -33,19 +33,13 @@ class QuranFontSettingsSheet extends StatelessWidget {
     );
   }
 
-  /// Lateef is labeled distinctly (Naskh, marked as the default); Amiri and
-  /// QPCHafs are both genuinely Uthmani-style scripts, so they share that
-  /// label (research.md R9 — QPCHafs replaces the design's original
-  /// Nastaleeq slot after that font's bundled asset was swapped out).
-  String _labelFor(String fontFamily) {
-    final style = switch (fontFamily) {
-      AppTypography.quranFontFamily =>
-        '${translator.word(TranslationKeys.quranFontStyleNaskh)}'
-            '${translator.word(TranslationKeys.quranFontDefaultSuffix)}',
-      _ => translator.word(TranslationKeys.quranFontStyleUthmani),
-    };
-    return '$fontFamily · $style';
-  }
+  /// All 4 selectable families (specs/005-quran-fonts-local-source
+  /// research.md R6/R8) are dedicated Uthmani-style Quran typefaces — unlike
+  /// the previous 3-family set, none is a general-purpose "default" font
+  /// worth calling out distinctly, so every card shares the same style
+  /// label.
+  String _labelFor(String fontFamily) =>
+      '$fontFamily · ${translator.word(TranslationKeys.quranFontStyleUthmani)}';
 
   @override
   Widget build(BuildContext context) {

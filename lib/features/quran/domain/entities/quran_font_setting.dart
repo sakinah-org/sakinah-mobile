@@ -1,7 +1,5 @@
-import '../../../../utils/style/app_typography.dart';
-
 /// The user's Quran text rendering preference (spec.md Key Entities) — a
-/// font family (one of 3 bundled families) and a font size, stored locally
+/// font family (one of 4 bundled families) and a font size, stored locally
 /// always and, when authenticated, additionally against the user's account.
 class QuranFontSetting {
   final String fontFamily;
@@ -9,28 +7,28 @@ class QuranFontSetting {
 
   const QuranFontSetting({required this.fontFamily, required this.fontSize});
 
-  /// The 3 selectable Quran reading fonts (spec.md FR-013), all bundled in
-  /// `pubspec.yaml`: Lateef (default), Amiri, and QPCHafs — the standard
-  /// King Fahd Complex "Hafs" Uthmani typeface. Originally planned as
-  /// Lateef/Amiri/Nastaleeq per the design reference (research.md R9/R10),
-  /// but Nastaleeq's bundled asset was later replaced with a set of
-  /// purpose-built Quran typefaces (Amiri/Kitab/MeQuran/QPCHafs); QPCHafs
-  /// is used here as the closer match to the design's "Uthmani" font slot
-  /// — `AppTypography.ornamentalFontFamily` (Nastaleeq) remains reserved
-  /// for its original wordmark/divider use elsewhere in the app, not Quran
-  /// reading.
+  /// The 4 selectable Quran reading fonts (specs/005-quran-fonts-local-
+  /// source spec.md FR-001), all bundled in `pubspec.yaml`: Amiri, Kitab,
+  /// MeQuran, and QPCHafs — the standard King Fahd Complex "Hafs" Uthmani
+  /// typeface, also this set's default (research.md R6). Replaces the
+  /// previous 3-family set (Lateef/Amiri/QPCHafs, specs/004-quran-screen
+  /// research.md R9) — Lateef (a general-purpose Naskh font, not
+  /// Quran-specific) is dropped; Kitab and MeQuran are added.
   static const List<String> availableFontFamilies = [
-    AppTypography.quranFontFamily, // 'Lateef'
     'Amiri',
+    'Kitab',
+    'MeQuran',
     'QPCHafs',
   ];
 
-  /// No prior local or remote data (spec.md Edge Cases) — the existing
-  /// default Quran font family, and the same size the `user_preferences`
-  /// table itself defaults `quran_font_size` to, so a guest's local default
-  /// and an authenticated user's server-side default agree.
+  /// No prior local or remote data, or a previously saved family that's no
+  /// longer offered — e.g. a pre-update user's 'Lateef' (spec.md Edge
+  /// Cases/FR-006) — the standard Uthmani "Hafs" typeface, and the same
+  /// size the `user_preferences` table itself defaults `quran_font_size`
+  /// to, so a guest's local default and an authenticated user's
+  /// server-side default agree.
   static const QuranFontSetting defaults = QuranFontSetting(
-    fontFamily: AppTypography.quranFontFamily,
+    fontFamily: 'QPCHafs',
     fontSize: 20,
   );
 

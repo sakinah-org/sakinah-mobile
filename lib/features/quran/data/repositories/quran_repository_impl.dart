@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
@@ -10,8 +9,6 @@ import '../../../../configurations/app_end_points.dart';
 import '../../../../configurations/app_errors.dart';
 import '../../../../configurations/app_persistence_data_keys.dart';
 import '../../../../handlers/shared_handler.dart';
-import '../../../../network/network_handler.dart';
-import '../../../../network/request_instructions.dart';
 import '../../domain/entities/ayah.dart';
 import '../../domain/entities/juz_section.dart';
 import '../../domain/entities/quran_font_setting.dart';
@@ -21,31 +18,37 @@ import '../models/ayah_model.dart';
 import '../models/quran_font_setting_model.dart';
 import '../models/surah_model.dart';
 
-/// See contracts/quran_repository_contract.md. Local-first,
-/// fetch-once-reuse-forever (research.md R2) — Surah/Juz/Ayah content is
-/// permanently static, so a cache hit skips the network entirely rather
-/// than revalidating on any schedule.
+/// See contracts/quran_repository_contract.md
+/// (specs/005-quran-fonts-local-source). Local-only, load-once-reuse-forever
+/// (specs/004-quran-screen research.md R2, updated by
+/// specs/005-quran-fonts-local-source research.md R1/R5) — Surah/Juz/Ayah
+/// content is sourced entirely from bundled assets, never the network; a
+/// cache hit skips even the asset read.
 class QuranRepositoryImpl implements QuranRepository {
   QuranRepositoryImpl({
-    DioClient? dioClient,
     SharedPrefHandler? prefs,
-  })  : _dio = dioClient ?? DioClient.instance,
-        _prefs = prefs ?? SharedPrefHandler.instance!;
+  }) : _prefs = prefs ?? SharedPrefHandler.instance!;
 
-  final DioClient _dio;
   final SharedPrefHandler _prefs;
 
   supabase.SupabaseClient get _client => supabase.Supabase.instance.client;
 
-  static const String _bundledAssetPath = 'assets/quran/quran_uthmani.json';
+  static const String _chaptersIndexAssetPath =
+      'assets/quran/chapters/index.json';
+  static const String _juzBoundariesAssetPath =
+      'assets/quran/juz_boundaries.json';
 
-  Map<String, dynamic>? _bundledJsonCache;
+  static String _chapterAssetPath(int surahNumber) =>
+      'assets/quran/chapters/$surahNumber.json';
 
-  Future<Map<String, dynamic>> _loadBundledJson() async {
-    if (_bundledJsonCache != null) return _bundledJsonCache!;
-    final raw = await rootBundle.loadString(_bundledAssetPath);
-    _bundledJsonCache = jsonDecode(raw) as Map<String, dynamic>;
-    return _bundledJsonCache!;
+  Future<T> _loadAndDecode<T>(String assetPath) async {
+    try {
+      final raw = await rootBundle.loadString(assetPath);
+      return jsonDecode(raw) as T;
+    } catch (e) {
+      log('QuranRepositoryImpl: failed to load/parse $assetPath: $e');
+      throw UnknownFailure('Unable to load Quran content ($assetPath)');
+    }
   }
 
   @override
@@ -56,35 +59,13 @@ class QuranRepositoryImpl implements QuranRepository {
       return SurahModel.listFromHiveJson(raw);
     }
 
-    try {
-      final response = await _dio.request(RequestInstructions(
-        url: AppEndPoints.quranCloudSurahList(),
-        method: 'GET',
-      ));
-      final surahs = SurahModel.listFromAlQuranCloudJson(
-          response.data as Map<String, dynamic>);
-      await _prefs.save(
-        AppPersistenceDataKeys.quranSurahListCache,
-        value: SurahModel.listToHiveJson(surahs),
-      );
-      return surahs;
-    } on DioException catch (e) {
-      log('QuranRepositoryImpl.getSurahList network failed, '
-          'falling back to bundled asset: $e');
-      try {
-        final bundled = await _loadBundledJson();
-        final surahs = SurahModel.listFromBundledJson(bundled);
-        // Cached too — content is static, so there's no reason to keep
-        // retrying the network (and eating its timeout) on every call.
-        await _prefs.save(
-          AppPersistenceDataKeys.quranSurahListCache,
-          value: SurahModel.listToHiveJson(surahs),
-        );
-        return surahs;
-      } catch (_) {
-        throw Failure.handleDioException(e);
-      }
-    }
+    final index = await _loadAndDecode<List>(_chaptersIndexAssetPath);
+    final surahs = SurahModel.listFromBundledJson(index);
+    await _prefs.save(
+      AppPersistenceDataKeys.quranSurahListCache,
+      value: SurahModel.listToHiveJson(surahs),
+    );
+    return surahs;
   }
 
   @override
@@ -96,34 +77,11 @@ class QuranRepositoryImpl implements QuranRepository {
       return AyahModel.listFromHiveJson(raw);
     }
 
-    try {
-      final response = await _dio.request(RequestInstructions(
-        url: AppEndPoints.quranCloudSurah(surahNumber),
-        method: 'GET',
-      ));
-      final ayahs = AyahModel.listFromAlQuranCloudJson(
-          response.data as Map<String, dynamic>);
-      await _prefs.save(cacheKey, value: AyahModel.listToHiveJson(ayahs));
-      return ayahs;
-    } on DioException catch (e) {
-      log('QuranRepositoryImpl.getSurah($surahNumber) network failed, '
-          'falling back to bundled asset: $e');
-      try {
-        final bundled = await _loadBundledJson();
-        final surahs = bundled['surahs'] as List;
-        final match = surahs.cast<Map>().firstWhere(
-              (s) => s['number'] == surahNumber,
-              orElse: () => const {},
-            );
-        if (match.isEmpty) throw Failure.handleDioException(e);
-        final ayahs =
-            AyahModel.listFromBundledJson(Map<String, dynamic>.from(match));
-        await _prefs.save(cacheKey, value: AyahModel.listToHiveJson(ayahs));
-        return ayahs;
-      } catch (_) {
-        throw Failure.handleDioException(e);
-      }
-    }
+    final chapter = await _loadAndDecode<Map<String, dynamic>>(
+        _chapterAssetPath(surahNumber));
+    final ayahs = AyahModel.listFromBundledJson(chapter);
+    await _prefs.save(cacheKey, value: AyahModel.listToHiveJson(ayahs));
+    return ayahs;
   }
 
   @override
@@ -137,18 +95,12 @@ class QuranRepositoryImpl implements QuranRepository {
         (k, v) => MapEntry(int.parse(k as String), List<int>.from(v as List)),
       );
     } else {
-      try {
-        juzToSurahNumbers = await _fetchJuzGroupingLive();
-      } on DioException catch (e) {
-        log('QuranRepositoryImpl.getJuzSections network failed, '
-            'falling back to bundled asset: $e');
-        try {
-          final bundled = await _loadBundledJson();
-          juzToSurahNumbers = _buildJuzGroupingFromBundled(bundled);
-        } catch (_) {
-          throw Failure.handleDioException(e);
-        }
-      }
+      final allSurahs = await getSurahList();
+      final boundaries = await _loadAndDecode<List>(_juzBoundariesAssetPath);
+      juzToSurahNumbers = _buildJuzGroupingFromBoundaries(
+        boundaries.cast<Map>().map(Map<String, dynamic>.from).toList(),
+        allSurahs,
+      );
       await _prefs.save(
         AppPersistenceDataKeys.quranJuzSectionsCache,
         value: juzToSurahNumbers.map((k, v) => MapEntry(k.toString(), v)),
@@ -170,45 +122,48 @@ class QuranRepositoryImpl implements QuranRepository {
     ];
   }
 
-  /// Fetches all 30 Juz endpoints in parallel and groups each one's ayahs by
-  /// `surah.number` (research.md R3) — only the distinct surah numbers per
-  /// Juz are kept, not the full ayah text, since that's all the Juz tab
-  /// needs once resolved against the already-cached Surah list.
-  Future<Map<int, List<int>>> _fetchJuzGroupingLive() async {
-    final result = <int, List<int>>{};
-    await Future.wait(List.generate(30, (i) => i + 1).map((juzNumber) async {
-      final response = await _dio.request(RequestInstructions(
-        url: AppEndPoints.quranCloudJuz(juzNumber),
-        method: 'GET',
-      ));
-      final data = response.data as Map<String, dynamic>;
-      final ayahs = (data['data'] as Map<String, dynamic>)['ayahs'] as List;
-      final numbers = <int>{};
-      for (final a in ayahs) {
-        final surah = (a as Map)['surah'] as Map;
-        numbers.add(surah['number'] as int);
-      }
-      result[juzNumber] = numbers.toList()..sort();
-    }));
-    return result;
-  }
+  /// Walks the 114 Surahs (in canonical order, using each one's already
+  /// known `ayahCount`) against the 30 static Juz boundary points
+  /// (`assets/quran/juz_boundaries.json` — specs/005-quran-fonts-local-source
+  /// research.md R3/data-model.md) to determine which Surah(s) each Juz
+  /// spans — a Surah crossing a boundary is added to both the Juz it starts
+  /// in and the Juz it continues into, reproducing the same grouping the
+  /// old per-ayah `juz` field used to give directly.
+  Map<int, List<int>> _buildJuzGroupingFromBoundaries(
+    List<Map<String, dynamic>> boundaries,
+    List<Surah> allSurahs,
+  ) {
+    final surahsByNumber = {for (final s in allSurahs) s.number: s};
+    final result = <int, Set<int>>{for (var j = 1; j <= 30; j++) j: {}};
 
-  /// Bundled-asset fallback: each ayah in the local dataset already carries
-  /// its own `juz` number, so Juz grouping is derived without needing a
-  /// separate bundled Juz dataset.
-  Map<int, List<int>> _buildJuzGroupingFromBundled(
-      Map<String, dynamic> bundled) {
-    final result = <int, Set<int>>{};
-    final surahs = bundled['surahs'] as List;
-    for (final s in surahs) {
-      final surahMap = s as Map;
-      final surahNumber = surahMap['number'] as int;
-      final ayahs = surahMap['ayahs'] as List;
-      for (final a in ayahs) {
-        final juz = (a as Map)['juz'] as int;
-        result.putIfAbsent(juz, () => <int>{}).add(surahNumber);
+    for (var i = 0; i < boundaries.length; i++) {
+      final juz = boundaries[i]['juz'] as int;
+      final startSurah = boundaries[i]['startSurah'] as int;
+      final startAyah = boundaries[i]['startAyah'] as int;
+
+      final isLast = i == boundaries.length - 1;
+      final endSurah = isLast ? 114 : (boundaries[i + 1]['startSurah'] as int);
+      final endAyahExclusive =
+          isLast ? null : (boundaries[i + 1]['startAyah'] as int);
+
+      for (var surahNumber = startSurah;
+          surahNumber <= endSurah;
+          surahNumber++) {
+        final ayahCount = surahsByNumber[surahNumber]?.ayahCount;
+        if (ayahCount == null) continue;
+
+        final rangeStart = surahNumber == startSurah ? startAyah : 1;
+        final rangeEndExclusive =
+            (surahNumber == endSurah && endAyahExclusive != null)
+                ? endAyahExclusive
+                : ayahCount + 1;
+
+        if (rangeStart < rangeEndExclusive) {
+          result[juz]!.add(surahNumber);
+        }
       }
     }
+
     return result.map((k, v) => MapEntry(k, v.toList()..sort()));
   }
 
@@ -220,6 +175,20 @@ class QuranRepositoryImpl implements QuranRepository {
     final fontSize = _prefs.contains(AppPersistenceDataKeys.quranFontSize)
         ? _prefs.get<double>(key: AppPersistenceDataKeys.quranFontSize)
         : QuranFontSetting.defaults.fontSize;
+
+    // A saved family that's no longer offered (e.g. a pre-update user's
+    // 'Lateef') is treated as unset and migrated to the new default, then
+    // re-persisted so the correction sticks (specs/005-quran-fonts-local-
+    // source research.md R7, spec.md FR-006).
+    if (!QuranFontSetting.availableFontFamilies.contains(fontFamily)) {
+      final migrated = QuranFontSetting(
+        fontFamily: QuranFontSetting.defaults.fontFamily,
+        fontSize: fontSize,
+      );
+      await saveFontSetting(migrated);
+      return migrated;
+    }
+
     return QuranFontSetting(fontFamily: fontFamily, fontSize: fontSize);
   }
 
@@ -260,7 +229,19 @@ class QuranRepositoryImpl implements QuranRepository {
           .select('quran_font_family, quran_font_size')
           .eq('user_id', userId)
           .maybeSingle();
-      return QuranFontSettingModel.fromSupabaseRow(row);
+      final setting = QuranFontSettingModel.fromSupabaseRow(row);
+      // A remote value saved before this update (e.g. 'Lateef') is no
+      // longer valid — treat it the same as "nothing to adopt" so it never
+      // overwrites the caller's already-migrated local value (research.md
+      // R7); the stale remote row is corrected on the user's next explicit
+      // font change via saveFontSetting.
+      if (setting != null &&
+          !QuranFontSetting.availableFontFamilies.contains(
+            setting.fontFamily,
+          )) {
+        return null;
+      }
+      return setting;
     } catch (e) {
       log('QuranRepositoryImpl.fetchRemoteFontSetting failed: $e');
       return null;
