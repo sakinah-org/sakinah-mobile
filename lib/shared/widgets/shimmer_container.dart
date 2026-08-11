@@ -10,7 +10,7 @@ class ShimmerContainer extends StatelessWidget {
     this.borderRadius = 0,
   });
 
-  final double height, width,borderRadius;
+  final double height, width, borderRadius;
   final Color color;
 
   @override

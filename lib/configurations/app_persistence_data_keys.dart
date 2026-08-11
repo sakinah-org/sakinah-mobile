@@ -37,4 +37,9 @@ abstract class AppPersistenceDataKeys {
   static const String quranSurahCachePrefix = 'quran_surah_cache';
   static const String quranFontFamily = 'quran_font_family';
   static const String quranFontSize = 'quran_font_size';
+
+  // ============================================================================
+  // Settings (lib/shared/bloc/settings_cubit.dart) — specs/006-settings-screen
+  // ============================================================================
+  static const String appLocale = 'app_locale';
 }

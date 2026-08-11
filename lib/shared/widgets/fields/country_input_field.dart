@@ -1,7 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 
-
 /// Please make sure you have added the [`country_picker`](https://pub.dev/packages/country_picker) package to your `pubspec.yaml` file.
 ///
 class CountryInputField extends StatefulWidget {
@@ -84,9 +83,12 @@ class _CountryInputFieldState extends State<CountryInputField> {
                       ),
                     Expanded(
                       child: Text(
-                        country == null ? "Choose country" : country!.displayName,
-                        style:
-                        country == null ? widget.hintStyle : widget.textStyle,
+                        country == null
+                            ? "Choose country"
+                            : country!.displayName,
+                        style: country == null
+                            ? widget.hintStyle
+                            : widget.textStyle,
                       ),
                     ),
                     if (country != null)
@@ -110,28 +112,31 @@ class _CountryInputFieldState extends State<CountryInputField> {
                 ),
               ),
             ),
-            if(widget.labelText.isNotEmpty)Positioned(
-              top: -6,
-              left: 14,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 4),
-                child: RichText(
-                  text: TextSpan(
-                    text: widget.labelText,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary, //
-                        fontSize: 10// Label color
+            if (widget.labelText.isNotEmpty)
+              Positioned(
+                top: -6,
+                left: 14,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 4),
+                  child: RichText(
+                    text: TextSpan(
+                      text: widget.labelText,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary, //
+                          fontSize: 10 // Label color
+                          ),
+                      children: [
+                        if (widget.isRequired)
+                          TextSpan(
+                            text: ' *',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                      ],
                     ),
-                    children: [
-                      if(widget.isRequired)TextSpan(
-                        text: ' *',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ],
-                  ),),
-                color: Colors.white,
+                  ),
+                  color: Colors.white,
+                ),
               ),
-            ),
           ],
         ),
         if (widget.hasError) const SizedBox(height: 8),
@@ -142,9 +147,9 @@ class _CountryInputFieldState extends State<CountryInputField> {
               const SizedBox(width: 4),
               Expanded(
                   child: Text(
-                    widget.errorText ?? "Error",
-                    style: const TextStyle(color: Colors.red),
-                  )),
+                widget.errorText ?? "Error",
+                style: const TextStyle(color: Colors.red),
+              )),
             ],
           ),
         if (widget.withBottomPadding) const SizedBox(height: 16),

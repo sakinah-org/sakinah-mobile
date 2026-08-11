@@ -31,18 +31,18 @@ class SharedPrefHandler {
     }
   }
 
-  void removeAllOf({required List<String> keys}) async {
+  Future<void> removeAllOf({required List<String> keys}) async {
     for (String key in keys) {
       if (_box!.containsKey(key)) {
-        log( 'Key $key exists, deleting...');
+        log('Key $key exists, deleting...');
         await _box!.delete(key);
       }
     }
   }
 
-  void remove(String key) async {
+  Future<void> remove(String key) async {
     if (_box!.containsKey(key)) {
-      log( 'Key $key exists, deleting...');
+      log('Key $key exists, deleting...');
       await _box!.delete(key);
     }
   }
@@ -52,7 +52,7 @@ class SharedPrefHandler {
     await _box!.clear();
   }
 
-  bool contains(String key){
+  bool contains(String key) {
     return _box!.containsKey(key);
   }
 }

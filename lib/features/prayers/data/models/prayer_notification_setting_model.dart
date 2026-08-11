@@ -68,7 +68,6 @@ class PrayerNotificationSettingModel {
     PrayerReminderSetting setting, {
     required String userId,
   }) {
-
     return {
       'user_id': userId,
       'prayer_id': prayerIdFor(setting.prayerCode),

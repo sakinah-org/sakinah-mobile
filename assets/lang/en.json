@@ -91,5 +91,35 @@
   "quran_font_style_naskh": "Naskh",
   "quran_font_style_uthmani": "Uthmani",
   "quran_font_style_ornamental": "Ornamental",
-  "quran_font_default_suffix": " (Default)"
+  "quran_font_default_suffix": " (Default)",
+
+  "settings_guest_title": "Browsing as guest",
+  "settings_sync_active_badge": "Sync active",
+  "settings_prayer_times_option": "Prayer Times",
+  "settings_change_language_option": "Change Language",
+  "settings_logout_option": "Logout",
+  "settings_logout_confirm_title": "Log out?",
+  "settings_logout_confirm_message": "You'll be signed out, but the app keeps working fully as a guest and your local preferences stay exactly as they are.",
+  "settings_logout_confirm_cta": "Logout",
+  "settings_logout_cancel_cta": "Cancel",
+
+  "qibla_screen_title": "Qibla Compass",
+  "qibla_direction_label": "Qibla direction",
+  "qibla_distance_to_mecca_label": "Distance to Mecca",
+  "qibla_align_instruction": "Point the top of your phone toward the arrow",
+  "qibla_calibration_title": "Calibration needed",
+  "qibla_calibration_message": "Move your phone in a figure-eight motion to improve accuracy",
+  "qibla_no_sensor_message": "Your device doesn't have a compass sensor. Here's the Qibla direction as a fixed value instead.",
+  "qibla_location_required_message": "Location access is required to find the Qibla direction.",
+  "qibla_compass_north": "North",
+  "qibla_compass_northeast": "Northeast",
+  "qibla_compass_east": "East",
+  "qibla_compass_southeast": "Southeast",
+  "qibla_compass_south": "South",
+  "qibla_compass_southwest": "Southwest",
+  "qibla_compass_west": "West",
+  "qibla_compass_northwest": "Northwest",
+
+  "language_sheet_title": "Language",
+  "language_sheet_footnote": "The language applies immediately across the app."
 }

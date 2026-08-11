@@ -13,7 +13,8 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
 
   @override
   void initState() {
-    _controller = VideoPlayerController.networkUrl(Uri.parse('https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'))
+    _controller = VideoPlayerController.networkUrl(Uri.parse(
+        'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'))
       ..initialize().then((_) {
         setState(() {});
       });

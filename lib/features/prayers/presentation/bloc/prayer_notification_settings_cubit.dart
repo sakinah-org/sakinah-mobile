@@ -68,7 +68,6 @@ class PrayerNotificationSettingsCubit
 
     await _repository.saveLocalSetting(changed);
 
-
     final time = _currentTimesByCode()?[prayerCode];
     if (isEnabled && time != null) {
       await _notificationHandler.scheduleReminder(

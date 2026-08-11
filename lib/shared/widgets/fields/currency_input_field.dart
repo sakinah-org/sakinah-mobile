@@ -1,7 +1,6 @@
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 
-
 /// Please make sure you have added the [`currency_picker`](https://pub.dev/packages/currency_picker) package to your `pubspec.yaml` file.
 class CurrencyInputField extends StatefulWidget {
   CurrencyInputField({
@@ -77,8 +76,9 @@ class _CurrencyInputFieldState extends State<CurrencyInputField> {
                     Expanded(
                       child: Text(
                         currency == null ? "Choose currency" : currency!.code,
-                        style:
-                        currency == null ? widget.hintStyle : widget.textStyle,
+                        style: currency == null
+                            ? widget.hintStyle
+                            : widget.textStyle,
                       ),
                     ),
                     if (currency != null)
@@ -102,28 +102,31 @@ class _CurrencyInputFieldState extends State<CurrencyInputField> {
                 ),
               ),
             ),
-            if(widget.labelText.isNotEmpty)Positioned(
-              top: -6,
-              left: 14,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 4),
-                child: RichText(
-                  text: TextSpan(
-                    text: widget.labelText,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary, //
-                        fontSize: 10// Label color
+            if (widget.labelText.isNotEmpty)
+              Positioned(
+                top: -6,
+                left: 14,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 4),
+                  child: RichText(
+                    text: TextSpan(
+                      text: widget.labelText,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary, //
+                          fontSize: 10 // Label color
+                          ),
+                      children: [
+                        if (widget.isRequired)
+                          TextSpan(
+                            text: ' *',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                      ],
                     ),
-                    children: [
-                      if(widget.isRequired)TextSpan(
-                        text: ' *',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ],
-                  ),),
-                color: Colors.white,
+                  ),
+                  color: Colors.white,
+                ),
               ),
-            ),
           ],
         ),
         if (widget.hasError) const SizedBox(height: 8),
@@ -134,9 +137,9 @@ class _CurrencyInputFieldState extends State<CurrencyInputField> {
               const SizedBox(width: 4),
               Expanded(
                   child: Text(
-                    widget.errorText ?? "Error",
-                    style: const TextStyle(color: Colors.red),
-                  )),
+                widget.errorText ?? "Error",
+                style: const TextStyle(color: Colors.red),
+              )),
             ],
           ),
         if (widget.withBottomPadding) const SizedBox(height: 16),

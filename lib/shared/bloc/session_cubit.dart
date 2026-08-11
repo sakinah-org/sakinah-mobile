@@ -119,4 +119,32 @@ class SessionCubit extends Cubit<AppStates> {
     );
     return AESEncryptor.instance.decrypt(encryptedValue) as String;
   }
+
+  /// Ends the authenticated session (specs/006-settings-screen FR-015,
+  /// contracts/session_cubit_logout_contract.md). Only ever clears the four
+  /// session keys this cubit itself owns — every other `SharedPrefHandler`
+  /// key (language, theme, prayer location, notification settings, Quran
+  /// font settings, ...) is left untouched, which is what guarantees local
+  /// preferences survive logout.
+  Future<void> logout() async {
+    try {
+      await supabase.Supabase.instance.client.auth.signOut();
+    } catch (e) {
+      // Local session teardown must still complete even if the remote
+      // sign-out call fails (e.g. already-expired session, no connectivity,
+      // or — in unit tests — Supabase never initialized at all).
+      log('SessionCubit.logout: remote signOut failed, continuing: $e');
+    }
+
+    final prefs = SharedPrefHandler.instance!;
+    await prefs.removeAllOf(keys: [
+      AppPersistenceDataKeys.isLogin,
+      AppPersistenceDataKeys.accessToken,
+      AppPersistenceDataKeys.refreshToken,
+      AppPersistenceDataKeys.userData,
+    ]);
+
+    _currentUser = null;
+    emit(LoadedState(null));
+  }
 }

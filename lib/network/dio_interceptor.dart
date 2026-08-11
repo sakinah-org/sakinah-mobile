@@ -24,12 +24,15 @@ class DioLoggingInterceptor {
         return handler.next(options);
       },
       onResponse: (response, handler) {
-        _logger.i("==: {${response.realUri.path}} Response => ${response.data}");
+        _logger
+            .i("==: {${response.realUri.path}} Response => ${response.data}");
         return handler.next(response);
       },
       onError: (DioError e, handler) {
-        _logger.e("==: Error => ${e.message}",error: e,stackTrace: e.stackTrace);
-        _logger.e("==: Error Response => ${e.response?.data}",error: e,stackTrace: e.stackTrace);
+        _logger.e("==: Error => ${e.message}",
+            error: e, stackTrace: e.stackTrace);
+        _logger.e("==: Error Response => ${e.response?.data}",
+            error: e, stackTrace: e.stackTrace);
         return handler.next(e);
       },
     );

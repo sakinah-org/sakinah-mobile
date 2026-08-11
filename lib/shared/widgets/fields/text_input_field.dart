@@ -62,7 +62,7 @@ class _TextInputFieldState extends State<TextInputField> {
   _mapSuffixIcon() {
     if (widget.keyboardType == null) {
       return null;
-    }  else if (widget.keyboardType == TextInputType.visiblePassword) {
+    } else if (widget.keyboardType == TextInputType.visiblePassword) {
       return GestureDetector(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),

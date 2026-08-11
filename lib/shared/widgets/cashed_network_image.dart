@@ -14,7 +14,19 @@ class CashedImage {
   }
 
   ///Container Network Image with border
-  static Widget containerNetworkImage({String image = "", BorderRadius? borderRadius, double? radius, String? defaultImage, double? height, double? width, String? customImage, BoxFit? fit, isPlaceHolder = true, double? widthOfShimmer, bool shadeLayer = false, bool edges = false}) {
+  static Widget containerNetworkImage(
+      {String image = "",
+      BorderRadius? borderRadius,
+      double? radius,
+      String? defaultImage,
+      double? height,
+      double? width,
+      String? customImage,
+      BoxFit? fit,
+      isPlaceHolder = true,
+      double? widthOfShimmer,
+      bool shadeLayer = false,
+      bool edges = false}) {
     return CachedNetworkImage(
       imageUrl: image == "" ? "" : image,
       fadeInDuration: const Duration(seconds: 1),
@@ -33,16 +45,17 @@ class CashedImage {
       placeholder: (context, url) {
         return isPlaceHolder
             ? Container(
-            width: width ?? 40,
-            height: height ?? 40,
-            decoration: BoxDecoration(
-                borderRadius: borderRadius ?? BorderRadius.circular(radius ?? 0),
-                image: DecorationImage(
-                    fit: fit ?? BoxFit.contain,
-                    image: Image.asset(
-                      defaultImage ?? "assets/images/logo.png",
-                      fit: BoxFit.contain,
-                    ).image)))
+                width: width ?? 40,
+                height: height ?? 40,
+                decoration: BoxDecoration(
+                    borderRadius:
+                        borderRadius ?? BorderRadius.circular(radius ?? 0),
+                    image: DecorationImage(
+                        fit: fit ?? BoxFit.contain,
+                        image: Image.asset(
+                          defaultImage ?? "assets/images/logo.png",
+                          fit: BoxFit.contain,
+                        ).image)))
             : Container();
       },
       imageBuilder: (context, provider) {
@@ -59,18 +72,29 @@ class CashedImage {
   }
 
   /// Circle Network Image
-  static Widget circleNewWorkImage({required String image, double? radius, String? placeHolder, bool isDefaultSvg = true, backGroundColor, color, BoxFit? fit}) {
+  static Widget circleNewWorkImage(
+      {required String image,
+      double? radius,
+      String? placeHolder,
+      bool isDefaultSvg = true,
+      backGroundColor,
+      color,
+      BoxFit? fit}) {
     return CachedNetworkImage(
-      imageUrl: image == ""? "" : image,
+      imageUrl: image == "" ? "" : image,
       repeat: ImageRepeat.noRepeat,
       errorWidget: (a, c, b) => Container(
         height: radius! * 2,
         width: radius * 2,
-        decoration: BoxDecoration(border: color != null ? Border.all(color: color, width: 1) : null, shape: BoxShape.circle),
+        decoration: BoxDecoration(
+            border: color != null ? Border.all(color: color, width: 1) : null,
+            shape: BoxShape.circle),
         child: CircleAvatar(
           radius: radius,
           backgroundColor: backGroundColor ?? Colors.white,
-          backgroundImage: Image.asset(placeHolder??"assets/images/logo.png", fit: BoxFit.contain).image,
+          backgroundImage: Image.asset(placeHolder ?? "assets/images/logo.png",
+                  fit: BoxFit.contain)
+              .image,
         ),
       ),
       fadeInDuration: const Duration(seconds: 1),
@@ -78,21 +102,24 @@ class CashedImage {
       placeholder: (context, url) => Container(
         height: radius! * 2,
         width: radius * 2,
-        decoration: BoxDecoration(border: color != null ? Border.all(color: color, width: 1) : null, shape: BoxShape.circle),
+        decoration: BoxDecoration(
+            border: color != null ? Border.all(color: color, width: 1) : null,
+            shape: BoxShape.circle),
         child: CircleAvatar(
           radius: radius,
           backgroundColor: backGroundColor ?? Colors.white,
-          child: Image.asset(placeHolder??"assets/images/logo.png"),
+          child: Image.asset(placeHolder ?? "assets/images/logo.png"),
         ),
       ),
       imageBuilder: (context, provider) {
         return Container(
           height: radius! * 2,
           width: radius * 2,
-          decoration: BoxDecoration(border: color != null ? Border.all(color: color, width: 1) : null, shape: BoxShape.circle),
+          decoration: BoxDecoration(
+              border: color != null ? Border.all(color: color, width: 1) : null,
+              shape: BoxShape.circle),
           child: CircleAvatar(
             backgroundImage: provider,
-
             radius: radius,
             backgroundColor: backGroundColor ?? Colors.white,
           ),
@@ -102,7 +129,8 @@ class CashedImage {
   }
 
   //Asset network Image
-  Widget imageNewWorkImage({String? image, String? defaultImage, double? height, double? width}) {
+  Widget imageNewWorkImage(
+      {String? image, String? defaultImage, double? height, double? width}) {
     return CachedNetworkImage(
       imageUrl: image == "" || image == null ? "" : image,
       //     fadeInDuration: Duration(seconds: 2),
@@ -110,21 +138,27 @@ class CashedImage {
         height: height ?? 40,
         width: width ?? 40,
         decoration: BoxDecoration(
-          image: DecorationImage(fit: BoxFit.cover, image: Image.asset("assets/images/logo.png").image),
+          image: DecorationImage(
+              fit: BoxFit.cover,
+              image: Image.asset("assets/images/logo.png").image),
         ),
       ),
       placeholder: (context, url) => Container(
         height: height ?? 40,
         width: width ?? 40,
         decoration: const BoxDecoration(
-          // image: DecorationImage(
-          //     fit: BoxFit.cover,
-          //     image: Image.asset(defaultImage ?? "assets/images/logo.png")
-          //         .image)
-        ),
+            // image: DecorationImage(
+            //     fit: BoxFit.cover,
+            //     image: Image.asset(defaultImage ?? "assets/images/logo.png")
+            //         .image)
+            ),
       ),
       imageBuilder: (context, provider) {
-        return Container(height: height ?? 40, width: width ?? 40, decoration: BoxDecoration(image: DecorationImage(fit: BoxFit.cover, image: provider)));
+        return Container(
+            height: height ?? 40,
+            width: width ?? 40,
+            decoration: BoxDecoration(
+                image: DecorationImage(fit: BoxFit.cover, image: provider)));
       },
     );
   }

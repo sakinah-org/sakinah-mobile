@@ -118,4 +118,33 @@ void main() {
           isNot(contains(plainAccessToken)));
     });
   });
+
+  group('SessionCubit.logout', () {
+    test('clears only the four session keys and returns to guest state',
+        () async {
+      final cubit = SessionCubit.instance;
+      final prefs = SharedPrefHandler.instance!;
+      await cubit.persistSession(
+        accessToken: 'a',
+        refreshToken: 'r',
+        user: User(id: 'u3', name: 'Logout Test', email: 'logout@example.com'),
+      );
+      // A key SessionCubit does NOT own — must survive logout untouched.
+      await prefs.save('unrelated_preference', value: 'keep-me');
+
+      // Supabase is never initialized in this test file, so the remote
+      // signOut() call is expected to fail — logout() must still complete
+      // local teardown (contracts/session_cubit_logout_contract.md).
+      await expectLater(cubit.logout(), completes);
+
+      expect(cubit.isLoggedIn, isFalse);
+      expect(cubit.currentUser, isNull);
+      expect(prefs.contains(AppPersistenceDataKeys.isLogin), isFalse);
+      expect(prefs.contains(AppPersistenceDataKeys.accessToken), isFalse);
+      expect(prefs.contains(AppPersistenceDataKeys.refreshToken), isFalse);
+      expect(prefs.contains(AppPersistenceDataKeys.userData), isFalse);
+      expect(prefs.contains('unrelated_preference'), isTrue);
+      expect(prefs.get<String>(key: 'unrelated_preference'), 'keep-me');
+    });
+  });
 }

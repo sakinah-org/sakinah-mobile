@@ -48,10 +48,12 @@ class _PrayerLocationCardState extends State<PrayerLocationCard> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final surface = isDark ? AppColors.darkBrandPrimaryMedium : AppColors.lightBrandPrimaryMedium;
+    final surface = isDark
+        ? AppColors.darkBrandPrimaryMedium
+        : AppColors.lightBrandPrimaryMedium;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
-    const  textPrimary =Colors.white;
-    const  textSecondary = Colors.white;
+    const textPrimary = Colors.white;
+    const textSecondary = Colors.white;
     const brandPrimary = Colors.white;
     final locale = Localizations.localeOf(context);
     final now = DateTime.now();
@@ -82,9 +84,12 @@ class _PrayerLocationCardState extends State<PrayerLocationCard> {
               Row(
                 spacing: 10,
                 children: [
-                  drawSvgIcon(AppIcons.location,
-                      width: 20, height: 20, iconColor: brandPrimary,),
-
+                  drawSvgIcon(
+                    AppIcons.location,
+                    width: 20,
+                    height: 20,
+                    iconColor: brandPrimary,
+                  ),
                   Expanded(
                     child: Text(
                       locationText ?? '—',
@@ -100,36 +105,38 @@ class _PrayerLocationCardState extends State<PrayerLocationCard> {
               ),
               // Rendered independently of the location fetch above so the
               // Hijri date degrades gracefully on its own (FR-001 scenario 5).
-              Builder(builder: (context) {
-                try {
-                  return Row(
-                    children: [
-                      if (method != null)
-                        Expanded(
-                          child: Text(
-                            '${translator.word(TranslationKeys.prayersLocationCalculationMethodLabel)}: ${_methodLabel(method)}',
-                            style: TextStyle(
-                              fontFamily: AppTypography.uiFontFamily,
-                              fontSize: 12,
-                              color: textSecondary,
+              Builder(
+                builder: (context) {
+                  try {
+                    return Row(
+                      children: [
+                        if (method != null)
+                          Expanded(
+                            child: Text(
+                              '${translator.word(TranslationKeys.prayersLocationCalculationMethodLabel)}: ${_methodLabel(method)}',
+                              style: TextStyle(
+                                fontFamily: AppTypography.uiFontFamily,
+                                fontSize: 12,
+                                color: textSecondary,
+                              ),
                             ),
                           ),
+                        Text(
+                          now.hijriDateLabel(locale),
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                            fontFamily: AppTypography.uiFontFamily,
+                            fontSize: 12,
+                            color: textSecondary,
+                          ),
                         ),
-                      Text(
-                        now.hijriDateLabel(locale),
-                        textAlign: TextAlign.end,
-                        style: TextStyle(
-                          fontFamily: AppTypography.uiFontFamily,
-                          fontSize: 12,
-                          color: textSecondary,
-                        ),
-                      ),
-                    ],
-                  );
-                } catch (_) {
-                  return const SizedBox.shrink();
-                }
-              },),
+                      ],
+                    );
+                  } catch (_) {
+                    return const SizedBox.shrink();
+                  }
+                },
+              ),
             ],
           );
         },

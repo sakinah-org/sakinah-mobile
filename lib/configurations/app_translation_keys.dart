@@ -143,4 +143,49 @@ abstract class TranslationKeys {
   static const String quranFontStyleUthmani = 'quran_font_style_uthmani';
   static const String quranFontStyleOrnamental = 'quran_font_style_ornamental';
   static const String quranFontDefaultSuffix = 'quran_font_default_suffix';
+
+  // ============================================================================
+  // Settings screen (lib/features/settings/) — specs/006-settings-screen
+  // ============================================================================
+  static const String settingsGuestTitle = 'settings_guest_title';
+  static const String settingsSyncActiveBadge = 'settings_sync_active_badge';
+  static const String settingsPrayerTimesOption =
+      'settings_prayer_times_option';
+  static const String settingsChangeLanguageOption =
+      'settings_change_language_option';
+  static const String settingsLogoutOption = 'settings_logout_option';
+  static const String settingsLogoutConfirmTitle =
+      'settings_logout_confirm_title';
+  static const String settingsLogoutConfirmMessage =
+      'settings_logout_confirm_message';
+  static const String settingsLogoutConfirmCta = 'settings_logout_confirm_cta';
+  static const String settingsLogoutCancelCta = 'settings_logout_cancel_cta';
+
+  // ============================================================================
+  // Qibla Compass screen (lib/features/qibla/) — specs/006-settings-screen
+  // ============================================================================
+  static const String qiblaScreenTitle = 'qibla_screen_title';
+  static const String qiblaDirectionLabel = 'qibla_direction_label';
+  static const String qiblaDistanceToMeccaLabel =
+      'qibla_distance_to_mecca_label';
+  static const String qiblaAlignInstruction = 'qibla_align_instruction';
+  static const String qiblaCalibrationTitle = 'qibla_calibration_title';
+  static const String qiblaCalibrationMessage = 'qibla_calibration_message';
+  static const String qiblaNoSensorMessage = 'qibla_no_sensor_message';
+  static const String qiblaLocationRequiredMessage =
+      'qibla_location_required_message';
+  static const String qiblaCompassNorth = 'qibla_compass_north';
+  static const String qiblaCompassNortheast = 'qibla_compass_northeast';
+  static const String qiblaCompassEast = 'qibla_compass_east';
+  static const String qiblaCompassSoutheast = 'qibla_compass_southeast';
+  static const String qiblaCompassSouth = 'qibla_compass_south';
+  static const String qiblaCompassSouthwest = 'qibla_compass_southwest';
+  static const String qiblaCompassWest = 'qibla_compass_west';
+  static const String qiblaCompassNorthwest = 'qibla_compass_northwest';
+
+  // ============================================================================
+  // Language bottom sheet (lib/features/settings/) — specs/006-settings-screen
+  // ============================================================================
+  static const String languageSheetTitle = 'language_sheet_title';
+  static const String languageSheetFootnote = 'language_sheet_footnote';
 }

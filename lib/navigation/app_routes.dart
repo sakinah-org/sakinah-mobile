@@ -8,4 +8,5 @@ abstract class AppRoutes {
   static const String resetPassword = '/reset-password';
   static const String prayers = '/prayers';
   static const String surahReading = '/surah-reading';
+  static const String qiblaCompass = '/qibla-compass';
 }

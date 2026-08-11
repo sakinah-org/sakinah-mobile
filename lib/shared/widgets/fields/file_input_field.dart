@@ -4,7 +4,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 class FileInputField extends StatefulWidget {
-  const FileInputField({super.key, this.label, this.onFilePicked, this.hint = "Select File"});
+  const FileInputField(
+      {super.key, this.label, this.onFilePicked, this.hint = "Select File"});
 
   final Function(DateTime)? onFilePicked;
   final String hint;
@@ -52,9 +53,15 @@ class _FileInputFieldState extends State<FileInputField> {
                 if (file == null) Icon(Icons.file_copy_outlined, size: 48),
                 if (file != null) Icon(Icons.file_copy, size: 48),
                 const SizedBox(height: 8),
-                if (file != null) Text(file!.path.split("/").last, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
+                if (file != null)
+                  Text(file!.path.split("/").last,
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
                 const SizedBox(height: 8),
-                if (file == null) Text(widget.hint, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                if (file == null)
+                  Text(widget.hint,
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                 if (file != null) const SizedBox(height: 8),
                 if (file != null)
                   OutlinedButton(

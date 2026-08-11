@@ -31,7 +31,8 @@ class ImagePickerHandler {
       );
       throw failure;
     } catch (e) {
-      throw UnknownFailure('An unexpected error occurred while selecting an image. Please try again.');
+      throw UnknownFailure(
+          'An unexpected error occurred while selecting an image. Please try again.');
     }
     return null;
   }

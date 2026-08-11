@@ -11,7 +11,6 @@ final lightTheme = ThemeData(
   scaffoldBackgroundColor: AppColors.lightBg,
   canvasColor: AppColors.lightBg,
   shadowColor: Colors.black.withOpacity(0.1),
-
   colorScheme: const ColorScheme.light(
     primary: AppColors.lightBrandPrimary,
     onPrimary: AppColors.lightOnBrand,
@@ -30,7 +29,6 @@ final lightTheme = ThemeData(
     outline: AppColors.lightBorderStrong,
     outlineVariant: AppColors.lightBorder,
   ),
-
   appBarTheme: const AppBarTheme(
     backgroundColor: AppColors.lightSurface,
     foregroundColor: AppColors.lightTextPrimary,
@@ -39,7 +37,6 @@ final lightTheme = ThemeData(
     titleTextStyle: AppTypography.h2Light,
     surfaceTintColor: Colors.transparent,
   ),
-
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: AppColors.lightBrandPrimary,
@@ -50,27 +47,25 @@ final lightTheme = ThemeData(
       elevation: 0,
     ),
   ),
-
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       foregroundColor: AppColors.lightBrandPrimary,
       side: const BorderSide(color: AppColors.lightBrandPrimary, width: 1.5),
-      textStyle: AppTypography.buttonLight.copyWith(color: AppColors.lightBrandPrimary),
+      textStyle: AppTypography.buttonLight
+          .copyWith(color: AppColors.lightBrandPrimary),
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),
   ),
-
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
       foregroundColor: AppColors.lightBrandPrimary,
-      textStyle: AppTypography.buttonLight.copyWith(color: AppColors.lightBrandPrimary),
+      textStyle: AppTypography.buttonLight
+          .copyWith(color: AppColors.lightBrandPrimary),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     ),
   ),
-
   textTheme: AppTypography.lightTextTheme,
-
   cardTheme: CardThemeData(
     color: AppColors.lightSurfaceRaised,
     elevation: 1,
@@ -81,7 +76,6 @@ final lightTheme = ThemeData(
     margin: const EdgeInsets.all(0),
     shadowColor: Colors.black.withOpacity(0.08),
   ),
-
   dialogTheme: DialogThemeData(
     backgroundColor: AppColors.lightSurfaceRaised,
     elevation: 8,
@@ -89,7 +83,6 @@ final lightTheme = ThemeData(
     titleTextStyle: AppTypography.h2Light,
     contentTextStyle: AppTypography.body1Light,
   ),
-
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
     fillColor: AppColors.lightSurface,
@@ -104,7 +97,8 @@ final lightTheme = ThemeData(
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: AppColors.lightBrandPrimary, width: 2),
+      borderSide:
+          const BorderSide(color: AppColors.lightBrandPrimary, width: 2),
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
@@ -115,17 +109,16 @@ final lightTheme = ThemeData(
       borderSide: const BorderSide(color: AppColors.error, width: 2),
     ),
     labelStyle: AppTypography.body2Light,
-    hintStyle: AppTypography.body2Light.copyWith(color: AppColors.lightTextTertiary),
+    hintStyle:
+        AppTypography.body2Light.copyWith(color: AppColors.lightTextTertiary),
     prefixIconColor: AppColors.lightTextSecondary,
     suffixIconColor: AppColors.lightTextSecondary,
   ),
-
   dividerTheme: const DividerThemeData(
     color: AppColors.lightBorder,
     thickness: 1,
     space: 16,
   ),
-
   chipTheme: ChipThemeData(
     backgroundColor: AppColors.lightSurface,
     deleteIconColor: AppColors.lightTextSecondary,
@@ -137,26 +130,23 @@ final lightTheme = ThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     side: const BorderSide(color: AppColors.lightBorder),
   ),
-
   iconTheme: const IconThemeData(
     color: AppColors.lightTextPrimary,
     size: 24,
   ),
-
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: AppColors.lightBrandPrimary,
     foregroundColor: AppColors.lightOnBrand,
     elevation: 4,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
   ),
-
   snackBarTheme: SnackBarThemeData(
     backgroundColor: AppColors.neutral900,
-    contentTextStyle: AppTypography.body1Light.copyWith(color: AppColors.lightBg),
+    contentTextStyle:
+        AppTypography.body1Light.copyWith(color: AppColors.lightBg),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     behavior: SnackBarBehavior.floating,
   ),
-
   drawerTheme: DrawerThemeData(
     backgroundColor: AppColors.lightSurfaceRaised,
     scrimColor: Colors.black.withOpacity(0.5),
@@ -167,7 +157,6 @@ final lightTheme = ThemeData(
       ),
     ),
   ),
-
   tabBarTheme: TabBarThemeData(
     indicator: const UnderlineTabIndicator(
       borderSide: BorderSide(color: AppColors.lightBrandPrimary, width: 3),
@@ -188,7 +177,6 @@ final darkTheme = ThemeData(
   scaffoldBackgroundColor: AppColors.darkBg,
   canvasColor: AppColors.darkBg,
   shadowColor: Colors.black.withOpacity(0.3),
-
   colorScheme: const ColorScheme.dark(
     primary: AppColors.darkBrandPrimary,
     onPrimary: AppColors.darkOnBrand,
@@ -207,7 +195,6 @@ final darkTheme = ThemeData(
     outline: AppColors.darkBorderStrong,
     outlineVariant: AppColors.darkBorder,
   ),
-
   appBarTheme: const AppBarTheme(
     backgroundColor: AppColors.darkSurface,
     foregroundColor: AppColors.darkTextPrimary,
@@ -216,7 +203,6 @@ final darkTheme = ThemeData(
     titleTextStyle: AppTypography.h2Dark,
     surfaceTintColor: Colors.transparent,
   ),
-
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: AppColors.darkBrandPrimary,
@@ -227,27 +213,25 @@ final darkTheme = ThemeData(
       elevation: 0,
     ),
   ),
-
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       foregroundColor: AppColors.darkBrandPrimary,
       side: const BorderSide(color: AppColors.darkBrandPrimary, width: 1.5),
-      textStyle: AppTypography.buttonDark.copyWith(color: AppColors.darkBrandPrimary),
+      textStyle:
+          AppTypography.buttonDark.copyWith(color: AppColors.darkBrandPrimary),
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),
   ),
-
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
       foregroundColor: AppColors.darkBrandPrimary,
-      textStyle: AppTypography.buttonDark.copyWith(color: AppColors.darkBrandPrimary),
+      textStyle:
+          AppTypography.buttonDark.copyWith(color: AppColors.darkBrandPrimary),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     ),
   ),
-
   textTheme: AppTypography.darkTextTheme,
-
   cardTheme: CardThemeData(
     color: AppColors.darkSurface,
     elevation: 1,
@@ -258,7 +242,6 @@ final darkTheme = ThemeData(
     margin: const EdgeInsets.all(0),
     shadowColor: Colors.black.withOpacity(0.3),
   ),
-
   dialogTheme: DialogThemeData(
     backgroundColor: AppColors.darkSurface,
     elevation: 8,
@@ -266,7 +249,6 @@ final darkTheme = ThemeData(
     titleTextStyle: AppTypography.h2Dark,
     contentTextStyle: AppTypography.body1Dark,
   ),
-
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
     fillColor: AppColors.darkSurface,
@@ -292,17 +274,16 @@ final darkTheme = ThemeData(
       borderSide: const BorderSide(color: AppColors.error, width: 2),
     ),
     labelStyle: AppTypography.body2Dark,
-    hintStyle: AppTypography.body2Dark.copyWith(color: AppColors.darkTextTertiary),
+    hintStyle:
+        AppTypography.body2Dark.copyWith(color: AppColors.darkTextTertiary),
     prefixIconColor: AppColors.darkTextSecondary,
     suffixIconColor: AppColors.darkTextSecondary,
   ),
-
   dividerTheme: const DividerThemeData(
     color: AppColors.darkBorder,
     thickness: 1,
     space: 16,
   ),
-
   chipTheme: ChipThemeData(
     backgroundColor: AppColors.darkSurface,
     deleteIconColor: AppColors.darkTextSecondary,
@@ -314,26 +295,23 @@ final darkTheme = ThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     side: const BorderSide(color: AppColors.darkBorder),
   ),
-
   iconTheme: const IconThemeData(
     color: AppColors.darkTextPrimary,
     size: 24,
   ),
-
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: AppColors.darkBrandPrimary,
     foregroundColor: AppColors.darkOnBrand,
     elevation: 4,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
   ),
-
   snackBarTheme: SnackBarThemeData(
     backgroundColor: AppColors.darkSurfaceRaised,
-    contentTextStyle: AppTypography.body1Dark.copyWith(color: AppColors.darkTextPrimary),
+    contentTextStyle:
+        AppTypography.body1Dark.copyWith(color: AppColors.darkTextPrimary),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     behavior: SnackBarBehavior.floating,
   ),
-
   drawerTheme: DrawerThemeData(
     backgroundColor: AppColors.darkSurface,
     scrimColor: Colors.black.withOpacity(0.5),
@@ -344,7 +322,6 @@ final darkTheme = ThemeData(
       ),
     ),
   ),
-
   tabBarTheme: TabBarThemeData(
     indicator: const UnderlineTabIndicator(
       borderSide: BorderSide(color: AppColors.darkBrandPrimary, width: 3),

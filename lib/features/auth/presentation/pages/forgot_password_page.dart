@@ -36,7 +36,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     return BlocProvider(
       create: (_) => ForgotPasswordBloc(AuthRepositoryImpl()),
       child: Scaffold(
-        appBar: AppBar(backgroundColor: Colors.white, surfaceTintColor: Colors.white,),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+        ),
         body: SafeArea(
           child: BlocConsumer<ForgotPasswordBloc, AppStates>(
             listener: (context, state) {
@@ -53,7 +56,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             builder: (context, state) {
               final isLoading = state is LoadingState;
               return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [

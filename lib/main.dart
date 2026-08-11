@@ -23,6 +23,7 @@ void main() async {
   await AppEnv.init(env);
   AESEncryptor.init();
   await SharedPrefHandler.init();
+  await SettingsCubit.instance.loadPersistedSettings();
   // Required before any `DateFormat`/Hijri day-name formatting for a
   // non-'en' locale (Home's greeting header, prayer-time captions).
   await initializeDateFormatting();

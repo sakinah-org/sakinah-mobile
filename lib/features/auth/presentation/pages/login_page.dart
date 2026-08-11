@@ -50,17 +50,14 @@ class _LoginPageState extends State<LoginPage> {
             builder: (context, state) {
               final isLoading = state is LoadingState;
               return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24 , vertical: 24),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-
-                    Text(
-                      "سكينة",
-                      style: AppTypography.appNameRegular,
-                      textAlign: TextAlign.center
-
-                    ),
+                    Text("سكينة",
+                        style: AppTypography.appNameRegular,
+                        textAlign: TextAlign.center),
                     const SizedBox(height: 8),
                     Text(
                       translator.word(TranslationKeys.authWelcomeBack),

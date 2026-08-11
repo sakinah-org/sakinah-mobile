@@ -1,4 +1,3 @@
-
 import '../handlers/translation_handler.dart';
 
 mixin Validations {
@@ -23,7 +22,7 @@ mixin Validations {
 
   String isValidPhone(String phone) {
     if (phone.isEmpty) {
-      return  translator.word("phone_validation_message");
+      return translator.word("phone_validation_message");
     } else if (phone.length > 13) {
       return translator.word("phone_validation_format_message");
     }
@@ -56,6 +55,7 @@ mixin Validations {
     }
     return "";
   }
+
   String isValidFirstName(String name) {
     if (name.isEmpty) {
       return "الرجاء ادخال الاسم الاول";
@@ -64,6 +64,7 @@ mixin Validations {
     }
     return "";
   }
+
   String isValidLastName(String name) {
     if (name.isEmpty) {
       return "الرجاء ادخال الاسم اللآخر";

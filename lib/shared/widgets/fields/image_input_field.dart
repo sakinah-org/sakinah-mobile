@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageInputField extends StatefulWidget {
-  const ImageInputField({super.key, this.label, this.onImagePicked, this.hint = "Select Image"});
+  const ImageInputField(
+      {super.key, this.label, this.onImagePicked, this.hint = "Select Image"});
   final Function(DateTime)? onImagePicked;
   final String hint;
   final String? label;
@@ -17,19 +18,22 @@ class _ImageInputFieldState extends State<ImageInputField> {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: [
         if (widget.label != null)
           Align(
             alignment: Alignment.centerLeft,
-            child: Text(widget.label!, style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700),),
+            child: Text(
+              widget.label!,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            ),
           ),
         if (widget.label != null) const SizedBox(height: 8),
         GestureDetector(
           onTap: () async {
             ImagePicker picker = ImagePicker();
-            XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
+            XFile? pickedImage =
+                await picker.pickImage(source: ImageSource.gallery);
             if (pickedImage != null) {
               setState(() {
                 image = File(pickedImage.path);
@@ -58,7 +62,10 @@ class _ImageInputFieldState extends State<ImageInputField> {
                     ),
                   ),
                 const SizedBox(height: 8),
-                if (image == null)Text(widget.hint, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                if (image == null)
+                  Text(widget.hint,
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                 if (image != null) const SizedBox(height: 8),
                 if (image != null)
                   OutlinedButton(

@@ -43,7 +43,7 @@
 
 ## R6. `flutter_qiblah` — bearing + heading
 
-**Decision**: Add `flutter_qiblah` (`^3.2.0`) to `pubspec.yaml`. `QibiaRepositoryImpl` (in `lib/features/qibla/data/repositories/`) wraps:
+**Decision**: Add `flutter_qiblah` (`^3.1.0+1` — `^3.2.0` requires `geolocator ^14.0.2`, which conflicts with this project's existing `geolocator ^13.0.2`; `3.1.0+1` resolves cleanly) to `pubspec.yaml`. `QibiaRepositoryImpl` (in `lib/features/qibla/data/repositories/`) wraps:
 - `FlutterQiblah.checkLocationStatus()` / `FlutterQiblah.requestPermissions()` for location gating (in addition to the existing `PermissionHandler.checkLocationPermission()` used elsewhere in the app, since `flutter_qiblah` needs location for its own bearing calculation).
 - `FlutterQiblah.qiblahStream` → emits `QiblahDirection { qiblah, direction, offset }` (all `double`, degrees, 0–360, `direction` = device heading from north, `qiblah`/`offset` = angle to rotate to face the Kaaba). This drives the **live rotating dial** (FR-018).
 - `FlutterQiblah.androidDeviceSensorSupport()` → `Future<bool>`, Android-only capability check, used as the primary "no magnetometer" signal (FR-020).
@@ -54,10 +54,10 @@
 
 ## R7. Detecting low accuracy (calibration prompt) and the "no magnetometer" fallback
 
-**Decision**:
-- **Low accuracy**: `QiblahDirection` itself carries no accuracy field, so `QibiaRepositoryImpl` separately subscribes to `FlutterCompass.events` (`CompassEvent.headingAccuracy`, exposed transitively via `flutter_compass_v2`, the plugin `flutter_qiblah` already depends on) alongside the qiblah stream. Treat `headingAccuracy == null` or `headingAccuracy > 15°` (or the platform's "undetermined" sentinel) as low accuracy → show the calibration (figure-eight) prompt; hide it once a subsequent reading reports acceptable accuracy. This threshold is a reasonable default to validate/tune during implementation, not a hard external spec.
-- **No magnetometer**: if `androidDeviceSensorSupport()` resolves `false`, **or** the heading stream reports a `null` direction (the documented Android no-sensor signal), switch to the static-bearing branch.
-- **Static bearing fallback**: computed independently of the sensor stream via the standard great-circle initial-bearing formula between the user's resolved coordinates and the fixed Kaaba coordinates (21.4225°N, 39.8262°E), so the static-degree value (FR-020) is available even when the live dial cannot be shown.
+**Decision** (confirmed against the installed `flutter_qiblah 3.1.0+1` / `flutter_compass_v2 1.0.3` source):
+- **Low accuracy**: `QiblahDirection { qiblah, direction, offset }` itself carries no accuracy field, so `QiblaRepositoryImpl` separately subscribes to `FlutterCompass.events` (`CompassEvent { heading, headingForCameraMode, accuracy }`, the transitive package `flutter_qiblah` already merges internally for its own stream) alongside the qiblah stream. `CompassEvent.accuracy` is the "deviation error in degrees, ± from the heading" (reliable on iOS; several hard-coded discrete values on Android). Treat `accuracy == null` or `accuracy > 15°` as low accuracy → show the calibration (figure-eight) prompt; hide it once a subsequent reading reports `accuracy <= 15°`. This threshold is a reasonable default to validate/tune during implementation, not a hard external spec.
+- **No magnetometer**: if `androidDeviceSensorSupport()` resolves `false`, **or** a `CompassEvent.heading` comes back `null` (the documented Android no-sensor signal — `flutter_qiblah`'s own internal merge treats it as `0.0` via `event.heading ?? 0.0`, which our repository must not silently do, since that would masquerade as a real reading), switch to the static-bearing branch.
+- **Static bearing fallback**: computed independently of the sensor stream via the standard great-circle initial-bearing formula between the user's resolved coordinates and the fixed Kaaba coordinates (21.422487°N, 39.826206°E — the exact constants `flutter_qiblah` itself uses internally, kept identical here so the static and live bearings never disagree). `flutter_qiblah`'s own equivalent helper (`Utils.getOffsetFromNorth`) is `src`-private and not exported by the package, so this formula must be reimplemented locally rather than called.
 
 **Rationale**: Keeps the fallback path correct regardless of platform/plugin sensor-reporting quirks — the static bearing never depends on a sensor that might be absent.
 

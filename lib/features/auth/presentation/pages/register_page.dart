@@ -42,7 +42,10 @@ class _RegisterPageState extends State<RegisterPage> {
     return BlocProvider(
       create: (_) => RegisterBloc(AuthRepositoryImpl()),
       child: Scaffold(
-        appBar: AppBar(backgroundColor: Colors.white, surfaceTintColor: Colors.white,),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+        ),
         body: SafeArea(
           child: BlocConsumer<RegisterBloc, AppStates>(
             listener: (context, state) {
@@ -60,7 +63,8 @@ class _RegisterPageState extends State<RegisterPage> {
             builder: (context, state) {
               final isLoading = state is LoadingState;
               return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [

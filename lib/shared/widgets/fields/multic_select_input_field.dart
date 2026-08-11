@@ -72,9 +72,13 @@ class _MultiSelectInputFieldState extends State<MultiSelectInputField> {
               children: [
                 Expanded(
                   child: Text(
-                    _selectedOptionsLabels.isEmpty ? widget.hint : _selectedOptionsLabels,
+                    _selectedOptionsLabels.isEmpty
+                        ? widget.hint
+                        : _selectedOptionsLabels,
                     style: TextStyle(
-                      color: _selectedOptionsLabels.isEmpty ? Colors.grey : Colors.black,
+                      color: _selectedOptionsLabels.isEmpty
+                          ? Colors.grey
+                          : Colors.black,
                     ),
                   ),
                 ),
@@ -94,7 +98,6 @@ Future<List<SelectOption>> showMultiOptionsBottomSheet({
   required String label,
   required List<SelectOption> valueSet,
 }) async {
-
   await showModalBottomSheet(
     context: context,
     backgroundColor: Colors.white,
@@ -143,7 +146,8 @@ Future<List<SelectOption>> showMultiOptionsBottomSheet({
 }
 
 class BottomSheetOptionView extends StatefulWidget {
-  const BottomSheetOptionView({super.key, required this.option, required this.onSelect});
+  const BottomSheetOptionView(
+      {super.key, required this.option, required this.onSelect});
 
   final SelectOption option;
   final Function(SelectOption) onSelect;
@@ -157,7 +161,8 @@ class _BottomSheetOptionViewState extends State<BottomSheetOptionView> {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(widget.option.label),
-      trailing: Icon(!widget.option.isSelected ? Icons.circle_outlined : Icons.circle),
+      trailing: Icon(
+          !widget.option.isSelected ? Icons.circle_outlined : Icons.circle),
       onTap: () {
         setState(() {
           widget.option.isSelected = !widget.option.isSelected;

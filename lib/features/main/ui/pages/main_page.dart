@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../home/presentation/pages/home_page.dart';
 import '../../../quran/presentation/pages/quran_page.dart';
+import '../../../settings/presentation/pages/settings_page.dart';
 import '../widgets/main_bottom_navigation_bar.dart';
 
 class MainPage extends StatelessWidget {
@@ -17,7 +18,7 @@ class MainPage extends StatelessWidget {
         children: [
           const HomePage(),
           const QuranPage(),
-          Container(),
+          const SettingsPage(),
         ],
       ),
       bottomNavigationBar: MainBottomNavigationBar(

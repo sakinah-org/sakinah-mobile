@@ -23,7 +23,7 @@ abstract class QiblaRepository {
 
 Implementation notes (not part of the contract surface, for the tasks phase):
 - `getBearing()`'s "location unavailable" `null` case reuses `PermissionHandler.checkLocationPermission()` + `LocationHandler.getCurrentPosition()`, matching `PrayerTimesRepositoryImpl.resolveLocation()`'s gating.
-- `watchLiveBearing()` merges `FlutterQiblah.qiblahStream` (bearing/heading) with `FlutterCompass.events` (`headingAccuracy`) into `QiblaLiveReading { bearingDegrees, headingDegrees, accuracy }` (research.md R7).
+- `watchLiveBearing()` merges `FlutterQiblah.qiblahStream` (`QiblahDirection.offset` = bearing, `.direction` = heading) with `FlutterCompass.events` (`CompassEvent.accuracy`) into `QiblaLiveReading { bearingDegrees, headingDegrees, accuracy }` (research.md R7). A `null` `CompassEvent.heading` is treated as "no sensor," not as `0.0` (unlike `flutter_qiblah`'s own internal merge).
 - The static-bearing branch computes `QiblaStaticReading.bearingDegrees` via the great-circle initial-bearing formula against the fixed Kaaba coordinates — no dependency on `flutter_qiblah`'s stream for this branch.
 
 ## `QiblaCompassCubit` (`presentation/bloc/qibla_compass_cubit.dart`)

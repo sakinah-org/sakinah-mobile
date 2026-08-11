@@ -27,7 +27,10 @@ class _DateInputFieldState extends State<DateInputField> {
         if (widget.label != null)
           Align(
             alignment: Alignment.centerLeft,
-            child: Text(widget.label!, style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700),),
+            child: Text(
+              widget.label!,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            ),
           ),
         if (widget.label != null) const SizedBox(height: 8),
         GestureDetector(
@@ -56,7 +59,9 @@ class _DateInputFieldState extends State<DateInputField> {
               children: [
                 Expanded(
                   child: Text(
-                    selectedDate == null ? widget.hint : DateFormat("EEE, MMM d, ''yy").format(selectedDate!),
+                    selectedDate == null
+                        ? widget.hint
+                        : DateFormat("EEE, MMM d, ''yy").format(selectedDate!),
                     style: TextStyle(
                       color: selectedDate == null ? Colors.grey : Colors.black,
                     ),

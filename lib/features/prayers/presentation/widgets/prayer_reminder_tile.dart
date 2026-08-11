@@ -50,10 +50,12 @@ class PrayerReminderTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          drawSvgIcon(prayerCodeIcon(code),
-              width: 24,
-              height: 24,
-              iconColor: interactive ? brandPrimary : textSecondary,),
+          drawSvgIcon(
+            prayerCodeIcon(code),
+            width: 24,
+            height: 24,
+            iconColor: interactive ? brandPrimary : textSecondary,
+          ),
           const SizedBox(width: 16),
           Expanded(
             child: Column(

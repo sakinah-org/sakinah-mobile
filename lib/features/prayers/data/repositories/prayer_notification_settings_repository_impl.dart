@@ -98,7 +98,8 @@ class PrayerNotificationSettingsRepositoryImpl
       }
 
       final remote = [
-        for (final row in rows) PrayerNotificationSettingModel.fromSupabaseRow(row),
+        for (final row in rows)
+          PrayerNotificationSettingModel.fromSupabaseRow(row),
       ];
       await _persistLocal(remote);
       return remote;
@@ -115,8 +116,8 @@ class PrayerNotificationSettingsRepositoryImpl
     try {
       await _client.from(AppEndPoints.prayerNotificationSettingsTable).upsert(
             settings
-                .map((s) =>
-                    PrayerNotificationSettingModel.toSupabaseRow(s, userId: userId))
+                .map((s) => PrayerNotificationSettingModel.toSupabaseRow(s,
+                    userId: userId))
                 .toList(),
             onConflict: 'user_id,prayer_id',
           );

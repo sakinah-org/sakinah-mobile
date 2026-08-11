@@ -91,5 +91,35 @@
   "quran_font_style_naskh": "نسخ",
   "quran_font_style_uthmani": "عثماني",
   "quran_font_style_ornamental": "زخرفي",
-  "quran_font_default_suffix": " (افتراضي)"
+  "quran_font_default_suffix": " (افتراضي)",
+
+  "settings_guest_title": "تتصفّح كضيف",
+  "settings_sync_active_badge": "المزامنة مفعّلة",
+  "settings_prayer_times_option": "مواقيت الصلاة",
+  "settings_change_language_option": "تغيير اللغة",
+  "settings_logout_option": "تسجيل الخروج",
+  "settings_logout_confirm_title": "تسجيل الخروج؟",
+  "settings_logout_confirm_message": "سيتم تسجيل خروجك، لكن التطبيق سيستمر بالعمل بالكامل كضيف وستبقى تفضيلاتك المحلية كما هي تمامًا.",
+  "settings_logout_confirm_cta": "تسجيل الخروج",
+  "settings_logout_cancel_cta": "إلغاء",
+
+  "qibla_screen_title": "بوصلة القبلة",
+  "qibla_direction_label": "اتجاه القبلة",
+  "qibla_distance_to_mecca_label": "المسافة إلى مكة المكرمة",
+  "qibla_align_instruction": "وجّه أعلى الهاتف نحو السهم",
+  "qibla_calibration_title": "يلزم المعايرة",
+  "qibla_calibration_message": "حرّك هاتفك على شكل رقم 8 لتحسين الدقة",
+  "qibla_no_sensor_message": "جهازك لا يحتوي على مستشعر بوصلة. إليك اتجاه القبلة كقيمة ثابتة بدلاً من ذلك.",
+  "qibla_location_required_message": "يلزم الوصول إلى الموقع لتحديد اتجاه القبلة.",
+  "qibla_compass_north": "شمال",
+  "qibla_compass_northeast": "شمال شرق",
+  "qibla_compass_east": "شرق",
+  "qibla_compass_southeast": "جنوب شرق",
+  "qibla_compass_south": "جنوب",
+  "qibla_compass_southwest": "جنوب غرب",
+  "qibla_compass_west": "غرب",
+  "qibla_compass_northwest": "شمال غرب",
+
+  "language_sheet_title": "اللغة",
+  "language_sheet_footnote": "يتم تطبيق اللغة فورًا في جميع أنحاء التطبيق."
 }
