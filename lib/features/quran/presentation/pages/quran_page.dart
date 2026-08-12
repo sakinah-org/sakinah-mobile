@@ -24,6 +24,8 @@ class QuranPage extends StatelessWidget {
           QuranCubit(repository: QuranRepositoryImpl())..loadSurahs(),
       child: Scaffold(
         appBar: AppBar(
+          leading: SizedBox(),
+          leadingWidth: 0,
           title: Text(translator.word(TranslationKeys.quranScreenTitle)),
           actions: [
             QuranFontButton(

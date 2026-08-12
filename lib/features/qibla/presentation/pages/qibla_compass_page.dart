@@ -75,73 +75,77 @@ class _LiveBody extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(20),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (showCalibration) ...[
-            const QiblaCalibrationBanner(),
-            const SizedBox(height: 20),
-          ],
-          QiblaCompassDial(reading: reading),
-          const SizedBox(height: 26),
-          Text(
-            '${reading.bearingDegrees.round()}°',
-            style: TextStyle(
-              fontFamily: AppTypography.uiFontFamily,
-              fontSize: 42,
-              fontWeight: FontWeight.w800,
-              color: textPrimary,
-              fontFeatures: const [FontFeature.tabularFigures()],
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            '${translator.word(TranslationKeys.qiblaDirectionLabel)} · '
-            '${qiblaCompassPointLabel(reading.bearingDegrees)}',
-            style: TextStyle(
-              fontFamily: AppTypography.uiFontFamily,
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-              color: brandPrimary,
-            ),
-          ),
-          if (distanceKm != null) ...[
-            const SizedBox(height: 8),
+      child: SizedBox(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (showCalibration) ...[
+              const QiblaCalibrationBanner(),
+              const SizedBox(height: 20),
+            ],
+            QiblaCompassDial(reading: reading),
+            const SizedBox(height: 26),
             Text(
-              '${translator.word(TranslationKeys.qiblaDistanceToMeccaLabel)} · '
-              '${distanceKm.round()} km',
+              '${reading.bearingDegrees.round()}°',
               style: TextStyle(
                 fontFamily: AppTypography.uiFontFamily,
-                fontSize: 12,
-                color: textSecondary,
+                fontSize: 42,
+                fontWeight: FontWeight.w800,
+                color: textPrimary,
+                fontFeatures: const [FontFeature.tabularFigures()],
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              '${translator.word(TranslationKeys.qiblaDirectionLabel)} · '
+              '${qiblaCompassPointLabel(reading.bearingDegrees)}',
+              style: TextStyle(
+                fontFamily: AppTypography.uiFontFamily,
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: brandPrimary,
+              ),
+            ),
+            if (distanceKm != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                '${translator.word(TranslationKeys.qiblaDistanceToMeccaLabel)} · '
+                '${distanceKm.round()} km',
+                style: TextStyle(
+                  fontFamily: AppTypography.uiFontFamily,
+                  fontSize: 12,
+                  color: textSecondary,
+                ),
+              ),
+            ],
+            const SizedBox(height: 26),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: BoxDecoration(
+                color: surface,
+                borderRadius: BorderRadius.circular(999),
+                border: Border.all(color: border),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.explore_outlined, size: 15, color: brandPrimary),
+                  const SizedBox(width: 8),
+                  Text(
+                    translator.word(TranslationKeys.qiblaAlignInstruction),
+                    style: TextStyle(
+                      fontFamily: AppTypography.uiFontFamily,
+                      fontSize: 12,
+                      color: textSecondary,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
-          const SizedBox(height: 26),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: BoxDecoration(
-              color: surface,
-              borderRadius: BorderRadius.circular(999),
-              border: Border.all(color: border),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.explore_outlined, size: 15, color: brandPrimary),
-                const SizedBox(width: 8),
-                Text(
-                  translator.word(TranslationKeys.qiblaAlignInstruction),
-                  style: TextStyle(
-                    fontFamily: AppTypography.uiFontFamily,
-                    fontSize: 12,
-                    color: textSecondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

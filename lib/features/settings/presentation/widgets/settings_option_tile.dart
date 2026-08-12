@@ -26,6 +26,7 @@ class SettingsOptionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
     final textPrimary =
         isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
     final textSecondary =
@@ -74,8 +75,11 @@ class SettingsOptionTile extends StatelessWidget {
               ),
               const SizedBox(width: 6),
             ],
-            drawSvgIcon(AppIcons.chevronRight,
-                width: 18, height: 18, iconColor: textTertiary),
+            RotatedBox(
+              quarterTurns: isArabic ? 2 : 0,
+              child: drawSvgIcon(AppIcons.chevronRight,
+                  width: 18, height: 18, iconColor: textTertiary),
+            ),
           ],
         ),
       ),

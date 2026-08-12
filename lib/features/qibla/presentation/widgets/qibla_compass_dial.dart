@@ -86,16 +86,16 @@ class QiblaCompassDial extends StatelessWidget {
             ),
           ),
           const Positioned(
-            top: 12,
+            top: 22,
             child: Text('N',
                 style: TextStyle(
                     fontFamily: AppTypography.uiFontFamily,
                     fontSize: 13,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.error)),
+                    color: AppColors.error,),),
           ),
           Positioned(
-            bottom: 12,
+            bottom: 22,
             child: Text('S',
                 style: TextStyle(
                     fontFamily: AppTypography.uiFontFamily,
@@ -104,7 +104,7 @@ class QiblaCompassDial extends StatelessWidget {
                     color: textTertiary)),
           ),
           Positioned(
-            left: 14,
+            left: 22,
             child: Text('W',
                 style: TextStyle(
                     fontFamily: AppTypography.uiFontFamily,
@@ -113,7 +113,7 @@ class QiblaCompassDial extends StatelessWidget {
                     color: textTertiary)),
           ),
           Positioned(
-            right: 14,
+            right: 22,
             child: Text('E',
                 style: TextStyle(
                     fontFamily: AppTypography.uiFontFamily,

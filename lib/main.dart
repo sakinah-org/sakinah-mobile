@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:sakinah/features/quran/presentation/bloc/quran_font_settings_cubit.dart';
 import 'package:sakinah/shared/bloc/session_cubit.dart';
 import 'package:sakinah/shared/bloc/settings_cubit.dart';
@@ -14,12 +15,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'firebase_options.dart';
 import 'handlers/translation_handler.dart';
 import 'navigation/route_generator.dart';
 
 String env = 'dev';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await AppEnv.init(env);
   AESEncryptor.init();
   await SharedPrefHandler.init();

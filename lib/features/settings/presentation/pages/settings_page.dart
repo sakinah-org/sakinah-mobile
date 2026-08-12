@@ -35,6 +35,8 @@ class SettingsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: SizedBox(),
+        leadingWidth: 0,
         title: Text(translator.word(TranslationKeys.settings)),
       ),
       backgroundColor: isDark ? AppColors.darkBg : AppColors.lightBg,
