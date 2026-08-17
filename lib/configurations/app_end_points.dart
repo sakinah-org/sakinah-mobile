@@ -39,4 +39,5 @@ abstract class AppEndPoints {
   static const String prayerNotificationSettingsTable =
       'prayer_notification_settings';
   static const String userPreferencesTable = 'user_preferences';
+  static const String userDevicesTable = 'user_devices';
 }

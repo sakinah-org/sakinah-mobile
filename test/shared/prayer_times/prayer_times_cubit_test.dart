@@ -35,9 +35,9 @@ void main() {
   blocTest<PrayerTimesCubit, PrayerTimesState>(
     'loadPrayerTimes emits [Loading, Loaded(isFallback:false)] on success',
     setUp: () {
-      when(() => repository.resolveLocation(forceRedetect: false)).thenAnswer(
+      when(() => repository.resolveLocation(forceRedetect: false, userId: null)).thenAnswer(
           (_) async => const Coordinates(latitude: 30, longitude: 31));
-      when(() => repository.getStoredCalculationMethod())
+      when(() => repository.getStoredCalculationMethod(userId: null))
           .thenAnswer((_) async => CalculationMethod.ummAlQura);
       when(() => repository.getPrayerTimes(
             location: any(named: 'location'),
@@ -64,7 +64,7 @@ void main() {
   blocTest<PrayerTimesCubit, PrayerTimesState>(
     'loadPrayerTimes emits [Loading, LocationRequired] when no location resolvable',
     setUp: () {
-      when(() => repository.resolveLocation(forceRedetect: false))
+      when(() => repository.resolveLocation(forceRedetect: false, userId: null))
           .thenAnswer((_) async => null);
     },
     build: () => PrayerTimesCubit.test(repository),
@@ -85,9 +85,9 @@ void main() {
   blocTest<PrayerTimesCubit, PrayerTimesState>(
     'loadPrayerTimes emits [Loading, Unavailable] when repository throws with no cache',
     setUp: () {
-      when(() => repository.resolveLocation(forceRedetect: false)).thenAnswer(
+      when(() => repository.resolveLocation(forceRedetect: false, userId: null)).thenAnswer(
           (_) async => const Coordinates(latitude: 30, longitude: 31));
-      when(() => repository.getStoredCalculationMethod())
+      when(() => repository.getStoredCalculationMethod(userId: null))
           .thenAnswer((_) async => CalculationMethod.ummAlQura);
       when(() => repository.getPrayerTimes(
             location: any(named: 'location'),
@@ -117,9 +117,9 @@ void main() {
   blocTest<PrayerTimesCubit, PrayerTimesState>(
     'loadPrayerTimes marks isFallback:true when the returned times are from a prior day',
     setUp: () {
-      when(() => repository.resolveLocation(forceRedetect: false)).thenAnswer(
+      when(() => repository.resolveLocation(forceRedetect: false, userId: null)).thenAnswer(
           (_) async => const Coordinates(latitude: 30, longitude: 31));
-      when(() => repository.getStoredCalculationMethod())
+      when(() => repository.getStoredCalculationMethod(userId: null))
           .thenAnswer((_) async => CalculationMethod.ummAlQura);
       when(() => repository.getPrayerTimes(
             location: any(named: 'location'),
@@ -139,9 +139,9 @@ void main() {
   group('loadLocationCardInfo', () {
     test('resolves location label + calculation method via the repository',
         () async {
-      when(() => repository.resolveLocation(forceRedetect: false)).thenAnswer(
+      when(() => repository.resolveLocation(forceRedetect: false, userId: null)).thenAnswer(
           (_) async => const Coordinates(latitude: 30, longitude: 31));
-      when(() => repository.getStoredCalculationMethod())
+      when(() => repository.getStoredCalculationMethod(userId: null))
           .thenAnswer((_) async => CalculationMethod.ummAlQura);
       when(() => repository.resolveDisplayLocation(any())).thenAnswer(
           (_) async =>
@@ -155,9 +155,9 @@ void main() {
     });
 
     test('returns a null label when no location is resolvable', () async {
-      when(() => repository.resolveLocation(forceRedetect: false))
+      when(() => repository.resolveLocation(forceRedetect: false, userId: null))
           .thenAnswer((_) async => null);
-      when(() => repository.getStoredCalculationMethod())
+      when(() => repository.getStoredCalculationMethod(userId: null))
           .thenAnswer((_) async => CalculationMethod.ummAlQura);
 
       final cubit = PrayerTimesCubit.test(repository);

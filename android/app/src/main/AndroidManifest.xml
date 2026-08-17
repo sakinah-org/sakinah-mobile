@@ -37,6 +37,16 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <!-- FCM pushes (send-prayer-reminders Edge Function) that arrive
+             while the app is backgrounded/killed are auto-displayed by the
+             OS on this channel — NotificationHandler.init() creates it
+             eagerly so it always exists by the time a push can arrive. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="prayer_reminders" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher" />
     </application>
     <queries>
         <intent>

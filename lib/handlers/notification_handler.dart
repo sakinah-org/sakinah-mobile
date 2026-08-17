@@ -62,15 +62,55 @@ class NotificationHandler {
 
     await _plugin.initialize(
       settings: settings,
-      onDidReceiveNotificationResponse: (_) => _openHome(),
+      onDidReceiveNotificationResponse: (_) => openHome(),
     );
+
+    // Created eagerly (rather than relying on the first zonedSchedule() call
+    // to lazily create it) so an FCM push referencing this channel id via
+    // the Android manifest's default_notification_channel_id meta-data
+    // always has somewhere to land, even before any prayer reminder has
+    // ever been scheduled on this device.
+    if (Platform.isAndroid) {
+      await _plugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(
+            const AndroidNotificationChannel(_channelId, _channelName),
+          );
+    }
     _initialized = true;
   }
 
-  void _openHome() {
+  /// Navigates to the main route, discarding the back stack. Used both for
+  /// local-notification taps (above) and for FCM notification taps
+  /// (`FcmHandler`) — same "just land on Home" behavior either way.
+  void openHome() {
     navigatorKey.currentState?.pushNamedAndRemoveUntil(
       AppRoutes.main,
       (route) => false,
+    );
+  }
+
+  /// Displays a push notification immediately, for FCM messages that arrive
+  /// while the app is in the foreground (where the OS does not auto-display
+  /// them — see `FcmHandler.initListeners`). Reuses the same channel as
+  /// scheduled prayer reminders.
+  Future<void> showImmediate({
+    required String title,
+    required String body,
+  }) async {
+    await _plugin.show(
+      id: DateTime.now().millisecondsSinceEpoch.remainder(1 << 31),
+      title: title,
+      body: body,
+      notificationDetails: const NotificationDetails(
+        android: AndroidNotificationDetails(_channelId, _channelName),
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentSound: true,
+          presentBanner: true,
+        ),
+      ),
     );
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../configurations/app_errors.dart';
+import '../../../bloc/session_cubit.dart';
 import '../../data/repositories/prayer_times_repository_impl.dart';
 import '../../domain/entities/calculation_method.dart';
 import '../../domain/entities/prayer_location.dart';
@@ -54,8 +55,10 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   /// own "only caller of PrayerTimesRepository" contract.
   Future<({ResolvedLocationLabel? locationLabel, CalculationMethod method})>
       loadLocationCardInfo() async {
-    final coordinates = await _repository.resolveLocation();
-    final method = await _repository.getStoredCalculationMethod();
+    final userId = SessionCubit.instance.currentUser?.id;
+    final coordinates = await _repository.resolveLocation(userId: userId);
+    final method =
+        await _repository.getStoredCalculationMethod(userId: userId);
     final label = coordinates == null
         ? null
         : await _repository.resolveDisplayLocation(coordinates);
@@ -64,14 +67,16 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
   Future<void> _resolveAndFetch({bool forceRedetect = false}) async {
     try {
-      final coordinates =
-          await _repository.resolveLocation(forceRedetect: forceRedetect);
+      final userId = SessionCubit.instance.currentUser?.id;
+      final coordinates = await _repository.resolveLocation(
+          forceRedetect: forceRedetect, userId: userId);
       if (coordinates == null) {
         emit(const PrayerTimesLocationRequiredState());
         return;
       }
 
-      final method = await _repository.getStoredCalculationMethod();
+      final method =
+          await _repository.getStoredCalculationMethod(userId: userId);
       await _fetch(location: coordinates, method: method);
     } catch (e) {
       log('PrayerTimesCubit._resolveAndFetch failed: $e');

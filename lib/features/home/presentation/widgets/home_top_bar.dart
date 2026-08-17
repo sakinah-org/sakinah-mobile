@@ -34,35 +34,6 @@ class HomeTopBar extends StatelessWidget {
               color: brandPrimary,
             ),
           ),
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(color: surface, shape: BoxShape.circle),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                drawSvgIcon(
-                  AppIcons.notifications,
-                  width: 20,
-                  height: 20,
-                  iconColor: textSecondary,
-                ),
-                Positioned(
-                  top: 9,
-                  right: 11,
-                  child: Container(
-                    width: 7,
-                    height: 7,
-                    decoration: BoxDecoration(
-                      color: AppColors.warning,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: surface, width: 1.5),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );

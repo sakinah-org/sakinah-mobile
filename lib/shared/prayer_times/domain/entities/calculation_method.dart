@@ -3,7 +3,8 @@
 enum CalculationMethod {
   ummAlQura('umm_al_qura', 4),
   isna('isna', 2),
-  mwl('mwl', 3);
+  mwl('mwl', 3),
+  egyptian('egyptian', 5);
 
   const CalculationMethod(this.storedValue, this.alAdhanId);
 

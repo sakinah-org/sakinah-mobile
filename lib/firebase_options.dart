@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDE0PmdsHcK_x4v-5DyZhSUKLbUIYaUkIo',
-    appId: '1:89660346994:android:caa6d22a187557711068eb',
+    appId: '1:89660346994:android:03ae5328e341bc8e1068eb',
     messagingSenderId: '89660346994',
     projectId: 'sakinah-7fe82',
     storageBucket: 'sakinah-7fe82.firebasestorage.app',
@@ -60,11 +60,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCbY8CCbOCbxk1nu1fMS2fK8YZY8uN5k_Q',
-    appId: '1:89660346994:ios:f05939e4916b8b111068eb',
+    appId: '1:89660346994:ios:01f5c3a687e1580c1068eb',
     messagingSenderId: '89660346994',
     projectId: 'sakinah-7fe82',
     storageBucket: 'sakinah-7fe82.firebasestorage.app',
-    iosBundleId: 'com.sakinah.app',
+    iosBundleId: 'com.helbawy.sakinah',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(

@@ -15,7 +15,7 @@ GET {base}/timings/{DD-MM-YYYY}?latitude={lat}&longitude={lng}&method={id}&schoo
 |---|---|---|
 | `{DD-MM-YYYY}` | Device local date, always explicit | Never omitted. |
 | `latitude`/`longitude` | `PrayerLocation.Coordinates` (from `LocationHandler`/cache) | |
-| `method` | `CalculationMethod` → int mapping (`umm_al_qura`→4, `isna`→2, `mwl`→3) | Defaults to `umm_al_qura` (4) when nothing stored (research.md §4). |
+| `method` | `CalculationMethod` → int mapping (`umm_al_qura`→4, `isna`→2, `mwl`→3, `egyptian`→5) | Defaults to `umm_al_qura` (4) when nothing stored (research.md §4). |
 | `school` | hardcoded `0` | No Hanafi toggle in v1. |
 
 ## Request — manual city (defined, not called in this feature)

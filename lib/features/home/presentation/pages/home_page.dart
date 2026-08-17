@@ -43,6 +43,7 @@ class _HomePageState extends State<HomePage> {
         body: SafeArea(
           child: Column(
             children: [
+              const SizedBox(height: 8),
               const HomeTopBar(),
               Expanded(
                 child: SingleChildScrollView(

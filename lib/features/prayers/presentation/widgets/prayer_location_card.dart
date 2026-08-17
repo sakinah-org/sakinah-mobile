@@ -42,6 +42,8 @@ class _PrayerLocationCardState extends State<PrayerLocationCard> {
         return 'ISNA';
       case CalculationMethod.mwl:
         return 'Muslim World League';
+      case CalculationMethod.egyptian:
+        return 'Egyptian General Authority of Survey';
     }
   }
 

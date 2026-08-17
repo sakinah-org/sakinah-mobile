@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:89660346994:android:03ae5328e341bc8e1068eb",
+        "android_client_info": {
+          "package_name": "com.helbawy.sakinah"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDE0PmdsHcK_x4v-5DyZhSUKLbUIYaUkIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:89660346994:android:caa6d22a187557711068eb",
         "android_client_info": {
           "package_name": "com.sakinah.app"

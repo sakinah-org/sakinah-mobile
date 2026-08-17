@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sakinah.app"
+    namespace = "com.helbawy.sakinah"
     compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
@@ -24,7 +24,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.sakinah.app"
+        applicationId = "com.helbawy.sakinah"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdkVersion = flutter.minSdkVersion

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 import '../../../../configurations/app_end_points.dart';
 import '../../../../configurations/app_errors.dart';
@@ -36,8 +37,22 @@ class PrayerTimesRepositoryImpl implements PrayerTimesRepository {
   final PermissionHandler _permissionHandler;
   final GeocodingHandler _geocodingHandler;
 
+  supabase.SupabaseClient get _client => supabase.Supabase.instance.client;
+
   @override
-  Future<Coordinates?> resolveLocation({bool forceRedetect = false}) async {
+  Future<Coordinates?> resolveLocation(
+      {bool forceRedetect = false, String? userId}) async {
+    if (!forceRedetect && userId != null) {
+      final remote = await _fetchRemoteLocation(userId);
+      if (remote != null) {
+        await _prefs.save(AppPersistenceDataKeys.prayerLocationLat,
+            value: remote.latitude);
+        await _prefs.save(AppPersistenceDataKeys.prayerLocationLng,
+            value: remote.longitude);
+        return remote;
+      }
+    }
+
     if (!forceRedetect &&
         _prefs.contains(AppPersistenceDataKeys.prayerLocationLat) &&
         _prefs.contains(AppPersistenceDataKeys.prayerLocationLng)) {
@@ -64,13 +79,56 @@ class PrayerTimesRepositoryImpl implements PrayerTimesRepository {
         latitude: position.latitude, longitude: position.longitude);
   }
 
+  Future<Coordinates?> _fetchRemoteLocation(String userId) async {
+    try {
+      final row = await _client
+          .from(AppEndPoints.userPreferencesTable)
+          .select('location_lat, location_lng')
+          .eq('user_id', userId)
+          .maybeSingle();
+      final lat = row?['location_lat'] as num?;
+      final lng = row?['location_lng'] as num?;
+      if (lat == null || lng == null) return null;
+      return Coordinates(latitude: lat.toDouble(), longitude: lng.toDouble());
+    } catch (e) {
+      log('PrayerTimesRepositoryImpl._fetchRemoteLocation failed: $e');
+      return null;
+    }
+  }
+
   @override
-  Future<CalculationMethod> getStoredCalculationMethod() async {
+  Future<CalculationMethod> getStoredCalculationMethod(
+      {String? userId}) async {
+    if (userId != null) {
+      final remote = await _fetchRemoteCalculationMethod(userId);
+      if (remote != null) {
+        await storeCalculationMethod(remote);
+        return remote;
+      }
+    }
+
     if (!_prefs.contains(AppPersistenceDataKeys.prayerCalculationMethod)) {
       return CalculationMethod.fallback;
     }
     return CalculationMethod.fromStoredValue(_prefs.get<String>(
         key: AppPersistenceDataKeys.prayerCalculationMethod));
+  }
+
+  Future<CalculationMethod?> _fetchRemoteCalculationMethod(
+      String userId) async {
+    try {
+      final row = await _client
+          .from(AppEndPoints.userPreferencesTable)
+          .select('prayer_calculation_method')
+          .eq('user_id', userId)
+          .maybeSingle();
+      final value = row?['prayer_calculation_method'] as String?;
+      if (value == null) return null;
+      return CalculationMethod.fromStoredValue(value);
+    } catch (e) {
+      log('PrayerTimesRepositoryImpl._fetchRemoteCalculationMethod failed: $e');
+      return null;
+    }
   }
 
   @override

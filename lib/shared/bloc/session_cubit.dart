@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sakinah/configurations/app_persistence_data_keys.dart';
 import 'package:sakinah/configurations/app_states.dart';
+import 'package:sakinah/handlers/fcm_handler.dart';
 import 'package:sakinah/handlers/security/AESEncryptor.dart';
 import 'package:sakinah/handlers/security/encrypted_value.dart';
 import 'package:sakinah/handlers/shared_handler.dart';
+import 'package:sakinah/shared/devices/data/repositories/user_device_repository_impl.dart';
 import 'package:sakinah/shared/models/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
@@ -127,6 +129,10 @@ class SessionCubit extends Cubit<AppStates> {
   /// font settings, ...) is left untouched, which is what guarantees local
   /// preferences survive logout.
   Future<void> logout() async {
+    // Must run before signOut() below — the delete RLS policy on
+    // user_devices requires auth.uid() to still match user_id.
+    await _unregisterDevice();
+
     try {
       await supabase.Supabase.instance.client.auth.signOut();
     } catch (e) {
@@ -146,5 +152,24 @@ class SessionCubit extends Cubit<AppStates> {
 
     _currentUser = null;
     emit(LoadedState(null));
+  }
+
+  /// Deletes this device's row from `user_devices` (007-update-login-FCM)
+  /// so it stops receiving pushes for [_currentUser] once signed out.
+  /// Best-effort: both the token fetch and the delete already swallow their
+  /// own failures, and a guest session (no `_currentUser`) has nothing to
+  /// unregister.
+  Future<void> _unregisterDevice() async {
+    final userId = _currentUser?.id;
+    if (userId == null) return;
+
+    final platform = FcmHandler.instance.platform;
+    if (platform == null) return;
+
+    final token = await FcmHandler.instance.getToken();
+    if (token == null) return;
+
+    await UserDeviceRepositoryImpl()
+        .unregisterDevice(userId: userId, fcmToken: token);
   }
 }

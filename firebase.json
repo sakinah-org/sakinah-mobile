@@ -1,1 +1,49 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"sakinah-7fe82","appId":"1:89660346994:android:caa6d22a187557711068eb","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"sakinah-7fe82","configurations":{"android":"1:89660346994:android:caa6d22a187557711068eb","ios":"1:89660346994:ios:f05939e4916b8b111068eb","macos":"1:89660346994:ios:82fb521b678d11f61068eb","web":"1:89660346994:web:7dcfb013308e2c091068eb","windows":"1:89660346994:web:4193a9750896bc571068eb"}}},"ios":{"default":{"projectId":"sakinah-7fe82","appId":"1:89660346994:ios:f05939e4916b8b111068eb","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"sakinah-7fe82","appId":"1:89660346994:ios:82fb521b678d11f61068eb","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "sakinah-7fe82",
+          "appId": "1:89660346994:android:caa6d22a187557711068eb",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "sakinah-7fe82",
+          "configurations": {
+            "android": "1:89660346994:android:caa6d22a187557711068eb",
+            "ios": "1:89660346994:ios:f05939e4916b8b111068eb",
+            "macos": "1:89660346994:ios:82fb521b678d11f61068eb",
+            "web": "1:89660346994:web:7dcfb013308e2c091068eb",
+            "windows": "1:89660346994:web:4193a9750896bc571068eb"
+          }
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "sakinah-7fe82",
+          "appId": "1:89660346994:ios:f05939e4916b8b111068eb",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "sakinah-7fe82",
+          "appId": "1:89660346994:ios:82fb521b678d11f61068eb",
+          "uploadDebugSymbols": false,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
