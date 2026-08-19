@@ -1,0 +1,81 @@
+default_platform(:android)
+
+STAGE_CONFIG = {
+  "dev" => { env: "dev", track: "internal" },
+  "staging" => { env: "staging", track: "beta" },
+  "production" => { env: "production", track: "production" }
+}.freeze
+
+PROJECT_ROOT = File.expand_path("..", Dir.pwd)
+AAB_PATH = File.join(PROJECT_ROOT, "build/app/outputs/bundle/release/app-release.aab")
+
+platform :android do
+  desc "Build a signed release AAB for the given stage without uploading it. Usage: fastlane build stage:dev"
+  lane :build do |options|
+    cfg = stage_config(options)
+    Dir.chdir(PROJECT_ROOT) do
+      sh("flutter", "build", "appbundle", "--release", "--dart-define=ENV=#{cfg[:env]}")
+    end
+    UI.success("Built #{AAB_PATH} for stage '#{options[:stage]}'.")
+  end
+
+  desc "Build and upload a release to Google Play for the given stage. Usage: fastlane deploy stage:production [release_status:draft]"
+  lane :deploy do |options|
+    cfg = stage_config(options)
+    version_code = next_version_code
+
+    Dir.chdir(PROJECT_ROOT) do
+      sh("flutter", "build", "appbundle", "--release",
+         "--dart-define=ENV=#{cfg[:env]}", "--build-number=#{version_code}")
+    end
+
+    UI.user_error!("Build succeeded but AAB not found at #{AAB_PATH}") unless File.exist?(AAB_PATH)
+
+    # Production defaults to a draft release so a human confirms the rollout
+    # in Play Console; internal/beta default to completed since those tracks
+    # only reach opted-in testers.
+    release_status = options[:release_status] || (cfg[:track] == "production" ? "draft" : "completed")
+
+    upload_to_play_store(
+      track: cfg[:track],
+      aab: AAB_PATH,
+      version_code: version_code,
+      release_status: release_status,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+
+    UI.success("Uploaded build #{version_code} (stage: #{options[:stage]}) to track '#{cfg[:track]}' with status '#{release_status}'.")
+  end
+
+  # Play Console shares one versionCode space across all tracks, so the next
+  # build must beat the highest versionCode already seen on any of them.
+  def next_version_code
+    tracks = %w[internal alpha beta production]
+    codes = tracks.flat_map do |t|
+      begin
+        google_play_track_version_codes(track: t)
+      rescue StandardError
+        []
+      end
+    end
+    max_code = codes.map(&:to_i).max
+
+    if max_code.nil?
+      UI.important("Could not read any existing versionCode from Play Console (app may not exist there yet). Falling back to pubspec.yaml.")
+      pubspec = File.read(File.join(PROJECT_ROOT, "pubspec.yaml"))
+      match = pubspec.match(/version:\s*[\d.]+\+(\d+)/)
+      max_code = match ? match[1].to_i : 0
+    end
+
+    max_code + 1
+  end
+
+  def stage_config(options)
+    stage = options[:stage].to_s.downcase
+    cfg = STAGE_CONFIG[stage]
+    UI.user_error!("Unknown stage '#{stage}'. Use one of: #{STAGE_CONFIG.keys.join(', ')}") unless cfg
+    cfg
+  end
+end

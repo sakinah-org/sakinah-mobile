@@ -49,3 +49,11 @@ app.*.map.json
 .env
 .env.*
 !.env.example
+
+# Fastlane / Play Console release tooling
+android/fastlane/report.xml
+android/fastlane/Preview.html
+android/fastlane/screenshots
+android/fastlane/test_output
+play-store-credentials*.json
+*.keystore.json
