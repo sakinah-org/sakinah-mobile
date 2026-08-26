@@ -41,20 +41,27 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
   @override
   Widget build(BuildContext context) {
     final email = ModalRoute.of(context)!.settings.arguments as String;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final defaultPinTheme = PinTheme(
       width: 42,
       height: 52,
-      textStyle: AppTypography.h2Light,
+      textStyle: isDark ? AppTypography.h2Dark : AppTypography.h2Light,
       decoration: BoxDecoration(
-        color: AppColors.lightSurface,
+        color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.lightBorder, width: 1.5),
+        border: Border.all(
+            color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
+            width: 1.5),
       ),
     );
     final focusedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration!.copyWith(
-        border: Border.all(color: AppColors.lightBrandPrimary, width: 1.5),
+        border: Border.all(
+            color: isDark
+                ? AppColors.darkBrandPrimary
+                : AppColors.lightBrandPrimary,
+            width: 1.5),
       ),
     );
     final errorPinTheme = defaultPinTheme.copyWith(
@@ -100,19 +107,24 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                   children: [
                     Text(
                       translator.word(TranslationKeys.authOtpTitle),
-                      style: AppTypography.h1Light,
+                      style:
+                          isDark ? AppTypography.h1Dark : AppTypography.h1Light,
                     ),
                     const SizedBox(height: 6),
                     RichText(
                       text: TextSpan(
-                        style: AppTypography.body2Light,
+                        style: isDark
+                            ? AppTypography.body2Dark
+                            : AppTypography.body2Light,
                         children: [
                           TextSpan(
                               text:
                                   '${translator.word(TranslationKeys.authOtpSubtitlePrefix)} '),
                           TextSpan(
                             text: _maskEmail(email),
-                            style: AppTypography.body2Light
+                            style: (isDark
+                                    ? AppTypography.body2Dark
+                                    : AppTypography.body2Light)
                                 .copyWith(fontWeight: FontWeight.w700),
                           ),
                         ],
@@ -145,7 +157,9 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                           : Text(
                               '${translator.word(TranslationKeys.authOtpResendPrompt)} '
                               '${translator.word(TranslationKeys.authOtpResendCountdown)} $countdownText',
-                              style: AppTypography.body2Light,
+                              style: isDark
+                                  ? AppTypography.body2Dark
+                                  : AppTypography.body2Light,
                             ),
                     ),
                     const SizedBox(height: 20),
@@ -156,13 +170,14 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                               .read<OtpBloc>()
                               .add(VerifyOtpSubmittedEvent(code: _code)),
                       child: state.isVerifying
-                          ? const SizedBox(
+                          ? SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation(
-                                    AppColors.lightOnBrand),
+                                valueColor: AlwaysStoppedAnimation(isDark
+                                    ? AppColors.darkOnBrand
+                                    : AppColors.lightOnBrand),
                               ),
                             )
                           : Text(translator

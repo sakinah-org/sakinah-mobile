@@ -17,7 +17,8 @@ class SettingsCubit extends Cubit<AppStates> {
   //========================================
   void toggleDarkMode() async {
     isDarkMode = !isDarkMode;
-    // TODO: save the value in shared preferences
+    await SharedPrefHandler.instance!
+        .save(AppPersistenceDataKeys.isDarkMode, value: isDarkMode);
     emit(LoadedState(isDarkMode));
   }
 
@@ -49,6 +50,9 @@ class SettingsCubit extends Cubit<AppStates> {
     final prefs = SharedPrefHandler.instance!;
     if (prefs.contains(AppPersistenceDataKeys.appLocale)) {
       locale = Locale(prefs.get<String>(key: AppPersistenceDataKeys.appLocale));
+    }
+    if (prefs.contains(AppPersistenceDataKeys.isDarkMode)) {
+      isDarkMode = prefs.get<bool>(key: AppPersistenceDataKeys.isDarkMode);
     }
   }
 }

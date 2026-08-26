@@ -102,6 +102,7 @@
   "settings_logout_confirm_message": "سيتم تسجيل خروجك، لكن التطبيق سيستمر بالعمل بالكامل كضيف وستبقى تفضيلاتك المحلية كما هي تمامًا.",
   "settings_logout_confirm_cta": "تسجيل الخروج",
   "settings_logout_cancel_cta": "إلغاء",
+  "settings_dark_mode_option": "الوضع الداكن",
 
   "qibla_screen_title": "بوصلة القبلة",
   "qibla_direction_label": "اتجاه القبلة",

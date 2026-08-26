@@ -36,10 +36,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     return BlocProvider(
       create: (_) => ForgotPasswordBloc(AuthRepositoryImpl()),
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-        ),
+        appBar: AppBar(),
         body: SafeArea(
           child: BlocConsumer<ForgotPasswordBloc, AppStates>(
             listener: (context, state) {
@@ -55,6 +52,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             },
             builder: (context, state) {
               final isLoading = state is LoadingState;
+              final isDark = Theme.of(context).brightness == Brightness.dark;
               return SingleChildScrollView(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
@@ -63,13 +61,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   children: [
                     Text(
                       translator.word(TranslationKeys.authForgotPasswordTitle),
-                      style: AppTypography.h1Light,
+                      style:
+                          isDark ? AppTypography.h1Dark : AppTypography.h1Light,
                     ),
                     const SizedBox(height: 6),
                     Text(
                       translator
                           .word(TranslationKeys.authForgotPasswordSubtitle),
-                      style: AppTypography.body2Light,
+                      style: isDark
+                          ? AppTypography.body2Dark
+                          : AppTypography.body2Light,
                     ),
                     const SizedBox(height: 24),
                     TextInputField(
@@ -78,7 +79,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           translator.word(TranslationKeys.authEmailLabel),
                       keyboardType: TextInputType.emailAddress,
                       prefixIcon: drawSvgIcon(AppIcons.emailOutlined,
-                          iconColor: AppColors.lightTextTertiary),
+                          iconColor: isDark
+                              ? AppColors.darkTextTertiary
+                              : AppColors.lightTextTertiary),
                     ),
                     const SizedBox(height: 12),
                     ElevatedButton(
@@ -90,13 +93,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 ),
                               ),
                       child: isLoading
-                          ? const SizedBox(
+                          ? SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation(
-                                    AppColors.lightOnBrand),
+                                valueColor: AlwaysStoppedAnimation(isDark
+                                    ? AppColors.darkOnBrand
+                                    : AppColors.lightOnBrand),
                               ),
                             )
                           : Text(

@@ -23,6 +23,10 @@ class TitledComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final brandPrimary =
+        isDark ? AppColors.darkBrandPrimary : AppColors.lightBrandPrimary;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -42,7 +46,7 @@ class TitledComponent extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.lightBrandPrimary),
+                        color: brandPrimary),
                   ),
                 ),
             ],

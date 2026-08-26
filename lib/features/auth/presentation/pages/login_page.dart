@@ -49,6 +49,10 @@ class _LoginPageState extends State<LoginPage> {
             },
             builder: (context, state) {
               final isLoading = state is LoadingState;
+              final isDark = Theme.of(context).brightness == Brightness.dark;
+              final textTertiary = isDark
+                  ? AppColors.darkTextTertiary
+                  : AppColors.lightTextTertiary;
               return SingleChildScrollView(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
@@ -62,13 +66,16 @@ class _LoginPageState extends State<LoginPage> {
                     Text(
                       translator.word(TranslationKeys.authWelcomeBack),
                       textAlign: TextAlign.center,
-                      style: AppTypography.h1Light,
+                      style:
+                          isDark ? AppTypography.h1Dark : AppTypography.h1Light,
                     ),
                     const SizedBox(height: 6),
                     Text(
                       translator.word(TranslationKeys.authLoginSubtitle),
                       textAlign: TextAlign.center,
-                      style: AppTypography.body2Light,
+                      style: isDark
+                          ? AppTypography.body2Dark
+                          : AppTypography.body2Light,
                     ),
                     const SizedBox(height: 24),
                     TextInputField(
@@ -77,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                           translator.word(TranslationKeys.authEmailLabel),
                       keyboardType: TextInputType.emailAddress,
                       prefixIcon: drawSvgIcon(AppIcons.emailOutlined,
-                          iconColor: AppColors.lightTextTertiary),
+                          iconColor: textTertiary),
                     ),
                     TextInputField(
                       controller: _passwordController,
@@ -85,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                           translator.word(TranslationKeys.authPasswordLabel),
                       keyboardType: TextInputType.visiblePassword,
                       prefixIcon: drawSvgIcon(AppIcons.password,
-                          iconColor: AppColors.lightTextTertiary),
+                          iconColor: textTertiary),
                     ),
                     Align(
                       alignment: AlignmentDirectional.centerStart,
@@ -109,13 +116,14 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                       child: isLoading
-                          ? const SizedBox(
+                          ? SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation(
-                                    AppColors.lightOnBrand),
+                                valueColor: AlwaysStoppedAnimation(isDark
+                                    ? AppColors.darkOnBrand
+                                    : AppColors.lightOnBrand),
                               ),
                             )
                           : Text(translator.word(TranslationKeys.authLoginCta)),
@@ -126,7 +134,9 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         Text(
                           translator.word(TranslationKeys.authNoAccountPrompt),
-                          style: AppTypography.body2Light,
+                          style: isDark
+                              ? AppTypography.body2Dark
+                              : AppTypography.body2Light,
                         ),
                         TextButton(
                           onPressed: isLoading

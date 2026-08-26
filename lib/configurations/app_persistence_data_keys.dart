@@ -42,4 +42,9 @@ abstract class AppPersistenceDataKeys {
   // Settings (lib/shared/bloc/settings_cubit.dart) — specs/006-settings-screen
   // ============================================================================
   static const String appLocale = 'app_locale';
+
+  // ============================================================================
+  // Dark Mode (lib/shared/bloc/settings_cubit.dart) — specs/008-dark-mode
+  // ============================================================================
+  static const String isDarkMode = 'is_dark_mode';
 }

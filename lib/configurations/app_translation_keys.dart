@@ -160,6 +160,7 @@ abstract class TranslationKeys {
       'settings_logout_confirm_message';
   static const String settingsLogoutConfirmCta = 'settings_logout_confirm_cta';
   static const String settingsLogoutCancelCta = 'settings_logout_cancel_cta';
+  static const String settingsDarkModeOption = 'settings_dark_mode_option';
 
   // ============================================================================
   // Qibla Compass screen (lib/features/qibla/) — specs/006-settings-screen

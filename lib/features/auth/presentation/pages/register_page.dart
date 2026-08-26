@@ -42,10 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return BlocProvider(
       create: (_) => RegisterBloc(AuthRepositoryImpl()),
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-        ),
+        appBar: AppBar(),
         body: SafeArea(
           child: BlocConsumer<RegisterBloc, AppStates>(
             listener: (context, state) {
@@ -62,6 +59,10 @@ class _RegisterPageState extends State<RegisterPage> {
             },
             builder: (context, state) {
               final isLoading = state is LoadingState;
+              final isDark = Theme.of(context).brightness == Brightness.dark;
+              final textTertiary = isDark
+                  ? AppColors.darkTextTertiary
+                  : AppColors.lightTextTertiary;
               return SingleChildScrollView(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
@@ -70,12 +71,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   children: [
                     Text(
                       translator.word(TranslationKeys.authRegisterTitle),
-                      style: AppTypography.h1Light,
+                      style:
+                          isDark ? AppTypography.h1Dark : AppTypography.h1Light,
                     ),
                     const SizedBox(height: 6),
                     Text(
                       translator.word(TranslationKeys.authRegisterSubtitle),
-                      style: AppTypography.body2Light,
+                      style: isDark
+                          ? AppTypography.body2Dark
+                          : AppTypography.body2Light,
                     ),
                     const SizedBox(height: 24),
                     TextInputField(
@@ -83,7 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       labelText: translator.word(TranslationKeys.authNameLabel),
                       keyboardType: TextInputType.name,
                       prefixIcon: drawSvgIcon(AppIcons.profile,
-                          iconColor: AppColors.lightTextTertiary),
+                          iconColor: textTertiary),
                     ),
                     TextInputField(
                       controller: _emailController,
@@ -91,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           translator.word(TranslationKeys.authEmailLabel),
                       keyboardType: TextInputType.emailAddress,
                       prefixIcon: drawSvgIcon(AppIcons.emailOutlined,
-                          iconColor: AppColors.lightTextTertiary),
+                          iconColor: textTertiary),
                     ),
                     TextInputField(
                       controller: _passwordController,
@@ -99,7 +103,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           translator.word(TranslationKeys.authPasswordLabel),
                       keyboardType: TextInputType.visiblePassword,
                       prefixIcon: drawSvgIcon(AppIcons.password,
-                          iconColor: AppColors.lightTextTertiary),
+                          iconColor: textTertiary),
                     ),
                     TextInputField(
                       controller: _confirmPasswordController,
@@ -107,7 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           .word(TranslationKeys.authConfirmPasswordLabel),
                       keyboardType: TextInputType.visiblePassword,
                       prefixIcon: drawSvgIcon(AppIcons.password,
-                          iconColor: AppColors.lightTextTertiary),
+                          iconColor: textTertiary),
                     ),
                     const SizedBox(height: 12),
                     ElevatedButton(
@@ -123,13 +127,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                               ),
                       child: isLoading
-                          ? const SizedBox(
+                          ? SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation(
-                                    AppColors.lightOnBrand),
+                                valueColor: AlwaysStoppedAnimation(isDark
+                                    ? AppColors.darkOnBrand
+                                    : AppColors.lightOnBrand),
                               ),
                             )
                           : Text(
@@ -142,7 +147,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         Text(
                           translator
                               .word(TranslationKeys.authHaveAccountPrompt),
-                          style: AppTypography.body2Light,
+                          style: isDark
+                              ? AppTypography.body2Dark
+                              : AppTypography.body2Light,
                         ),
                         TextButton(
                           onPressed:

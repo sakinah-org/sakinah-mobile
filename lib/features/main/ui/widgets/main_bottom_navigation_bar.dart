@@ -20,9 +20,13 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final brandPrimary =
+        isDark ? AppColors.darkBrandPrimary : AppColors.lightBrandPrimary;
+
     return BottomNavigationBar(
       currentIndex: _currentIndex,
-      selectedItemColor: AppColors.lightBrandPrimary,
+      selectedItemColor: brandPrimary,
       unselectedItemColor: Color(0xff8E8E8E),
       showUnselectedLabels: true,
       type: BottomNavigationBarType.fixed,
@@ -35,26 +39,23 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
       items: [
         BottomNavigationBarItem(
           icon: drawSvgIcon(AppIcons.home,
-              iconColor: _currentIndex == 0
-                  ? AppColors.lightBrandPrimary
-                  : const Color(0xff8E8E8E)),
+              iconColor:
+                  _currentIndex == 0 ? brandPrimary : const Color(0xff8E8E8E)),
           label: "Home",
         ),
         BottomNavigationBarItem(
           icon: drawSvgIcon(
             AppIcons.quran,
-            iconColor: _currentIndex == 1
-                ? AppColors.lightBrandPrimary
-                : const Color(0xff8E8E8E),
+            iconColor:
+                _currentIndex == 1 ? brandPrimary : const Color(0xff8E8E8E),
           ),
           label: translator.word(TranslationKeys.quranTabLabel),
         ),
         BottomNavigationBarItem(
           icon: drawSvgIcon(
             AppIcons.settingsIcon,
-            iconColor: _currentIndex == 2
-                ? AppColors.lightBrandPrimary
-                : const Color(0xff8E8E8E),
+            iconColor:
+                _currentIndex == 2 ? brandPrimary : const Color(0xff8E8E8E),
           ),
           label: "Settings",
         ),

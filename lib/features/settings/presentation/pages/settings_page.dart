@@ -14,6 +14,7 @@ import '../widgets/settings_authenticated_profile_card.dart';
 import '../widgets/settings_guest_prompt_card.dart';
 import '../widgets/settings_logout_confirmation_dialog.dart';
 import '../widgets/settings_option_tile.dart';
+import '../widgets/settings_toggle_tile.dart';
 
 /// The Settings tab (specs/006-settings-screen) — account section + options
 /// list. Reached directly as a `PageView` child of `MainPage`, not via a
@@ -85,6 +86,15 @@ class SettingsPage extends StatelessWidget {
                         trailingValue:
                             LanguageBottomSheet.nativeName(locale.languageCode),
                         onTap: () => LanguageBottomSheet.show(context),
+                      ),
+                      Divider(height: 1, color: border),
+                      SettingsToggleTile(
+                        icon: AppIcons.appearance,
+                        label: translator
+                            .word(TranslationKeys.settingsDarkModeOption),
+                        value: context.watch<SettingsCubit>().isDarkMode,
+                        onChanged: (_) =>
+                            SettingsCubit.instance.toggleDarkMode(),
                       ),
                     ],
                   ),

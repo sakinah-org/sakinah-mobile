@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:sakinah/toolkit/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../../utils/style/app_colors.dart';
 import '../icon_handler.dart';
 
 class TextInputField extends StatefulWidget {
@@ -98,6 +99,10 @@ class _TextInputFieldState extends State<TextInputField> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final labelColor =
+        isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -105,7 +110,7 @@ class _TextInputFieldState extends State<TextInputField> {
           Text(
             widget.labelText ?? "",
             style: TextStyle(
-                fontSize: 14, fontWeight: FontWeight.w700, color: Colors.black),
+                fontSize: 14, fontWeight: FontWeight.w700, color: labelColor),
           ),
         if (widget.labelText != null) const SizedBox(height: 8),
         SizedBox(

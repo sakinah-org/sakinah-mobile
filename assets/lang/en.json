@@ -102,6 +102,7 @@
   "settings_logout_confirm_message": "You'll be signed out, but the app keeps working fully as a guest and your local preferences stay exactly as they are.",
   "settings_logout_confirm_cta": "Logout",
   "settings_logout_cancel_cta": "Cancel",
+  "settings_dark_mode_option": "Dark Mode",
 
   "qibla_screen_title": "Qibla Compass",
   "qibla_direction_label": "Qibla direction",

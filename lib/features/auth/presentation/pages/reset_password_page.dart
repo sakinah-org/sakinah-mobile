@@ -58,6 +58,10 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             },
             builder: (context, state) {
               final isLoading = state is LoadingState;
+              final isDark = Theme.of(context).brightness == Brightness.dark;
+              final textTertiary = isDark
+                  ? AppColors.darkTextTertiary
+                  : AppColors.lightTextTertiary;
               return SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
@@ -66,13 +70,16 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     const SizedBox(height: 24),
                     Text(
                       translator.word(TranslationKeys.authResetPasswordTitle),
-                      style: AppTypography.h1Light,
+                      style:
+                          isDark ? AppTypography.h1Dark : AppTypography.h1Light,
                     ),
                     const SizedBox(height: 6),
                     Text(
                       translator
                           .word(TranslationKeys.authResetPasswordSubtitle),
-                      style: AppTypography.body2Light,
+                      style: isDark
+                          ? AppTypography.body2Dark
+                          : AppTypography.body2Light,
                     ),
                     const SizedBox(height: 24),
                     TextInputField(
@@ -81,7 +88,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                           translator.word(TranslationKeys.authNewPasswordLabel),
                       keyboardType: TextInputType.visiblePassword,
                       prefixIcon: drawSvgIcon(AppIcons.password,
-                          iconColor: AppColors.lightTextTertiary),
+                          iconColor: textTertiary),
                       withBottomPadding: false,
                     ),
                     const PasswordRulesHint(),
@@ -91,7 +98,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                           .word(TranslationKeys.authConfirmPasswordLabel),
                       keyboardType: TextInputType.visiblePassword,
                       prefixIcon: drawSvgIcon(AppIcons.password,
-                          iconColor: AppColors.lightTextTertiary),
+                          iconColor: textTertiary),
                     ),
                     const SizedBox(height: 12),
                     ElevatedButton(
@@ -105,13 +112,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                 ),
                               ),
                       child: isLoading
-                          ? const SizedBox(
+                          ? SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation(
-                                    AppColors.lightOnBrand),
+                                valueColor: AlwaysStoppedAnimation(isDark
+                                    ? AppColors.darkOnBrand
+                                    : AppColors.lightOnBrand),
                               ),
                             )
                           : Text(translator
