@@ -1,22 +1,11 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:sakinah/features/quran/domain/entities/ayah.dart';
-import 'package:sakinah/features/quran/domain/entities/surah.dart';
 import 'package:sakinah/features/quran/domain/repositories/quran_repository.dart';
 import 'package:sakinah/features/quran/presentation/bloc/surah_reading_cubit.dart';
 import 'package:sakinah/features/quran/presentation/bloc/surah_reading_state.dart';
 
 class MockQuranRepository extends Mock implements QuranRepository {}
-
-const _fatiha = Surah(
-  number: 1,
-  arabicName: 'سُورَةُ ٱلْفَاتِحَةِ',
-  transliteration: 'Al-Faatiha',
-  meaning: 'The Opening',
-  revelationType: RevelationType.meccan,
-  ayahCount: 7,
-);
 
 void main() {
   late MockQuranRepository repository;
@@ -25,41 +14,45 @@ void main() {
     repository = MockQuranRepository();
   });
 
-  group('loadSurah', () {
+  group('initialize', () {
     blocTest<SurahReadingCubit, SurahReadingState>(
-      'emits [Loading, Loaded] with the matching Surah and its ayahs',
+      'emits [Loading, Loaded] with the Surah\'s first page and the fixed total',
       setUp: () {
-        when(() => repository.getSurahList())
-            .thenAnswer((_) async => const [_fatiha]);
-        when(() => repository.getSurah(1)).thenAnswer((_) async => const [
-              Ayah(
-                  numberInSurah: 1,
-                  text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ'),
-            ]);
+        when(() => repository.firstPageOfSurah(2)).thenAnswer((_) async => 2);
       },
       build: () => SurahReadingCubit(repository: repository),
-      act: (cubit) => cubit.loadSurah(1),
+      act: (cubit) => cubit.initialize(2),
       expect: () => [
         isA<SurahReadingLoadingState>(),
         isA<SurahReadingLoadedState>()
-            .having((s) => s.surah.number, 'surah.number', 1)
-            .having((s) => s.ayahs, 'ayahs', hasLength(1)),
+            .having((s) => s.startingPageNumber, 'startingPageNumber', 2)
+            .having((s) => s.totalPages, 'totalPages', kQuranTotalPages),
       ],
     );
 
     blocTest<SurahReadingCubit, SurahReadingState>(
-      'emits [Loading, Unavailable] when the ayah fetch fails',
+      'emits [Loading, Unavailable] when page resolution fails',
       setUp: () {
-        when(() => repository.getSurahList())
-            .thenAnswer((_) async => const [_fatiha]);
-        when(() => repository.getSurah(1)).thenThrow(Exception('boom'));
+        when(() => repository.firstPageOfSurah(1)).thenThrow(Exception('boom'));
       },
       build: () => SurahReadingCubit(repository: repository),
-      act: (cubit) => cubit.loadSurah(1),
+      act: (cubit) => cubit.initialize(1),
       expect: () => [
         isA<SurahReadingLoadingState>(),
         isA<SurahReadingUnavailableState>(),
       ],
     );
+  });
+
+  group('resolveJuzFirstPage', () {
+    test('returns the repository\'s resolved page without emitting', () async {
+      when(() => repository.firstPageOfJuz(5)).thenAnswer((_) async => 82);
+      final cubit = SurahReadingCubit(repository: repository);
+
+      final page = await cubit.resolveJuzFirstPage(5);
+
+      expect(page, 82);
+      expect(cubit.state, isA<SurahReadingInitialState>());
+    });
   });
 }

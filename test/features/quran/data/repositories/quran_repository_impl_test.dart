@@ -161,4 +161,110 @@ void main() {
       expect(reread.fontFamily, QuranFontSetting.defaults.fontFamily);
     });
   });
+
+  // specs/009-quran-paged-reading
+  group('getPage', () {
+    test('a single-surah page has exactly one run', () async {
+      final page = await repository.getPage(1);
+
+      expect(page.pageNumber, 1);
+      expect(page.surahRuns, hasLength(1));
+      expect(page.startSurah.number, 1);
+      expect(page.surahRuns.single.ayahs, hasLength(7)); // all of Al-Fatihah
+      expect(page.isMixedPage, isFalse);
+    });
+
+    test('a two-surah mixed page (106) has both runs in order', () async {
+      final page = await repository.getPage(106);
+
+      expect(page.isMixedPage, isTrue);
+      expect(page.surahRuns, hasLength(2));
+      expect(page.surahRuns[0].surah.number, 4);
+      expect(page.surahRuns[0].ayahs.map((a) => a.numberInSurah), [176]);
+      expect(page.surahRuns[1].surah.number, 5);
+      expect(page.surahRuns[1].ayahs.map((a) => a.numberInSurah), [1, 2]);
+    });
+
+    test('a three-surah page (604) includes the middle surah in full',
+        () async {
+      final page = await repository.getPage(604);
+
+      expect(page.surahRuns, hasLength(3));
+      expect(page.surahRuns.map((r) => r.surah.number), [112, 113, 114]);
+      // Al-Falaq (113) is entirely between the page's start/end surah —
+      // every one of its 5 ayahs must be present, not dropped.
+      expect(
+          page.surahRuns[1].ayahs.map((a) => a.numberInSurah), [1, 2, 3, 4, 5]);
+    });
+
+    test('every ayah on a page carries a matching pageNumber', () async {
+      final page = await repository.getPage(250);
+
+      for (final run in page.surahRuns) {
+        for (final ayah in run.ayahs) {
+          expect(ayah.pageNumber, 250);
+        }
+      }
+    });
+
+    test('throws ArgumentError outside the 1–604 range', () async {
+      expect(() => repository.getPage(0), throwsArgumentError);
+      expect(() => repository.getPage(605), throwsArgumentError);
+    });
+  });
+
+  // US2: swiping past a surah's last page must land on the very next
+  // surah's first page (FR-007/FR-008), and page 1/604 are the true
+  // ends of the whole index (FR-009 — the no-op-at-the-edge behavior
+  // itself is PageView's own bounded-itemCount/ClampingScrollPhysics
+  // guarantee, a Flutter framework contract rather than app logic, so it
+  // isn't re-asserted here; see quickstart.md US2 for the manual check).
+  group('boundary crossing (US2)', () {
+    test(
+        'the last page of a non-final Surah is immediately followed by '
+        'the next Surah\'s first page', () async {
+      // Al-Faatiha (1) is the whole of page 1; Al-Baqarah (2) starts on
+      // page 2 — confirmed by the getPage(1)/(2) assertions above.
+      final lastPageOfSurah1 = await repository.getPage(1);
+      final firstPageOfSurah2 = await repository.firstPageOfSurah(2);
+
+      expect(lastPageOfSurah1.pageNumber + 1, firstPageOfSurah2);
+    });
+
+    test('Surah 114 (An-Nas, the last Surah) ends exactly on page 604',
+        () async {
+      final page604 = await repository.getPage(604);
+
+      expect(page604.surahRuns.last.surah.number, 114);
+      expect(page604.pageNumber, 604);
+    });
+
+    test('Surah 1 (Al-Fatihah, the first Surah) starts exactly on page 1',
+        () async {
+      expect(await repository.firstPageOfSurah(1), 1);
+    });
+  });
+
+  group('firstPageOfSurah', () {
+    test('Al-Fatihah (1) starts on page 1', () async {
+      expect(await repository.firstPageOfSurah(1), 1);
+    });
+
+    test('An-Nas (114, the last surah) starts on page 604', () async {
+      expect(await repository.firstPageOfSurah(114), 604);
+    });
+  });
+
+  group('firstPageOfJuz', () {
+    test('Juz 1 starts on page 1', () async {
+      expect(await repository.firstPageOfJuz(1), 1);
+    });
+
+    test('Juz 30 starts on the same page An-Naba (78) starts on', () async {
+      final juz30Page = await repository.firstPageOfJuz(30);
+      final surah78Page = await repository.firstPageOfSurah(78);
+
+      expect(juz30Page, surah78Page);
+    });
+  });
 }

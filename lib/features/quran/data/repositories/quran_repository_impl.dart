@@ -11,6 +11,7 @@ import '../../../../configurations/app_persistence_data_keys.dart';
 import '../../../../handlers/shared_handler.dart';
 import '../../domain/entities/ayah.dart';
 import '../../domain/entities/juz_section.dart';
+import '../../domain/entities/mushaf_page.dart';
 import '../../domain/entities/quran_font_setting.dart';
 import '../../domain/entities/surah.dart';
 import '../../domain/repositories/quran_repository.dart';
@@ -37,6 +38,8 @@ class QuranRepositoryImpl implements QuranRepository {
       'assets/quran/chapters/index.json';
   static const String _juzBoundariesAssetPath =
       'assets/quran/juz_boundaries.json';
+  static const String _pageBoundariesAssetPath =
+      'assets/quran/page_boundaries.json';
 
   static String _chapterAssetPath(int surahNumber) =>
       'assets/quran/chapters/$surahNumber.json';
@@ -82,6 +85,85 @@ class QuranRepositoryImpl implements QuranRepository {
     final ayahs = AyahModel.listFromBundledJson(chapter);
     await _prefs.save(cacheKey, value: AyahModel.listToHiveJson(ayahs));
     return ayahs;
+  }
+
+  /// Returns the cached 604-entry page→ayah-range index if present;
+  /// otherwise reads and parses [_pageBoundariesAssetPath] (an object keyed
+  /// by page number as a string — cached and returned as-is), caches it
+  /// permanently, and returns it (contracts/quran_repository_paging_contract.md).
+  Future<Map<String, dynamic>> _loadPageBoundaries() async {
+    if (_prefs.contains(AppPersistenceDataKeys.quranPageBoundariesCache)) {
+      return Map<String, dynamic>.from(
+        _prefs.get<Map>(key: AppPersistenceDataKeys.quranPageBoundariesCache),
+      );
+    }
+
+    final boundaries =
+        await _loadAndDecode<Map<String, dynamic>>(_pageBoundariesAssetPath);
+    await _prefs.save(
+      AppPersistenceDataKeys.quranPageBoundariesCache,
+      value: boundaries,
+    );
+    return boundaries;
+  }
+
+  @override
+  Future<MushafPage> getPage(int pageNumber) async {
+    final boundaries = await _loadPageBoundaries();
+    final boundary = boundaries['$pageNumber'] as Map?;
+    if (boundary == null) {
+      throw ArgumentError.value(pageNumber, 'pageNumber', 'Must be 1–604');
+    }
+    final startSurahNumber = boundary['startSurah'] as int;
+    final startAyah = boundary['startAyah'] as int;
+    final endSurahNumber = boundary['endSurah'] as int;
+    final endAyah = boundary['endAyah'] as int;
+
+    final allSurahs = await getSurahList();
+    final surahByNumber = {for (final s in allSurahs) s.number: s};
+
+    // Almost always startSurahNumber == endSurahNumber (one run). Near the
+    // end of the Quran, a page can span 3 short surahs at once (e.g. page
+    // 604: Al-Ikhlas + Al-Falaq + An-Nas) — walk every surah in the
+    // [startSurahNumber, endSurahNumber] range, not just the two ends.
+    final runs = <MushafPageSurahRun>[];
+    for (var surahNumber = startSurahNumber;
+        surahNumber <= endSurahNumber;
+        surahNumber++) {
+      final ayahs = await getSurah(surahNumber);
+      final isFirst = surahNumber == startSurahNumber;
+      final isLast = surahNumber == endSurahNumber;
+      final runAyahs = ayahs
+          .where((a) =>
+              (!isFirst || a.numberInSurah >= startAyah) &&
+              (!isLast || a.numberInSurah <= endAyah))
+          .toList();
+      runs.add(
+        MushafPageSurahRun(surah: surahByNumber[surahNumber]!, ayahs: runAyahs),
+      );
+    }
+
+    return MushafPage(pageNumber: pageNumber, surahRuns: runs);
+  }
+
+  @override
+  Future<int> firstPageOfSurah(int surahNumber) async {
+    final ayahs = await getSurah(surahNumber);
+    return ayahs.first.pageNumber!;
+  }
+
+  @override
+  Future<int> firstPageOfJuz(int juzNumber) async {
+    final rawBoundaries = await _loadAndDecode<List>(_juzBoundariesAssetPath);
+    final boundaries =
+        rawBoundaries.cast<Map>().map(Map<String, dynamic>.from).toList();
+    final boundary = boundaries.firstWhere((b) => b['juz'] == juzNumber);
+    final startSurah = boundary['startSurah'] as int;
+    final startAyah = boundary['startAyah'] as int;
+
+    final ayahs = await getSurah(startSurah);
+    final ayah = ayahs.firstWhere((a) => a.numberInSurah == startAyah);
+    return ayah.pageNumber!;
   }
 
   @override

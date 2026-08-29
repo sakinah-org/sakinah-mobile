@@ -3,11 +3,14 @@ import '../../domain/entities/ayah.dart';
 /// Maps a bundled `assets/quran/chapters/{n}.json`'s `verses[]` entries
 /// (`risan/quran-json` per-chapter shape — plan.md/research.md R2) onto
 /// [Ayah]. Also the Hive envelope for the permanent per-Surah local cache
-/// (specs/004-quran-screen research.md R2).
+/// (specs/004-quran-screen research.md R2). Verses now also carry a `page`
+/// field (specs/009-quran-paged-reading) — parsed as nullable to stay
+/// tolerant of any shape drift, though the bundled assets always include it.
 class AyahModel {
   static Ayah fromJson(Map<String, dynamic> json) => Ayah(
         numberInSurah: json['id'] as int,
         text: json['text'] as String,
+        pageNumber: json['page'] as int?,
       );
 
   /// Parses one bundled Surah file's `verses[]` array.
@@ -23,6 +26,7 @@ class AyahModel {
   static Map<String, dynamic> toHiveJson(Ayah ayah) => {
         'id': ayah.numberInSurah,
         'text': ayah.text,
+        'page': ayah.pageNumber,
       };
 
   static List<Map<String, dynamic>> listToHiveJson(List<Ayah> ayahs) =>

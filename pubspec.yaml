@@ -86,6 +86,7 @@ flutter:
    - assets/env/
    - assets/quran/chapters/
    - assets/quran/juz_boundaries.json
+   - assets/quran/page_boundaries.json
 
 
  

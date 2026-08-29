@@ -1,5 +1,6 @@
 import '../entities/ayah.dart';
 import '../entities/juz_section.dart';
+import '../entities/mushaf_page.dart';
 import '../entities/quran_font_setting.dart';
 import '../entities/surah.dart';
 
@@ -37,4 +38,21 @@ abstract class QuranRepository {
   /// Returns null (not throw) if the row doesn't exist yet, the columns are
   /// unset, or on any Postgrest error.
   Future<QuranFontSetting?> fetchRemoteFontSetting(String userId);
+
+  // ============================================================================
+  // Paged reading (specs/009-quran-paged-reading) — contracts/quran_repository_paging_contract.md
+  // ============================================================================
+
+  /// Assembles and returns the [MushafPage] for [pageNumber] (1–604), from
+  /// the bundled page-boundary index and this Surah's already-cached ayat
+  /// (data-model.md). Same fallback/failure behavior as [getSurahList].
+  Future<MushafPage> getPage(int pageNumber);
+
+  /// Resolves a Surah's first Mushaf page — the page its ayah 1 belongs to
+  /// (spec.md FR-005). Same fallback/failure behavior as [getSurahList].
+  Future<int> firstPageOfSurah(int surahNumber);
+
+  /// Resolves a Juz's (1–30) first Mushaf page — the page its starting
+  /// ayah belongs to. Same fallback/failure behavior as [getSurahList].
+  Future<int> firstPageOfJuz(int juzNumber);
 }

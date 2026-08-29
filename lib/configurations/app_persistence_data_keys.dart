@@ -34,9 +34,20 @@ abstract class AppPersistenceDataKeys {
   // ============================================================================
   static const String quranSurahListCache = 'quran_surah_list_cache';
   static const String quranJuzSectionsCache = 'quran_juz_sections_cache';
-  static const String quranSurahCachePrefix = 'quran_surah_cache';
+
+  /// Bumped to _v2 for specs/009-quran-paged-reading (research.md R5): the
+  /// bundled chapters/{n}.json now carries a `page` field per ayah, so a
+  /// cache written under the old key (pre-update installs) would silently
+  /// keep serving page-less ayahs forever. The old key is intentionally
+  /// left orphaned, not migrated.
+  static const String quranSurahCachePrefix = 'quran_surah_cache_v2';
   static const String quranFontFamily = 'quran_font_family';
   static const String quranFontSize = 'quran_font_size';
+
+  // ============================================================================
+  // Quran Paged Reading (lib/features/quran/) — specs/009-quran-paged-reading
+  // ============================================================================
+  static const String quranPageBoundariesCache = 'quran_page_boundaries_cache';
 
   // ============================================================================
   // Settings (lib/shared/bloc/settings_cubit.dart) — specs/006-settings-screen

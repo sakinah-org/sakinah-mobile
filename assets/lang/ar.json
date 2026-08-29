@@ -93,6 +93,17 @@
   "quran_font_style_ornamental": "زخرفي",
   "quran_font_default_suffix": " (افتراضي)",
 
+  "quran_page_badge_label": "صفحة",
+  "quran_jump_sheet_title": "الانتقال إلى صفحة",
+  "quran_jump_page_tab_label": "رقم الصفحة",
+  "quran_jump_juz_tab_label": "الجزء",
+  "quran_jump_go_cta": "انتقال",
+  "quran_jump_page_range_hint": "من 1 إلى 604 — رقم صفحة المصحف",
+  "quran_jump_juz_hint": "اختر جزءًا من 1 إلى 30",
+  "quran_audio_download_tooltip": "تنزيل صوت السورة",
+  "quran_listen_action_label": "استماع",
+  "quran_tafseer_action_label": "تفسير",
+
   "settings_guest_title": "تتصفّح كضيف",
   "settings_sync_active_badge": "المزامنة مفعّلة",
   "settings_prayer_times_option": "مواقيت الصلاة",

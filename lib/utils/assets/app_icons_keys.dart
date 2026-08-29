@@ -54,4 +54,12 @@ abstract class AppIcons {
   // Home — Ayah of Today card
   // ============================================================================
   static const String quote = 'quote';
+
+  // ============================================================================
+  // Quran Paged Reading (lib/features/quran/) — specs/009-quran-paged-reading
+  // ============================================================================
+  static const String audioDownload = 'audio_download';
+  static const String pageJump = 'page_jump';
+  static const String listen = 'listen';
+  static const String tafseer = 'tafseer';
 }

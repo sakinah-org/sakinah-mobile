@@ -1,0 +1,10 @@
+{
+ "total_ayat_processed": 6236,
+ "total_ayat_expected": 6236,
+ "pages_indexed": 604,
+ "pages_expected": 604,
+ "ayat_with_no_page_assigned": [],
+ "ayat_seen_on_conflicting_pages": [],
+ "non_monotonic_page_jumps_within_surah": [],
+ "status": "PASS"
+}

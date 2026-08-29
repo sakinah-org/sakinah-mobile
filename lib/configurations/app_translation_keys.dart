@@ -145,6 +145,21 @@ abstract class TranslationKeys {
   static const String quranFontDefaultSuffix = 'quran_font_default_suffix';
 
   // ============================================================================
+  // Quran Paged Reading (lib/features/quran/) — specs/009-quran-paged-reading
+  // ============================================================================
+  static const String quranPageBadgeLabel = 'quran_page_badge_label';
+  static const String quranJumpSheetTitle = 'quran_jump_sheet_title';
+  static const String quranJumpPageTabLabel = 'quran_jump_page_tab_label';
+  static const String quranJumpJuzTabLabel = 'quran_jump_juz_tab_label';
+  static const String quranJumpGoCta = 'quran_jump_go_cta';
+  static const String quranJumpPageRangeHint = 'quran_jump_page_range_hint';
+  static const String quranJumpJuzHint = 'quran_jump_juz_hint';
+  static const String quranAudioDownloadTooltip =
+      'quran_audio_download_tooltip';
+  static const String quranListenActionLabel = 'quran_listen_action_label';
+  static const String quranTafseerActionLabel = 'quran_tafseer_action_label';
+
+  // ============================================================================
   // Settings screen (lib/features/settings/) — specs/006-settings-screen
   // ============================================================================
   static const String settingsGuestTitle = 'settings_guest_title';

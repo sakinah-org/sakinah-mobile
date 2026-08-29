@@ -93,6 +93,17 @@
   "quran_font_style_ornamental": "Ornamental",
   "quran_font_default_suffix": " (Default)",
 
+  "quran_page_badge_label": "Page",
+  "quran_jump_sheet_title": "Go to Page",
+  "quran_jump_page_tab_label": "Page Number",
+  "quran_jump_juz_tab_label": "Juz",
+  "quran_jump_go_cta": "Go",
+  "quran_jump_page_range_hint": "From 1 to 604 — Mushaf page number",
+  "quran_jump_juz_hint": "Choose a Juz from 1 to 30",
+  "quran_audio_download_tooltip": "Download Surah Audio",
+  "quran_listen_action_label": "Listen",
+  "quran_tafseer_action_label": "Tafseer",
+
   "settings_guest_title": "Browsing as guest",
   "settings_sync_active_badge": "Sync active",
   "settings_prayer_times_option": "Prayer Times",
