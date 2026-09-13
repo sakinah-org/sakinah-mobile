@@ -29,7 +29,7 @@ Build a signed release AAB for the given stage without uploading it. Usage: fast
 [bundle exec] fastlane android deploy
 ```
 
-Build and upload a release to Google Play for the given stage. Usage: fastlane deploy stage:production [release_status:draft]
+Build and upload a release to Google Play for the given stage. Usage: fastlane deploy stage:production [release_status:draft] [track:beta]
 
 ----
 

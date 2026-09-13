@@ -1,0 +1,126 @@
+name: Release to Play Store
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Stage to release"
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+          - production
+      track:
+        description: "Override Play Store track (optional, defaults per stage)"
+        required: false
+        type: string
+      release_status:
+        description: "Override release status: draft/completed/inProgress/halted (optional)"
+        required: false
+        type: string
+
+env:
+  FLUTTER_VERSION: "3.47.2"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Restore env config
+        env:
+          ENV_FILE_DEV: ${{ secrets.ENV_FILE_DEV }}
+          ENV_FILE_STAGING: ${{ secrets.ENV_FILE_STAGING }}
+          ENV_FILE_PRODUCTION: ${{ secrets.ENV_FILE_PRODUCTION }}
+        run: |
+          mkdir -p assets/env
+          printf '%s' "$ENV_FILE_DEV" > assets/env/.env.dev
+          printf '%s' "$ENV_FILE_STAGING" > assets/env/.env.staging
+          printf '%s' "$ENV_FILE_PRODUCTION" > assets/env/.env.production
+
+      - run: flutter pub get
+
+      - run: flutter test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+          working-directory: android
+
+      - name: Restore env config
+        env:
+          ENV_FILE_DEV: ${{ secrets.ENV_FILE_DEV }}
+          ENV_FILE_STAGING: ${{ secrets.ENV_FILE_STAGING }}
+          ENV_FILE_PRODUCTION: ${{ secrets.ENV_FILE_PRODUCTION }}
+        run: |
+          mkdir -p assets/env
+          printf '%s' "$ENV_FILE_DEV" > assets/env/.env.dev
+          printf '%s' "$ENV_FILE_STAGING" > assets/env/.env.staging
+          printf '%s' "$ENV_FILE_PRODUCTION" > assets/env/.env.production
+
+      - run: flutter pub get
+
+      - name: Restore Android signing keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 -d > android/app/upload-keystore.jks
+          cat > android/key.properties <<EOF
+          storePassword=$ANDROID_KEYSTORE_PASSWORD
+          keyPassword=$ANDROID_KEY_PASSWORD
+          keyAlias=$ANDROID_KEY_ALIAS
+          storeFile=upload-keystore.jks
+          EOF
+
+      - name: Restore Play Console service account key
+        env:
+          PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
+        run: printf '%s' "$PLAY_STORE_JSON_KEY" > "$RUNNER_TEMP/play-store-credentials.json"
+
+      - name: Build and deploy to Play Store
+        working-directory: android
+        env:
+          PLAY_STORE_JSON_KEY_PATH: ${{ runner.temp }}/play-store-credentials.json
+          GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON }}
+          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+        run: |
+          ARGS=(stage:"${{ inputs.stage }}")
+          if [ -n "${{ inputs.track }}" ]; then ARGS+=(track:"${{ inputs.track }}"); fi
+          if [ -n "${{ inputs.release_status }}" ]; then ARGS+=(release_status:"${{ inputs.release_status }}"); fi
+          bundle exec fastlane deploy "${ARGS[@]}"
+
+      - name: Clean up credentials
+        if: always()
+        run: |
+          rm -f android/app/upload-keystore.jks android/key.properties
+          rm -f "$RUNNER_TEMP/play-store-credentials.json"
+          rm -f assets/env/.env.dev assets/env/.env.staging assets/env/.env.production
