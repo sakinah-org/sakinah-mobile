@@ -6,7 +6,7 @@ STAGE_CONFIG = {
   "production" => { env: "production", track: "production" }
 }.freeze
 
-PROJECT_ROOT = File.expand_path("..", Dir.pwd)
+PROJECT_ROOT = File.expand_path("../..", __dir__)
 AAB_PATH = File.join(PROJECT_ROOT, "build/app/outputs/bundle/release/app-release.aab")
 
 platform :android do
@@ -19,9 +19,10 @@ platform :android do
     UI.success("Built #{AAB_PATH} for stage '#{options[:stage]}'.")
   end
 
-  desc "Build and upload a release to Google Play for the given stage. Usage: fastlane deploy stage:production [release_status:draft]"
+  desc "Build and upload a release to Google Play for the given stage. Usage: fastlane deploy stage:production [release_status:draft] [track:beta]"
   lane :deploy do |options|
     cfg = stage_config(options)
+    track = options[:track] || cfg[:track]
     version_code = next_version_code
 
     Dir.chdir(PROJECT_ROOT) do
@@ -31,13 +32,15 @@ platform :android do
 
     UI.user_error!("Build succeeded but AAB not found at #{AAB_PATH}") unless File.exist?(AAB_PATH)
 
+    upload_aab_to_drive(stage: options[:stage].to_s.downcase, version_code: version_code)
+
     # Production defaults to a draft release so a human confirms the rollout
     # in Play Console; internal/beta default to completed since those tracks
     # only reach opted-in testers.
-    release_status = options[:release_status] || (cfg[:track] == "production" ? "draft" : "completed")
+    release_status = options[:release_status] || (track == "production" ? "draft" : "completed")
 
     upload_to_play_store(
-      track: cfg[:track],
+      track: track,
       aab: AAB_PATH,
       version_code: version_code,
       release_status: release_status,
@@ -46,7 +49,41 @@ platform :android do
       skip_upload_screenshots: true
     )
 
-    UI.success("Uploaded build #{version_code} (stage: #{options[:stage]}) to track '#{cfg[:track]}' with status '#{release_status}'.")
+    UI.success("Uploaded build #{version_code} (stage: #{options[:stage]}, env: #{cfg[:env]}) to track '#{track}' with status '#{release_status}'.")
+  end
+
+  # Archives the built AAB to a Google Drive folder before it goes to Play
+  # Console, so every shipped build stays retrievable even if the Play
+  # Console release is later edited or removed.
+  def upload_aab_to_drive(stage:, version_code:)
+    require "google/apis/drive_v3"
+    require "googleauth"
+
+    key_json = ENV["GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON"]
+    folder_id = ENV["GOOGLE_DRIVE_FOLDER_ID"]
+    if key_json.nil? || key_json.empty? || folder_id.nil? || folder_id.empty?
+      UI.important("GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON / GOOGLE_DRIVE_FOLDER_ID not set - skipping Google Drive archive.")
+      return
+    end
+
+    authorizer = Google::Auth::ServiceAccountCredentials.make_creds(
+      json_key_io: StringIO.new(key_json),
+      scope: ["https://www.googleapis.com/auth/drive.file"]
+    )
+    authorizer.fetch_access_token!
+
+    drive = Google::Apis::DriveV3::DriveService.new
+    drive.authorization = authorizer
+
+    file_name = "sakinah-#{stage}-#{version_code}.aab"
+    drive.create_file(
+      Google::Apis::DriveV3::File.new(name: file_name, parents: [folder_id]),
+      fields: "id",
+      upload_source: AAB_PATH,
+      content_type: "application/octet-stream"
+    )
+
+    UI.success("Archived #{file_name} to Google Drive folder #{folder_id}.")
   end
 
   # Play Console shares one versionCode space across all tracks, so the next
